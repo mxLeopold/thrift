@@ -1,0 +1,59 @@
+spring: 
+      profiles: test
+      redis: 
+           host: 172.16.100.195
+           port: 9736 
+           database: 1 
+           expires: 1500
+           pool: 
+               max-idle: 100
+               min-idle: 0
+               max-active: 100
+               max-wait: -1
+      aop:
+          proxy-target-class: true
+      datasource:
+           type: com.alibaba.druid.pool.DruidDataSource
+           master:
+               url: jdbc:mysql://172.16.117.226:3306/exercise
+               username: ent_all
+               password: ent
+               driver-class-name: com.mysql.jdbc.Driver
+               minIdle: 5
+               maxActive: 100
+               initialSize: 10
+               maxWait: 60000
+               timeBetweenEvictionRunsMillis: 60000
+               minEvictableIdleTimeMillis: 300000
+               validationQuery: select 'x'
+               testWhileIdle: true
+               testOnBorrow: false
+               testOnReturn: false
+               poolPreparedStatements: true
+               maxPoolPreparedStatementPerConnectionSize: 50
+               removeAbandoned: true
+               filters: stat
+           slave:
+               url: jdbc:mysql://172.16.117.226:3306/exercise
+               username: ent_all
+               password: ent
+               driver-class-name: com.mysql.jdbc.Driver
+               minIdle: 5
+               maxActive: 100
+               initialSize: 10
+               maxWait: 60000
+               timeBetweenEvictionRunsMillis: 60000
+               minEvictableIdleTimeMillis: 300000
+               validationQuery: select 'x'
+               testWhileIdle: true
+               testOnBorrow: false
+               testOnReturn: false
+               poolPreparedStatements: true
+               maxPoolPreparedStatementPerConnectionSize: 50
+               removeAbandoned: true
+               filters: stat
+server:
+      port: 9093          
+logging: 
+    level: 
+        com.sunlands: DEBUG

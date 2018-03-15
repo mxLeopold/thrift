@@ -1,0 +1,62 @@
+spring: 
+      profiles: prod 
+      redis:
+           host: 172.16.116.9
+           port: 9736
+           database: 1
+           expires: 1500
+           pool:
+               max-idle: 100
+               min-idle: 0
+               max-active: 100
+               max-wait: -1
+      aop:
+           proxy-target-class: true
+      datasource:
+           type: com.alibaba.druid.pool.DruidDataSource
+           master:
+               url: jdbc:mysql://172.16.100.66:3306/exercise
+               username: ENC(jVAgVoy+HZrJfQKIfKbM6qpqKgrL6mpM)
+               password: ENC(2WuNd4YrKKzt6O24TnZT1NyTiTPHp9cO)
+               driver-class-name: com.mysql.jdbc.Driver
+               minIdle: 5
+               maxActive: 100
+               initialSize: 10
+               maxWait: 60000
+               timeBetweenEvictionRunsMillis: 60000
+               minEvictableIdleTimeMillis: 300000
+               validationQuery: select 'x'
+               testWhileIdle: true
+               testOnBorrow: false
+               testOnReturn: false
+               poolPreparedStatements: true
+               maxPoolPreparedStatementPerConnectionSize: 50
+               removeAbandoned: true
+               filters: stat
+           slave:
+               url: jdbc:mysql://172.16.100.67:3306/exercise
+               username: ENC(GyynV3aEvb+GKdEFQaTFkpxHbrZKswm6)
+               password: ENC(NkEFOJNBNe+SeSYqOWrfgf/NqWDJmfZA)
+               driver-class-name: com.mysql.jdbc.Driver
+               minIdle: 5
+               maxActive: 100
+               initialSize: 10
+               maxWait: 60000
+               timeBetweenEvictionRunsMillis: 60000
+               minEvictableIdleTimeMillis: 300000
+               validationQuery: select 'x'
+               testWhileIdle: true
+               testOnBorrow: false
+               testOnReturn: false
+               poolPreparedStatements: true
+               maxPoolPreparedStatementPerConnectionSize: 50
+               removeAbandoned: true
+               filters: stat
+server:
+      port: 9090
+logging: 
+    level: 
+        com.sunlands: DEBUG         
+jasypt: 
+    encryptor: 
+        password: ent
