@@ -1,4 +1,4 @@
-package com.sunlands.rpc.test;
+package com.sunlands.rpc.test.api;
 
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
