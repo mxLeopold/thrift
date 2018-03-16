@@ -6,7 +6,7 @@ struct Test {
 	2: string name; 
 }
 
-service ApiService {
+service ApiHomePageService {
 	// 学期
 	list<UserRecord> getUserRecord(1: i32 id, 2: i32 stuId);
 
