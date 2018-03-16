@@ -1,7 +1,7 @@
 package com.sunlands;
 
-import com.sunlands.rpc.web.handler.ApiWebServiceHandler;
-import com.sunlands.rpc.web.service.ApiWebService;
+import com.sunlands.rpc.web.handler.WebStatisticsServiceHandler;
+import com.sunlands.rpc.web.service.WebStatisticsService;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
@@ -26,15 +26,25 @@ public class Application {
     }
 
     @Bean
-    public ServletRegistrationBean servletRegistrationBean(TProtocolFactory protocolFactory,
-                                                           ApiWebServiceHandler handler) {
+    public ServletRegistrationBean statisticsServletRegistrationBean(TProtocolFactory protocolFactory,
+                                                           WebStatisticsServiceHandler handler) {
         // 在spring boot里当只有一个servlet时，spring boot默认将映射到/*路径。否则bean名称将作为映射路径
         // 参见官网文档 《27.3.1 Servlets, Filters, and listeners》
-        ServletRegistrationBean web = new ServletRegistrationBean(
-                new TServlet(new ApiWebService.Processor<>(handler), protocolFactory),
-                "/web/*");
-        web.setName("web");
-        return web;
+        ServletRegistrationBean statistics = new ServletRegistrationBean(
+                new TServlet(new WebStatisticsService.Processor<>(handler), protocolFactory),
+                "/web/statistics/*");
+        statistics.setName("statistics");
+        return statistics;
+    }
+
+    @Bean
+    public ServletRegistrationBean homePageServletRegistrationBean(TProtocolFactory protocolFactory,
+                                                           WebStatisticsServiceHandler handler) {
+        ServletRegistrationBean homePage = new ServletRegistrationBean(
+                new TServlet(new WebStatisticsService.Processor<>(handler), protocolFactory),
+                "/api/homePage/*");
+        homePage.setName("homePage");
+        return homePage;
     }
 
     @Bean

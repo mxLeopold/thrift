@@ -22,7 +22,7 @@ struct QuizzesPaperReport {
     18: i32 wrong;
 }
 
-service ApiWebService {
+service WebStatisticsService {
 	// 查询随堂考列表
 	list<QuizzesPaperReport> getQuizzesPaperReport(1: string paperId, 2: string unitIdStr);
 

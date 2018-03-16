@@ -2,17 +2,15 @@ package com.sunlands.rpc.web.handler;
 
 import com.sunlands.rpc.web.biz.model.QuizzesPaperReportDTO;
 import com.sunlands.rpc.web.biz.service.QuizzesPaperReportService;
-import com.sunlands.rpc.web.service.ApiWebService;
+import com.sunlands.rpc.web.service.WebStatisticsService;
 import com.sunlands.rpc.web.service.QuizzesPaperReport;
 import org.apache.thrift.TException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import javax.jws.Oneway;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +23,7 @@ import java.util.List;
  * @since v1.0
  */
 @Component
-public class ApiWebServiceHandler implements ApiWebService.Iface {
+public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     @Autowired
     private QuizzesPaperReportService quizzesPaperReportService;
     @Override

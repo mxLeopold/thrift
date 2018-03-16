@@ -1,6 +1,6 @@
 package com.sunlands.rpc.test;
 
-import com.sunlands.rpc.web.service.ApiWebService;
+import com.sunlands.rpc.web.service.WebStatisticsService;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.THttpClient;
@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
-public class WebServiceTest {
+public class ApiHomePageServiceTest {
 
     @Autowired
     protected TProtocolFactory protocolFactory;
@@ -33,13 +33,13 @@ public class WebServiceTest {
     @LocalServerPort
     protected int port;
 
-    protected ApiWebService.Client client;
+    protected WebStatisticsService.Client client;
 
     @Before
     public void setUp() throws Exception {
-        TTransport transport = new THttpClient("http://localhost:" + port + "/web");
+        TTransport transport = new THttpClient("http://localhost:" + port + "/web/statistics");
         TProtocol protocol = protocolFactory.getProtocol(transport);
-        client = new ApiWebService.Client(protocol);
+        client = new WebStatisticsService.Client(protocol);
     }
     @Test
     public void testGroupMember() throws Exception {
