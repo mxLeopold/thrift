@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
+@Mapper
 public interface QuizzesPaperReportMapper {
     /**
      * 查询C端试卷
