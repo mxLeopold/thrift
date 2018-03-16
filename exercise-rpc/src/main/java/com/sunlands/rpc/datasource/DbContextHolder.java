@@ -22,7 +22,7 @@ public class DbContextHolder {
     }
 
     public static DbType getDbType() {
-        return contextHolder.get() == null ? DbType.SLAVE : contextHolder.get();
+        return contextHolder.get() == null ? DbType.MASTER : contextHolder.get();
     }
 
     public static void clearDbType() {

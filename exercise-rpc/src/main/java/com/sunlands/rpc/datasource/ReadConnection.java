@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * <p>Title:写注解</p>
+ * <p>Title:读注解</p>
  * <p>Description:</p>
  *
  * @author <a href="mailto:yinhang89@sunlands.com">尹行</a>
@@ -15,5 +15,5 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.METHOD, ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface WriteConnection {
+public @interface ReadConnection {
 }

@@ -9,7 +9,7 @@ import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 
 /**
- * <p>Title:写拦截器</p>
+ * <p>Title:读拦截器</p>
  * <p>Description:</p>
  *
  * @author <a href="mailto:yinhang89@sunlands.com">尹行</a>
@@ -18,15 +18,15 @@ import org.springframework.stereotype.Component;
  */
 @Aspect
 @Component
-public class WriteConnectionInterceptor implements Ordered {
+public class ReadConnectionInterceptor implements Ordered {
 
-    public static final Logger logger = LoggerFactory.getLogger(WriteConnectionInterceptor.class);
+    public static final Logger logger = LoggerFactory.getLogger(ReadConnectionInterceptor.class);
 
-    @Around("@annotation(writeConnection)")
-    public Object proceed(ProceedingJoinPoint proceedingJoinPoint, WriteConnection writeConnection) throws Throwable {
+    @Around("@annotation(readConnection)")
+    public Object proceed(ProceedingJoinPoint proceedingJoinPoint, ReadConnection readConnection) throws Throwable {
         try {
-            logger.info("set database connection to write");
-            DbContextHolder.setDbType(DbContextHolder.DbType.MASTER);
+            logger.info("set database connection to read");
+            DbContextHolder.setDbType(DbContextHolder.DbType.SLAVE);
             Object result = proceedingJoinPoint.proceed();
             return result;
         } finally {

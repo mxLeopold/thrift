@@ -26,7 +26,7 @@ import java.util.Map;
  */
 @Configuration
 @AutoConfigureAfter({DataSourceConfiguration.class})
-@MapperScan("com.sunlands.rpc.app.biz.dao")
+@MapperScan("com.sunlands.rpc.*.biz.dao")
 public class MybatisConfiguration {
 
     private static Log logger = LogFactory.getLog(MybatisConfiguration.class);
@@ -50,7 +50,7 @@ public class MybatisConfiguration {
         Map<Object, Object> targetDataResources = new HashMap<>();
         targetDataResources.put(DbContextHolder.DbType.MASTER, masterDataSource);
         targetDataResources.put(DbContextHolder.DbType.SLAVE, slaveDataSource);
-        proxy.setDefaultTargetDataSource(slaveDataSource);
+        proxy.setDefaultTargetDataSource(masterDataSource);
         proxy.setTargetDataSources(targetDataResources);
         proxy.afterPropertiesSet();
         return proxy;

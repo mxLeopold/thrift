@@ -26,13 +26,13 @@ public class DataSourceConfiguration {
     private Class<? extends DataSource> dataSourceType;
 
     @Bean(name = "masterDataSource")
+    @Primary
     @ConfigurationProperties(prefix = "spring.datasource.master")
     public DataSource masterDataSource() {
         return DataSourceBuilder.create().type(dataSourceType).build();
     }
 
     @Bean(name = "slaveDataSource")
-    @Primary
     @ConfigurationProperties(prefix = "spring.datasource.slave")
     public DataSource slaveDataSource() {
         return DataSourceBuilder.create().type(dataSourceType).build();
