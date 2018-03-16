@@ -1,10 +1,14 @@
 package com.sunlands.rpc.test;
 
+import com.sunlands.rpc.web.biz.dao.QuizzesPaperReportMapper;
+import com.sunlands.rpc.web.biz.model.PaperDTO;
+import com.sunlands.rpc.web.biz.service.QuizzesPaperReportService;
 import com.sunlands.rpc.web.service.ApiWebService;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.THttpClient;
 import org.apache.thrift.transport.TTransport;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +19,8 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.awt.print.Paper;
 
 /**
  * @author wangzhuzhu
@@ -28,6 +34,10 @@ public class CommonServiceTest {
 
     @Autowired
     protected TProtocolFactory protocolFactory;
+
+    @Autowired
+    protected QuizzesPaperReportMapper quizzesPaperReportMapper;
+
 
     @LocalServerPort
     protected int port;
@@ -51,4 +61,9 @@ public class CommonServiceTest {
 //        Assert.assertEquals(2,members.size());
     }
 
+    @Test
+    public void testNew() {
+        PaperDTO paperDTO = quizzesPaperReportMapper.selectPapeByCode("45");
+        Assert.assertNotNull(paperDTO);
+    }
 }

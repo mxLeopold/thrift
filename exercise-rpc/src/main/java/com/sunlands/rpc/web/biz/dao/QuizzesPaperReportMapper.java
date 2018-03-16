@@ -5,10 +5,11 @@ import com.sunlands.rpc.web.biz.model.QuizzesPaperReportDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Mapper
+@Component
 public interface QuizzesPaperReportMapper {
     /**
      * 查询C端试卷
