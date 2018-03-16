@@ -1,8 +1,7 @@
 package com.sunlands.rpc.web.handler;
 
-import com.sunlands.rpc.app.biz.service.CourseService;
 import com.sunlands.rpc.web.service.ApiWebService;
-import com.sunlands.rpc.web.service.UserRecord;
+import com.sunlands.rpc.web.service.QuizzesPaperReport;
 import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,14 +19,9 @@ import java.util.List;
 @Component
 public class ApiWebServiceHandler implements ApiWebService.Iface {
 
-    @Autowired
-    private CourseService courseService;
 
     @Override
-    public List<UserRecord> getUserRecord(int id, int stuId) throws TException {
-        List<UserRecord> recordList = courseService.getUserRecord(id, stuId);
-        // TODO: 2018/3/15
-
+    public List<QuizzesPaperReport> getQuizzesPaperReport(String paperId, String unitIdStr) throws TException {
         return null;
     }
 }
