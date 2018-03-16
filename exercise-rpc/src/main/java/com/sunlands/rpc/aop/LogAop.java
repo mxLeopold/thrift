@@ -13,7 +13,7 @@ public class LogAop {
 
 	ThreadLocal<Long> startTime = new ThreadLocal<>();
 
-	@Pointcut("execution(* com.sunlands.rpc.*.handler.*.* (..))")
+	@Pointcut("execution(* com.sunlands.rpc.*.*.handler.*.* (..))")
 	public void log(){}
 
 	@Before("log()")

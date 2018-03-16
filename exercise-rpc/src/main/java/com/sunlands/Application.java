@@ -1,7 +1,7 @@
 package com.sunlands;
 
-import com.sunlands.rpc.web.handler.WebStatisticsServiceHandler;
-import com.sunlands.rpc.web.service.WebStatisticsService;
+import com.sunlands.rpc.web.statistics.handler.WebStatisticsServiceHandler;
+import com.sunlands.rpc.web.statistics.service.WebStatisticsService;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;

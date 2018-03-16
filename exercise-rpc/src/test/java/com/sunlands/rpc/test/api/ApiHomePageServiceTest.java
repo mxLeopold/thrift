@@ -1,6 +1,6 @@
 package com.sunlands.rpc.test.api;
 
-import com.sunlands.rpc.web.service.WebStatisticsService;
+import com.sunlands.rpc.web.statistics.service.WebStatisticsService;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.THttpClient;

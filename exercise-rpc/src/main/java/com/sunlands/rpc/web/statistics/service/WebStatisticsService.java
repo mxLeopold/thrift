@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.sunlands.rpc.web.service;
+package com.sunlands.rpc.web.statistics.service;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.async.AsyncMethodCallback;

@@ -1,9 +1,9 @@
-package com.sunlands.rpc.web.handler;
+package com.sunlands.rpc.web.statistics.handler;
 
 import com.sunlands.rpc.web.biz.model.QuizzesPaperReportDTO;
 import com.sunlands.rpc.web.biz.service.QuizzesPaperReportService;
-import com.sunlands.rpc.web.service.WebStatisticsService;
-import com.sunlands.rpc.web.service.QuizzesPaperReport;
+import com.sunlands.rpc.web.statistics.service.WebStatisticsService;
+import com.sunlands.rpc.web.statistics.service.QuizzesPaperReport;
 import org.apache.thrift.TException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-namespace java com.sunlands.rpc.web.service
+namespace java com.sunlands.rpc.web.statistics.service
 
 // 随堂考统计数据
 struct QuizzesPaperReport {

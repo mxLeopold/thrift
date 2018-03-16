@@ -42,14 +42,14 @@ public class WebStatisticsServiceTest {
     @LocalServerPort
     protected int port;
 
-    protected com.sunlands.rpc.web.service.WebStatisticsService.Client client;
+    protected com.sunlands.rpc.web.statistics.service.WebStatisticsService.Client client;
 
 
     @Before
     public void setUp() throws Exception {
         TTransport transport = new THttpClient("http://localhost:" + port + "/web/statistics");
         TProtocol protocol = protocolFactory.getProtocol(transport);
-        client = new com.sunlands.rpc.web.service.WebStatisticsService.Client(protocol);
+        client = new com.sunlands.rpc.web.statistics.service.WebStatisticsService.Client(protocol);
     }
 
     @Test

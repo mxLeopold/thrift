@@ -1,4 +1,4 @@
-namespace java com.sunlands.rpc.api.service
+namespace java com.sunlands.rpc.api.homepage.service
 
 // 做题记录
 struct Test {
