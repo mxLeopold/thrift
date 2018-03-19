@@ -1,6 +1,6 @@
 package com.sunlands.rpc.web.statistics.handler;
 
-import com.sunlands.rpc.web.biz.model.QuizzesPaperReportDTO;
+import com.sunlands.rpc.web.biz.model.PaperReportDTO;
 import com.sunlands.rpc.web.biz.service.QuizzesPaperReportService;
 import com.sunlands.rpc.web.statistics.service.*;
 import org.apache.thrift.TException;
@@ -37,16 +37,16 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     }
 
     @Override
-    public List<QuizzesPaperReport> getQuizzesPaperReport(String paperId, String unitIdStr) throws TException {
+    public List<PaperReport> getPaperReport(String paperId, String unitIdStr) throws TException {
         if (paperId == null || StringUtils.isEmpty(paperId)) {
             throw new TException("paperId不能为空");
         }
         if (unitIdStr == null || StringUtils.isEmpty(unitIdStr)) {
             throw new TException("unitIdStr不能为空");
         }
-        List<QuizzesPaperReportDTO> quizzesPaperReportDTOS = quizzesPaperReportService.getQuizzesPaperReport(paperId, unitIdStr);
+        List<PaperReportDTO> quizzesPaperReportDTOS = quizzesPaperReportService.getPaperReport(paperId, unitIdStr);
         if (!CollectionUtils.isEmpty(quizzesPaperReportDTOS)) {
-            List<QuizzesPaperReport> quizzesPaperReports = new ArrayList<QuizzesPaperReport>();
+            List<PaperReport> quizzesPaperReports = new ArrayList<PaperReport>();
             BeanUtils.copyProperties(quizzesPaperReportDTOS, quizzesPaperReports);
             return quizzesPaperReports;
         } else {
@@ -55,7 +55,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     }
 
     @Override
-    public List<QuizzesPaperDetail> getQuizzesPaperDetail(String paperId, String unitIdStr) throws TException {
+    public List<PaperDetail> getPaperDetail(String paperId, String unitIdStr) throws TException {
         return null;
     }
 

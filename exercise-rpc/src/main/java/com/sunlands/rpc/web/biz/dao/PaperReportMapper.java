@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.Select;
 import java.util.List;
 
 @Mapper
-public interface QuizzesPaperReportMapper {
+public interface PaperReportMapper {
     /**
      * 查询C端试卷
      * @param paperCode

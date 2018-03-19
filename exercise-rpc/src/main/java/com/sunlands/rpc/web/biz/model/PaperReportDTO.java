@@ -3,7 +3,7 @@ package com.sunlands.rpc.web.biz.model;
 /**
  * 随堂考统计数据
  */
-public class QuizzesPaperReportDTO {
+public class PaperReportDTO {
     private Integer answerNumber;
     private Float answerTime;
     private Float answerTimeAve;

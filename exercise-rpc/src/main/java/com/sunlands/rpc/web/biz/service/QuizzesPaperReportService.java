@@ -1,6 +1,6 @@
 package com.sunlands.rpc.web.biz.service;
 
-import com.sunlands.rpc.web.biz.model.QuizzesPaperReportDTO;
+import com.sunlands.rpc.web.biz.model.PaperReportDTO;
 
 import java.util.List;
 
@@ -16,6 +16,6 @@ public interface QuizzesPaperReportService {
      * @param unitIdStr
      * @return
      */
-    List<QuizzesPaperReportDTO> getQuizzesPaperReport(String paperCode, String unitIdStr);
+    List<PaperReportDTO> getPaperReport(String paperCode, String unitIdStr);
 
 }

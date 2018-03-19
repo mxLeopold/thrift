@@ -1,6 +1,6 @@
 package com.sunlands.rpc.test.web;
 
-import com.sunlands.rpc.web.biz.dao.QuizzesPaperReportMapper;
+import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.PaperDTO;
 import com.sunlands.rpc.web.biz.model.StuAnswerStatisticsDTO;
 import org.apache.thrift.protocol.TProtocol;
@@ -37,7 +37,7 @@ public class WebStatisticsServiceTest {
     protected TProtocolFactory protocolFactory;
 
     @Autowired
-    protected QuizzesPaperReportMapper quizzesPaperReportMapper;
+    protected PaperReportMapper paperReportMapper;
 
 
     @LocalServerPort
@@ -55,9 +55,9 @@ public class WebStatisticsServiceTest {
 
     @Test
     public void testNew() {
-        PaperDTO paperDTO = quizzesPaperReportMapper.selectPapeByCode("45");
+        PaperDTO paperDTO = paperReportMapper.selectPapeByCode("45");
         Assert.assertNotNull(paperDTO);
-        StuAnswerStatisticsDTO stuAnswerStatisticsDTO = quizzesPaperReportMapper.selectStuAnswerStatistics(paperDTO.getId(), 352923);
+        StuAnswerStatisticsDTO stuAnswerStatisticsDTO = paperReportMapper.selectStuAnswerStatistics(paperDTO.getId(), 352923);
         Assert.assertNotNull(stuAnswerStatisticsDTO);
     }
 }
