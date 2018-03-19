@@ -1,5 +1,7 @@
 package com.sunlands;
 
+import com.sunlands.rpc.api.homepage.handler.ApiHomePageServiceHandler;
+import com.sunlands.rpc.api.homepage.service.ApiHomePageService;
 import com.sunlands.rpc.web.statistics.handler.WebStatisticsServiceHandler;
 import com.sunlands.rpc.web.statistics.service.WebStatisticsService;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
@@ -39,9 +41,9 @@ public class Application {
 
     @Bean
     public ServletRegistrationBean homePageServletRegistrationBean(TProtocolFactory protocolFactory,
-                                                           WebStatisticsServiceHandler handler) {
+                                                           ApiHomePageServiceHandler handler) {
         ServletRegistrationBean homePage = new ServletRegistrationBean(
-                new TServlet(new WebStatisticsService.Processor<>(handler), protocolFactory),
+                new TServlet(new ApiHomePageService.Processor<>(handler), protocolFactory),
                 "/api/homePage/*");
         homePage.setName("homePage");
         return homePage;
