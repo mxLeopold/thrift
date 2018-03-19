@@ -25,11 +25,12 @@ public interface TikuUserRecordMapper {
      * @return
      */
     @Select({
-            "SELECT COUNT(1) c FROM ${tableName} ",
-            "WHERE stu_id = #{studentId} ",
-            "AND status_code = 'COMPLETE' ",
+            "SELECT COUNT(1) c FROM ${tableName}",
+            "WHERE stu_id = #{studentId}",
+            "AND status_code = 'COMPLETE'",
             "AND DATE(end_time) = DATE(#{date})",
-            "AND exercise_type = #{exerciseType}"
+            "AND exercise_type = #{exerciseType}",
+            "AND delete_flag = 0"
     })
     int countCompleteRecordByExerciseTypeAndDate(@Param("tableName") String tableName,
                                                  @Param("studentId") int studentId,

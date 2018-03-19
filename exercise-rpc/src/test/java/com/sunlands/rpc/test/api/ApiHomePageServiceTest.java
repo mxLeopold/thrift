@@ -59,4 +59,10 @@ public class ApiHomePageServiceTest {
         int done = client.isDailyIntelligentExerciseDone(1612069);
         System.out.println(done == 0 ? "未完成" : "完成");
     }
+
+    @Test
+    public void testGetSubmitQuestionCount() throws TException {
+        int count = client.getSubmitQuestionCount(3977845, 1612069);
+        System.out.println(count);
+    }
 }

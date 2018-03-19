@@ -10,7 +10,18 @@ package com.sunlands.rpc.common;
 public class Constant {
 
     public static void main(String[] args) {
-        System.out.println(UserRecord.getTableName(1));
+        System.out.println(TikuUserRecord.getTableName(1));
+    }
+
+    public static class TikuUserQuestion {
+
+        public static final String TABLE_NAME = "t_tiku_user_question_";
+
+        public static final String TABLE_NAME_FORMAT = "t_tiku_user_question_%02d";
+
+        public static String getTableName(int studentId) {
+            return String.format(TABLE_NAME_FORMAT, studentId % 100);
+        }
     }
 
     /**
@@ -18,7 +29,7 @@ public class Constant {
      *
      * @author 吴雨佳
      */
-    public static class UserRecord {
+    public static class TikuUserRecord {
 
         public static final String TABLE_NAME = "t_tiku_user_record_";
 

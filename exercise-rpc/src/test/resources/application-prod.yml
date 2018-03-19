@@ -60,3 +60,5 @@ logging:
 jasypt: 
     encryptor: 
         password: ent
+rpc:
+    student-rpc-url: http://172.16.100.194:7094/student
