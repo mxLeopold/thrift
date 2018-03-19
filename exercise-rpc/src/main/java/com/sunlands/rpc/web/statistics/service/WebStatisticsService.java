@@ -45,7 +45,7 @@ public class WebStatisticsService {
 
     public List<PaperReport> getPaperReport(String paperId, String unitIdStr) throws TException;
 
-    public List<PaperDetail> getPaperDetail(String paperId, String unitIdStr) throws TException;
+    public PaperDetail getPaperDetail(String paperId, String unitIdStr) throws TException;
 
     public List<StuAnswerDetail> getStuAnswerDetail(int paperId, String unitIdStr) throws TException;
 
@@ -156,7 +156,7 @@ public class WebStatisticsService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getPaperReport failed: unknown result");
     }
 
-    public List<PaperDetail> getPaperDetail(String paperId, String unitIdStr) throws TException
+    public PaperDetail getPaperDetail(String paperId, String unitIdStr) throws TException
     {
       send_getPaperDetail(paperId, unitIdStr);
       return recv_getPaperDetail();
@@ -170,7 +170,7 @@ public class WebStatisticsService {
       sendBase("getPaperDetail", args);
     }
 
-    public List<PaperDetail> recv_getPaperDetail() throws TException
+    public PaperDetail recv_getPaperDetail() throws TException
     {
       getPaperDetail_result result = new getPaperDetail_result();
       receiveBase(result, "getPaperDetail");
@@ -349,7 +349,7 @@ public class WebStatisticsService {
         prot.writeMessageEnd();
       }
 
-      public List<PaperDetail> getResult() throws TException {
+      public PaperDetail getResult() throws TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -693,7 +693,7 @@ public class WebStatisticsService {
       }
     }
 
-    public static class getPaperDetail<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getPaperDetail_args, List<PaperDetail>> {
+    public static class getPaperDetail<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getPaperDetail_args, PaperDetail> {
       public getPaperDetail() {
         super("getPaperDetail");
       }
@@ -702,10 +702,10 @@ public class WebStatisticsService {
         return new getPaperDetail_args();
       }
 
-      public AsyncMethodCallback<List<PaperDetail>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+      public AsyncMethodCallback<PaperDetail> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<List<PaperDetail>>() { 
-          public void onComplete(List<PaperDetail> o) {
+        return new AsyncMethodCallback<PaperDetail>() { 
+          public void onComplete(PaperDetail o) {
             getPaperDetail_result result = new getPaperDetail_result();
             result.success = o;
             try {
@@ -739,7 +739,7 @@ public class WebStatisticsService {
         return false;
       }
 
-      public void start(I iface, getPaperDetail_args args, AsyncMethodCallback<List<PaperDetail>> resultHandler) throws TException {
+      public void start(I iface, getPaperDetail_args args, AsyncMethodCallback<PaperDetail> resultHandler) throws TException {
         iface.getPaperDetail(args.paperId, args.unitIdStr,resultHandler);
       }
     }
@@ -3696,7 +3696,7 @@ public class WebStatisticsService {
   public static class getPaperDetail_result implements org.apache.thrift.TBase<getPaperDetail_result, getPaperDetail_result._Fields>, java.io.Serializable, Cloneable, Comparable<getPaperDetail_result>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getPaperDetail_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -3704,7 +3704,7 @@ public class WebStatisticsService {
       schemes.put(TupleScheme.class, new getPaperDetail_resultTupleSchemeFactory());
     }
 
-    public List<PaperDetail> success; // required
+    public PaperDetail success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -3769,8 +3769,7 @@ public class WebStatisticsService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, PaperDetail.class))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, PaperDetail.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getPaperDetail_result.class, metaDataMap);
     }
@@ -3779,7 +3778,7 @@ public class WebStatisticsService {
     }
 
     public getPaperDetail_result(
-      List<PaperDetail> success)
+      PaperDetail success)
     {
       this();
       this.success = success;
@@ -3790,11 +3789,7 @@ public class WebStatisticsService {
      */
     public getPaperDetail_result(getPaperDetail_result other) {
       if (other.isSetSuccess()) {
-        List<PaperDetail> __this__success = new ArrayList<PaperDetail>(other.success.size());
-        for (PaperDetail other_element : other.success) {
-          __this__success.add(new PaperDetail(other_element));
-        }
-        this.success = __this__success;
+        this.success = new PaperDetail(other.success);
       }
     }
 
@@ -3807,26 +3802,11 @@ public class WebStatisticsService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<PaperDetail> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(PaperDetail elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<PaperDetail>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<PaperDetail> getSuccess() {
+    public PaperDetail getSuccess() {
       return this.success;
     }
 
-    public getPaperDetail_result setSuccess(List<PaperDetail> success) {
+    public getPaperDetail_result setSuccess(PaperDetail success) {
       this.success = success;
       return this;
     }
@@ -3852,7 +3832,7 @@ public class WebStatisticsService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<PaperDetail>)value);
+          setSuccess((PaperDetail)value);
         }
         break;
 
@@ -3970,6 +3950,9 @@ public class WebStatisticsService {
     public void validate() throws TException {
       // check for required fields
       // check for sub-struct validity
+      if (success != null) {
+        success.validate();
+      }
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -4007,19 +3990,9 @@ public class WebStatisticsService {
           }
           switch (schemeField.id) {
             case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
-                {
-                  org.apache.thrift.protocol.TList _list56 = iprot.readListBegin();
-                  struct.success = new ArrayList<PaperDetail>(_list56.size);
-                  PaperDetail _elem57;
-                  for (int _i58 = 0; _i58 < _list56.size; ++_i58)
-                  {
-                    _elem57 = new PaperDetail();
-                    _elem57.read(iprot);
-                    struct.success.add(_elem57);
-                  }
-                  iprot.readListEnd();
-                }
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new PaperDetail();
+                struct.success.read(iprot);
                 struct.setSuccessIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
@@ -4042,14 +4015,7 @@ public class WebStatisticsService {
         oprot.writeStructBegin(STRUCT_DESC);
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-          {
-            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (PaperDetail _iter59 : struct.success)
-            {
-              _iter59.write(oprot);
-            }
-            oprot.writeListEnd();
-          }
+          struct.success.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -4075,13 +4041,7 @@ public class WebStatisticsService {
         }
         oprot.writeBitSet(optionals, 1);
         if (struct.isSetSuccess()) {
-          {
-            oprot.writeI32(struct.success.size());
-            for (PaperDetail _iter60 : struct.success)
-            {
-              _iter60.write(oprot);
-            }
-          }
+          struct.success.write(oprot);
         }
       }
 
@@ -4090,17 +4050,8 @@ public class WebStatisticsService {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          {
-            org.apache.thrift.protocol.TList _list61 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<PaperDetail>(_list61.size);
-            PaperDetail _elem62;
-            for (int _i63 = 0; _i63 < _list61.size; ++_i63)
-            {
-              _elem62 = new PaperDetail();
-              _elem62.read(iprot);
-              struct.success.add(_elem62);
-            }
-          }
+          struct.success = new PaperDetail();
+          struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }
       }
@@ -4888,14 +4839,14 @@ public class WebStatisticsService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list64 = iprot.readListBegin();
-                  struct.success = new ArrayList<StuAnswerDetail>(_list64.size);
-                  StuAnswerDetail _elem65;
-                  for (int _i66 = 0; _i66 < _list64.size; ++_i66)
+                  org.apache.thrift.protocol.TList _list56 = iprot.readListBegin();
+                  struct.success = new ArrayList<StuAnswerDetail>(_list56.size);
+                  StuAnswerDetail _elem57;
+                  for (int _i58 = 0; _i58 < _list56.size; ++_i58)
                   {
-                    _elem65 = new StuAnswerDetail();
-                    _elem65.read(iprot);
-                    struct.success.add(_elem65);
+                    _elem57 = new StuAnswerDetail();
+                    _elem57.read(iprot);
+                    struct.success.add(_elem57);
                   }
                   iprot.readListEnd();
                 }
@@ -4923,9 +4874,9 @@ public class WebStatisticsService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (StuAnswerDetail _iter67 : struct.success)
+            for (StuAnswerDetail _iter59 : struct.success)
             {
-              _iter67.write(oprot);
+              _iter59.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -4956,9 +4907,9 @@ public class WebStatisticsService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (StuAnswerDetail _iter68 : struct.success)
+            for (StuAnswerDetail _iter60 : struct.success)
             {
-              _iter68.write(oprot);
+              _iter60.write(oprot);
             }
           }
         }
@@ -4970,14 +4921,14 @@ public class WebStatisticsService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list69 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<StuAnswerDetail>(_list69.size);
-            StuAnswerDetail _elem70;
-            for (int _i71 = 0; _i71 < _list69.size; ++_i71)
+            org.apache.thrift.protocol.TList _list61 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<StuAnswerDetail>(_list61.size);
+            StuAnswerDetail _elem62;
+            for (int _i63 = 0; _i63 < _list61.size; ++_i63)
             {
-              _elem70 = new StuAnswerDetail();
-              _elem70.read(iprot);
-              struct.success.add(_elem70);
+              _elem62 = new StuAnswerDetail();
+              _elem62.read(iprot);
+              struct.success.add(_elem62);
             }
           }
           struct.setSuccessIsSet(true);

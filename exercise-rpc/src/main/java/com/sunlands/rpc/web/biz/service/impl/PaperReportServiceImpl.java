@@ -1,9 +1,7 @@
 package com.sunlands.rpc.web.biz.service.impl;
 
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
-import com.sunlands.rpc.web.biz.model.PaperDTO;
-import com.sunlands.rpc.web.biz.model.PaperReportDTO;
-import com.sunlands.rpc.web.biz.model.StuAnswerDetailDTO;
+import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,5 +53,14 @@ public class PaperReportServiceImpl implements PaperReportService {
     @Override
     public List<StuAnswerDetailDTO> getStuAnswerDetails(Integer paperId, String unitIdStr) {
         return paperReportMapper.getStuAnswerDetails(paperId, unitIdStr);
+    }
+
+    @Override
+    public PaperDetailDTO getPaperDetail(String paperId, String unitIdStr) {
+        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperId);
+        Assert.notNull(paperDTO, "试卷不存在");
+
+//        PaperDetailDTO
+        return null;
     }
 }

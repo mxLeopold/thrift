@@ -1,5 +1,6 @@
 package com.sunlands.rpc.web.statistics.handler;
 
+import com.sunlands.rpc.web.biz.model.PaperDetailDTO;
 import com.sunlands.rpc.web.biz.model.PaperReportDTO;
 import com.sunlands.rpc.web.biz.model.StuAnswerDetailDTO;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
@@ -7,6 +8,7 @@ import com.sunlands.rpc.web.statistics.service.*;
 import org.apache.thrift.TException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -38,7 +40,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     }
 
     @Override
-    public List<PaperReport> getPaperReport(String paperId, String unitIdStr) throws TException {
+    public List<PaperReport> getPaperReport(String paperId, String unitIdStr) throws TException { // TODO: 2018/3/19 加数据，以满足jsp文件跳转逻辑
         if (paperId == null || StringUtils.isEmpty(paperId)) {
             throw new TException("paperId不能为空");
         }
@@ -55,13 +57,19 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     }
 
     @Override
-    public List<PaperDetail> getPaperDetail(String paperId, String unitIdStr) throws TException {
-        return null;
+    public PaperDetail getPaperDetail(String paperId, String unitIdStr) throws TException {
+        PaperDetailDTO paperDetailDTO = paperReportService.getPaperDetail(paperId, unitIdStr);
+        if (paperDetailDTO == null) {
+            return null;
+        }
+        PaperDetail paperDetail = new PaperDetail();
+        BeanUtils.copyProperties(paperDetailDTO, paperDetail); // TODO: 2018/3/19 后续直接传文件？
+        return paperDetail;
     }
 
     @Override
     public List<StuAnswerDetail> getStuAnswerDetail(int paperId, String unitIdStr) throws TException {
-        List<StuAnswerDetailDTO> stuAnswerDetailDTOs = paperReportService.getStuAnswerDetails(paperId, unitIdStr);
+        List<StuAnswerDetailDTO> stuAnswerDetailDTOs = paperReportService.getStuAnswerDetails(paperId, unitIdStr); // TODO: 2018/3/19 企业家根据学员id查询学员姓名
         if (CollectionUtils.isEmpty(stuAnswerDetailDTOs)) {
             return null;
         }

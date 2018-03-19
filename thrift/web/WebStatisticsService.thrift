@@ -45,7 +45,7 @@ struct QuestionDetail {
     3: string questionType;
     4: string questionContent;
     5: string analysis;
-    6: double score;   // decimal?
+    6: string scoreStr;
     7: string answer;
     8: list<Option> optionList; // 选项列表
     9: list<Blank> blankList; // 填空题-空列表
@@ -84,7 +84,7 @@ service WebStatisticsService {
 	list<PaperReport> getPaperReport(1: string paperId, 2: string unitIdStr);
 
     // 查询随堂考详情
-    list<PaperDetail> getPaperDetail(1: string paperId, 2: string unitIdStr);
+    PaperDetail getPaperDetail(1: string paperId, 2: string unitIdStr);
 
     // 成绩详情列表
     list<StuAnswerDetail> getStuAnswerDetail(1: i32 paperId, 2: string unitIdStr);

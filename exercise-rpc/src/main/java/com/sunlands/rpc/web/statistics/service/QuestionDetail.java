@@ -43,7 +43,7 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
   private static final org.apache.thrift.protocol.TField QUESTION_TYPE_FIELD_DESC = new org.apache.thrift.protocol.TField("questionType", org.apache.thrift.protocol.TType.STRING, (short)3);
   private static final org.apache.thrift.protocol.TField QUESTION_CONTENT_FIELD_DESC = new org.apache.thrift.protocol.TField("questionContent", org.apache.thrift.protocol.TType.STRING, (short)4);
   private static final org.apache.thrift.protocol.TField ANALYSIS_FIELD_DESC = new org.apache.thrift.protocol.TField("analysis", org.apache.thrift.protocol.TType.STRING, (short)5);
-  private static final org.apache.thrift.protocol.TField SCORE_FIELD_DESC = new org.apache.thrift.protocol.TField("score", org.apache.thrift.protocol.TType.DOUBLE, (short)6);
+  private static final org.apache.thrift.protocol.TField SCORE_STR_FIELD_DESC = new org.apache.thrift.protocol.TField("scoreStr", org.apache.thrift.protocol.TType.STRING, (short)6);
   private static final org.apache.thrift.protocol.TField ANSWER_FIELD_DESC = new org.apache.thrift.protocol.TField("answer", org.apache.thrift.protocol.TType.STRING, (short)7);
   private static final org.apache.thrift.protocol.TField OPTION_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("optionList", org.apache.thrift.protocol.TType.LIST, (short)8);
   private static final org.apache.thrift.protocol.TField BLANK_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("blankList", org.apache.thrift.protocol.TType.LIST, (short)9);
@@ -61,7 +61,7 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
   public String questionType; // required
   public String questionContent; // required
   public String analysis; // required
-  public double score; // required
+  public String scoreStr; // required
   public String answer; // required
   public List<Option> optionList; // required
   public List<Blank> blankList; // required
@@ -75,7 +75,7 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
     QUESTION_TYPE((short)3, "questionType"),
     QUESTION_CONTENT((short)4, "questionContent"),
     ANALYSIS((short)5, "analysis"),
-    SCORE((short)6, "score"),
+    SCORE_STR((short)6, "scoreStr"),
     ANSWER((short)7, "answer"),
     OPTION_LIST((short)8, "optionList"),
     BLANK_LIST((short)9, "blankList"),
@@ -105,8 +105,8 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
           return QUESTION_CONTENT;
         case 5: // ANALYSIS
           return ANALYSIS;
-        case 6: // SCORE
-          return SCORE;
+        case 6: // SCORE_STR
+          return SCORE_STR;
         case 7: // ANSWER
           return ANSWER;
         case 8: // OPTION_LIST
@@ -159,7 +159,6 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
   // isset id assignments
   private static final int __QUESTIONID_ISSET_ID = 0;
   private static final int __SEQUENCE_ISSET_ID = 1;
-  private static final int __SCORE_ISSET_ID = 2;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -174,8 +173,8 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.ANALYSIS, new org.apache.thrift.meta_data.FieldMetaData("analysis", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
-    tmpMap.put(_Fields.SCORE, new org.apache.thrift.meta_data.FieldMetaData("score", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.DOUBLE)));
+    tmpMap.put(_Fields.SCORE_STR, new org.apache.thrift.meta_data.FieldMetaData("scoreStr", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.ANSWER, new org.apache.thrift.meta_data.FieldMetaData("answer", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.OPTION_LIST, new org.apache.thrift.meta_data.FieldMetaData("optionList", org.apache.thrift.TFieldRequirementType.DEFAULT, 
@@ -203,7 +202,7 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
     String questionType,
     String questionContent,
     String analysis,
-    double score,
+    String scoreStr,
     String answer,
     List<Option> optionList,
     List<Blank> blankList,
@@ -218,8 +217,7 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
     this.questionType = questionType;
     this.questionContent = questionContent;
     this.analysis = analysis;
-    this.score = score;
-    setScoreIsSet(true);
+    this.scoreStr = scoreStr;
     this.answer = answer;
     this.optionList = optionList;
     this.blankList = blankList;
@@ -243,7 +241,9 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
     if (other.isSetAnalysis()) {
       this.analysis = other.analysis;
     }
-    this.score = other.score;
+    if (other.isSetScoreStr()) {
+      this.scoreStr = other.scoreStr;
+    }
     if (other.isSetAnswer()) {
       this.answer = other.answer;
     }
@@ -290,8 +290,7 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
     this.questionType = null;
     this.questionContent = null;
     this.analysis = null;
-    setScoreIsSet(false);
-    this.score = 0.0;
+    this.scoreStr = null;
     this.answer = null;
     this.optionList = null;
     this.blankList = null;
@@ -417,27 +416,28 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
     }
   }
 
-  public double getScore() {
-    return this.score;
+  public String getScoreStr() {
+    return this.scoreStr;
   }
 
-  public QuestionDetail setScore(double score) {
-    this.score = score;
-    setScoreIsSet(true);
+  public QuestionDetail setScoreStr(String scoreStr) {
+    this.scoreStr = scoreStr;
     return this;
   }
 
-  public void unsetScore() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __SCORE_ISSET_ID);
+  public void unsetScoreStr() {
+    this.scoreStr = null;
   }
 
-  /** Returns true if field score is set (has been assigned a value) and false otherwise */
-  public boolean isSetScore() {
-    return EncodingUtils.testBit(__isset_bitfield, __SCORE_ISSET_ID);
+  /** Returns true if field scoreStr is set (has been assigned a value) and false otherwise */
+  public boolean isSetScoreStr() {
+    return this.scoreStr != null;
   }
 
-  public void setScoreIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SCORE_ISSET_ID, value);
+  public void setScoreStrIsSet(boolean value) {
+    if (!value) {
+      this.scoreStr = null;
+    }
   }
 
   public String getAnswer() {
@@ -662,11 +662,11 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
       }
       break;
 
-    case SCORE:
+    case SCORE_STR:
       if (value == null) {
-        unsetScore();
+        unsetScoreStr();
       } else {
-        setScore((Double)value);
+        setScoreStr((String)value);
       }
       break;
 
@@ -730,8 +730,8 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
     case ANALYSIS:
       return getAnalysis();
 
-    case SCORE:
-      return getScore();
+    case SCORE_STR:
+      return getScoreStr();
 
     case ANSWER:
       return getAnswer();
@@ -769,8 +769,8 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
       return isSetQuestionContent();
     case ANALYSIS:
       return isSetAnalysis();
-    case SCORE:
-      return isSetScore();
+    case SCORE_STR:
+      return isSetScoreStr();
     case ANSWER:
       return isSetAnswer();
     case OPTION_LIST:
@@ -843,12 +843,12 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
         return false;
     }
 
-    boolean this_present_score = true;
-    boolean that_present_score = true;
-    if (this_present_score || that_present_score) {
-      if (!(this_present_score && that_present_score))
+    boolean this_present_scoreStr = true && this.isSetScoreStr();
+    boolean that_present_scoreStr = true && that.isSetScoreStr();
+    if (this_present_scoreStr || that_present_scoreStr) {
+      if (!(this_present_scoreStr && that_present_scoreStr))
         return false;
-      if (this.score != that.score)
+      if (!this.scoreStr.equals(that.scoreStr))
         return false;
     }
 
@@ -929,10 +929,10 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
     if (present_analysis)
       list.add(analysis);
 
-    boolean present_score = true;
-    list.add(present_score);
-    if (present_score)
-      list.add(score);
+    boolean present_scoreStr = true && (isSetScoreStr());
+    list.add(present_scoreStr);
+    if (present_scoreStr)
+      list.add(scoreStr);
 
     boolean present_answer = true && (isSetAnswer());
     list.add(present_answer);
@@ -1020,12 +1020,12 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetScore()).compareTo(other.isSetScore());
+    lastComparison = Boolean.valueOf(isSetScoreStr()).compareTo(other.isSetScoreStr());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetScore()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.score, other.score);
+    if (isSetScoreStr()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.scoreStr, other.scoreStr);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1132,8 +1132,12 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("score:");
-    sb.append(this.score);
+    sb.append("scoreStr:");
+    if (this.scoreStr == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.scoreStr);
+    }
     first = false;
     if (!first) sb.append(", ");
     sb.append("answer:");
@@ -1260,10 +1264,10 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 6: // SCORE
-            if (schemeField.type == org.apache.thrift.protocol.TType.DOUBLE) {
-              struct.score = iprot.readDouble();
-              struct.setScoreIsSet(true);
+          case 6: // SCORE_STR
+            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+              struct.scoreStr = iprot.readString();
+              struct.setScoreStrIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
@@ -1388,9 +1392,11 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
         oprot.writeString(struct.analysis);
         oprot.writeFieldEnd();
       }
-      oprot.writeFieldBegin(SCORE_FIELD_DESC);
-      oprot.writeDouble(struct.score);
-      oprot.writeFieldEnd();
+      if (struct.scoreStr != null) {
+        oprot.writeFieldBegin(SCORE_STR_FIELD_DESC);
+        oprot.writeString(struct.scoreStr);
+        oprot.writeFieldEnd();
+      }
       if (struct.answer != null) {
         oprot.writeFieldBegin(ANSWER_FIELD_DESC);
         oprot.writeString(struct.answer);
@@ -1477,7 +1483,7 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
       if (struct.isSetAnalysis()) {
         optionals.set(4);
       }
-      if (struct.isSetScore()) {
+      if (struct.isSetScoreStr()) {
         optionals.set(5);
       }
       if (struct.isSetAnswer()) {
@@ -1511,8 +1517,8 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
       if (struct.isSetAnalysis()) {
         oprot.writeString(struct.analysis);
       }
-      if (struct.isSetScore()) {
-        oprot.writeDouble(struct.score);
+      if (struct.isSetScoreStr()) {
+        oprot.writeString(struct.scoreStr);
       }
       if (struct.isSetAnswer()) {
         oprot.writeString(struct.answer);
@@ -1580,8 +1586,8 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
         struct.setAnalysisIsSet(true);
       }
       if (incoming.get(5)) {
-        struct.score = iprot.readDouble();
-        struct.setScoreIsSet(true);
+        struct.scoreStr = iprot.readString();
+        struct.setScoreStrIsSet(true);
       }
       if (incoming.get(6)) {
         struct.answer = iprot.readString();
