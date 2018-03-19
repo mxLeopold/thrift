@@ -45,6 +45,7 @@ public class UserRecordStatisticsServiceImpl implements UserRecordStatisticsServ
     }
 
     @Override
+    @ReadConnection
     public int countQuestionCountBySubjectIdsAndStuId(Collection<Integer> subjectIdList, int studentId) {
         if (subjectIdList == null || subjectIdList.isEmpty()) {
             return 0;

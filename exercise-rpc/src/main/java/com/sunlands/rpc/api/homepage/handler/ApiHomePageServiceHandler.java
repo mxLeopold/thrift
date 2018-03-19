@@ -39,7 +39,7 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
         try {
             termList = studentRpcService.getAllTermSubjectByDetailId(ordDetailId);
         } catch (Exception e) {
-            log.info("请求StudentRPC发生异常");
+            log.error("请求StudentRPC发生异常, message: {}", e.getMessage());
             return 0;
         }
         Set<Integer> subjectIdList = new HashSet<>();
