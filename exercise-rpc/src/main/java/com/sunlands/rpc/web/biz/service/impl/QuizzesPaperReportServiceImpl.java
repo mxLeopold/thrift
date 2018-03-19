@@ -5,11 +5,14 @@ import com.sunlands.rpc.web.biz.model.PaperDTO;
 import com.sunlands.rpc.web.biz.model.QuizzesPaperReportDTO;
 import com.sunlands.rpc.web.biz.service.QuizzesPaperReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Service
 public class QuizzesPaperReportServiceImpl implements QuizzesPaperReportService{
     @Autowired
     private QuizzesPaperReportMapper quizzesPaperReportMapper;

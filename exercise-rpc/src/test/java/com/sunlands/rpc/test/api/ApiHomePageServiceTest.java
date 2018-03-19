@@ -1,6 +1,9 @@
 package com.sunlands.rpc.test.api;
 
+import com.sunlands.rpc.api.homepage.handler.ApiHomePageServiceHandler;
+import com.sunlands.rpc.api.homepage.service.ApiHomePageService;
 import com.sunlands.rpc.web.statistics.service.WebStatisticsService;
+import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.THttpClient;
@@ -33,18 +36,27 @@ public class ApiHomePageServiceTest {
     @LocalServerPort
     protected int port;
 
-    protected WebStatisticsService.Client client;
+    protected ApiHomePageService.Client client;
+
+    @Autowired
+    private ApiHomePageServiceHandler handler;
 
     @Before
     public void setUp() throws Exception {
-        TTransport transport = new THttpClient("http://localhost:" + port + "/web/statistics");
+        TTransport transport = new THttpClient("http://localhost:" + port + "/api/homePage");
         TProtocol protocol = protocolFactory.getProtocol(transport);
-        client = new WebStatisticsService.Client(protocol);
+        client = new ApiHomePageService.Client(protocol);
     }
     @Test
     public void testGroupMember() throws Exception {
 
 //        List<Member> members = client.getGroupMemberListByPerson(0, "wangzhuzhu");
 //        Assert.assertEquals(2,members.size());
+    }
+
+    @Test
+    public void testIsDailyIntelligentExerciseDone() throws TException {
+        int done = client.isDailyIntelligentExerciseDone(1612069);
+        System.out.println(done == 0 ? "未完成" : "完成");
     }
 }

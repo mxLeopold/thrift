@@ -78,6 +78,13 @@
 				<artifactId>aspectjweaver</artifactId>
 				<version>${aspectj-version}</version>
 			</dependency>
+			<!-- Joda Time 时间工具包, SpringBoot版本中依赖的版本为2.9.4 -->
+			<!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
+			<dependency>
+				<groupId>joda-time</groupId>
+				<artifactId>joda-time</artifactId>
+				<version>${joda-time.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
