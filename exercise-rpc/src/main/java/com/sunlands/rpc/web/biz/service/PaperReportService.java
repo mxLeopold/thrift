@@ -8,7 +8,7 @@ import java.util.List;
  * 新题库 - 随堂考统计数据
  * add by chenqiuxia 20180316
  */
-public interface QuizzesPaperReportService {
+public interface PaperReportService {
 
     /**
      * 随堂考列表
@@ -17,5 +17,9 @@ public interface QuizzesPaperReportService {
      * @return
      */
     List<PaperReportDTO> getPaperReport(String paperCode, String unitIdStr);
+
+    Boolean isPaperIdValid(String paperCode);
+
+    Boolean checkPaperType(String paperCode, String type);
 
 }

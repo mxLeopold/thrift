@@ -1,7 +1,7 @@
 package com.sunlands.rpc.web.statistics.handler;
 
 import com.sunlands.rpc.web.biz.model.PaperReportDTO;
-import com.sunlands.rpc.web.biz.service.QuizzesPaperReportService;
+import com.sunlands.rpc.web.biz.service.PaperReportService;
 import com.sunlands.rpc.web.statistics.service.*;
 import org.apache.thrift.TException;
 import org.springframework.beans.BeanUtils;
@@ -24,16 +24,16 @@ import java.util.List;
 @Component
 public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     @Autowired
-    private QuizzesPaperReportService quizzesPaperReportService;
+    private PaperReportService paperReportService;
 
     @Override
     public boolean isPaperIdValid(String paperId) throws TException {
-        return false;
+        return paperReportService.isPaperIdValid(paperId);
     }
 
     @Override
     public boolean checkPaperType(String paperId, String exerciseType) throws TException {
-        return false;
+        return paperReportService.checkPaperType(paperId, exerciseType);
     }
 
     @Override
@@ -44,7 +44,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         if (unitIdStr == null || StringUtils.isEmpty(unitIdStr)) {
             throw new TException("unitIdStr不能为空");
         }
-        List<PaperReportDTO> quizzesPaperReportDTOS = quizzesPaperReportService.getPaperReport(paperId, unitIdStr);
+        List<PaperReportDTO> quizzesPaperReportDTOS = paperReportService.getPaperReport(paperId, unitIdStr);
         if (!CollectionUtils.isEmpty(quizzesPaperReportDTOS)) {
             List<PaperReport> quizzesPaperReports = new ArrayList<PaperReport>();
             BeanUtils.copyProperties(quizzesPaperReportDTOS, quizzesPaperReports);

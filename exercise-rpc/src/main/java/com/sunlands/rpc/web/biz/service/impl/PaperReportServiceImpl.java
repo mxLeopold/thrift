@@ -3,7 +3,8 @@ package com.sunlands.rpc.web.biz.service.impl;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.PaperDTO;
 import com.sunlands.rpc.web.biz.model.PaperReportDTO;
-import com.sunlands.rpc.web.biz.service.QuizzesPaperReportService;
+import com.sunlands.rpc.web.biz.model.PaperTypeEnum;
+import com.sunlands.rpc.web.biz.service.PaperReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class QuizzesPaperReportServiceImpl implements QuizzesPaperReportService{
+public class PaperReportServiceImpl implements PaperReportService {
     @Autowired
     private PaperReportMapper paperReportMapper;
 
@@ -25,5 +26,20 @@ public class QuizzesPaperReportServiceImpl implements QuizzesPaperReportService{
         quizzesPaperReportDTO.setQuestionNum(paperDTO.getQuestionAmount());
         // TODO: 2018/3/16 查询学员答题统计信息
         return Arrays.asList(quizzesPaperReportDTO);
+    }
+
+    @Override
+    public Boolean isPaperIdValid(String paperCode) {
+        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+        return  (paperDTO == null) ? false : true;
+    }
+
+    @Override
+    public Boolean checkPaperType(String paperCode, String type) {
+        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+        if (paperDTO != null && paperDTO.getType().equals(type)) {
+            return true;
+        }
+        return false;
     }
 }
