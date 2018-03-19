@@ -29,7 +29,7 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
 
     @Override
     public int isDailyIntelligentExerciseDone(int studentId) throws TException {
-        return userRecordStatisticsService.isExerciseDone(studentId, "2018-03-16", Constant.UserRecord.ExerciseTypeEnum.INTELLIGENT_EXERCISE.getCode());
+        return userRecordStatisticsService.isExerciseDone(studentId, DateTimeUtil.today(), Constant.UserRecord.ExerciseTypeEnum.INTELLIGENT_EXERCISE.getCode());
     }
 
 }
