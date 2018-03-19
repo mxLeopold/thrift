@@ -3,7 +3,7 @@ package com.sunlands.rpc.web.biz.model;
 /**
  * 试卷统计数据
  */
-public class stuAnswerStatisticsDTO {
+public class StuAnswerStatisticsDTO {
     private Integer paperId; // 试卷id
     private Integer totalNum; // 答题人数
     private Integer totalTime; // 答题总用时

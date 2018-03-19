@@ -2,11 +2,10 @@ package com.sunlands.rpc.web.biz.dao;
 
 import com.sunlands.rpc.web.biz.model.PaperDTO;
 import com.sunlands.rpc.web.biz.model.QuizzesPaperReportDTO;
-import com.sunlands.rpc.web.biz.model.stuAnswerStatisticsDTO;
+import com.sunlands.rpc.web.biz.model.StuAnswerStatisticsDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -38,5 +37,5 @@ public interface QuizzesPaperReportMapper {
     @Select({
             "SELECT a.t_paper_id paperId, count(a.id) totalNum,sum(a.total_time) totalTime from t_tiku_user_record_quiz a where a.t_paper_id = @paperId and a.unit_id = @unitId"
     })
-    stuAnswerStatisticsDTO selectStuAnswerStatistics(@Param("paperId")Integer paperId, @Param("unitId") Integer unitId);
+    StuAnswerStatisticsDTO selectStuAnswerStatistics(@Param("paperId")Integer paperId, @Param("unitId") Integer unitId);
 }

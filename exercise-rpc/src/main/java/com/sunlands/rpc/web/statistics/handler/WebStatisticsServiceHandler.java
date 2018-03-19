@@ -2,8 +2,7 @@ package com.sunlands.rpc.web.statistics.handler;
 
 import com.sunlands.rpc.web.biz.model.QuizzesPaperReportDTO;
 import com.sunlands.rpc.web.biz.service.QuizzesPaperReportService;
-import com.sunlands.rpc.web.statistics.service.WebStatisticsService;
-import com.sunlands.rpc.web.statistics.service.QuizzesPaperReport;
+import com.sunlands.rpc.web.statistics.service.*;
 import org.apache.thrift.TException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +25,17 @@ import java.util.List;
 public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     @Autowired
     private QuizzesPaperReportService quizzesPaperReportService;
+
+    @Override
+    public boolean isPaperIdValid(String paperId) throws TException {
+        return false;
+    }
+
+    @Override
+    public boolean checkPaperType(String paperId, String exerciseType) throws TException {
+        return false;
+    }
+
     @Override
     public List<QuizzesPaperReport> getQuizzesPaperReport(String paperId, String unitIdStr) throws TException {
         if (paperId == null || StringUtils.isEmpty(paperId)) {
@@ -42,5 +52,15 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public List<QuizzesPaperDetail> getQuizzesPaperDetail(String paperId, String unitIdStr) throws TException {
+        return null;
+    }
+
+    @Override
+    public List<StuAnswerDetail> getStuAnswerDetail(List<TikuUserRecord> recordList) throws TException {
+        return null;
     }
 }

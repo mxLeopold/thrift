@@ -2,6 +2,7 @@ package com.sunlands.rpc.test.web;
 
 import com.sunlands.rpc.web.biz.dao.QuizzesPaperReportMapper;
 import com.sunlands.rpc.web.biz.model.PaperDTO;
+import com.sunlands.rpc.web.biz.model.StuAnswerStatisticsDTO;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.THttpClient;
@@ -56,5 +57,7 @@ public class WebStatisticsServiceTest {
     public void testNew() {
         PaperDTO paperDTO = quizzesPaperReportMapper.selectPapeByCode("45");
         Assert.assertNotNull(paperDTO);
+        StuAnswerStatisticsDTO stuAnswerStatisticsDTO = quizzesPaperReportMapper.selectStuAnswerStatistics(paperDTO.getId(), 352923);
+        Assert.assertNotNull(stuAnswerStatisticsDTO);
     }
 }
