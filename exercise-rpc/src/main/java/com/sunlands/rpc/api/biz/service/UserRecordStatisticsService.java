@@ -1,6 +1,7 @@
 package com.sunlands.rpc.api.biz.service;
 
-/**
+import java.util.Collection;
+import java.util.Set; /**
  * 用户做题记录统计
  *
  * @Author: 吴雨佳
@@ -17,4 +18,13 @@ public interface UserRecordStatisticsService {
      * @return 1. 完成  0. 未完成
      */
     int isExerciseDone(int studentId, String date, String exerciseType);
+
+    /**
+     * 统计学员做过所有科目下的题目数
+     *
+     * @param subjectIdList    科目Id集合
+     * @param studentId        学员ID
+     * @return  题目数
+     */
+    int countQuestionCountBySubjectIdsAndStuId(Collection<Integer> subjectIdList, int studentId);
 }
