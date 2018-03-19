@@ -20,12 +20,6 @@ struct PaperReport {
     16: string subjectId;
     17: i32 userPaperId;
     18: i32 wrong;
-    19: list<TikuUserRecord> recordList;
-}
-// 学员答题记录信息
-struct TikuUserRecord {
-    1: i32 stuId;
-    2: i32 recordId;
 }
 // 学员成绩详情
 struct StuAnswerDetail {
@@ -93,5 +87,5 @@ service WebStatisticsService {
     list<PaperDetail> getPaperDetail(1: string paperId, 2: string unitIdStr);
 
     // 成绩详情列表
-    list<StuAnswerDetail> getStuAnswerDetail(1: list<TikuUserRecord> recordList);
+    list<StuAnswerDetail> getStuAnswerDetail(1: i32 paperId, 2: string unitIdStr);
 }

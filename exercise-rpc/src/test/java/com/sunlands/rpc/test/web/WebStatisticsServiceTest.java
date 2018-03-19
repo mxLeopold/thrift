@@ -1,7 +1,10 @@
 package com.sunlands.rpc.test.web;
 
+import com.sun.tools.corba.se.idl.StringGen;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.PaperDTO;
+import com.sunlands.rpc.web.biz.model.PaperReportDTO;
+import com.sunlands.rpc.web.biz.model.StuAnswerDetailDTO;
 import com.sunlands.rpc.web.biz.model.StuAnswerStatisticsDTO;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
@@ -18,6 +21,9 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>Title:</p>
@@ -55,9 +61,27 @@ public class WebStatisticsServiceTest {
 
     @Test
     public void testNew() {
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode("45");
-        Assert.assertNotNull(paperDTO);
-        StuAnswerStatisticsDTO stuAnswerStatisticsDTO = paperReportMapper.selectStuAnswerStatistics(paperDTO.getId(), 352923);
-        Assert.assertNotNull(stuAnswerStatisticsDTO);
+        String paperCode = "2531";
+        String unitIdStr = "352923,1";
+        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+        org.springframework.util.Assert.notNull(paperDTO, "试卷不存在");
+////        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
+//        PaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
+//        if (paperReport != null) {
+//            Integer answerNum = paperReport.getAnswerNumber();
+//            if (answerNum != null && !answerNum.equals(0)) {
+//                paperReport.setAnswerTimeAve(paperReport.getAnswerTime() / answerNum);
+//                paperReport.setCorrectAve(paperReport.getCorrect() / answerNum);
+//                paperReport.setCorrectPercent((float) paperReport.getCorrect() / (answerNum * paperDTO.getQuestionAmount()));
+//            }
+//            paperReport.setPaperName(paperDTO.getName());
+//            paperReport.setQuestionNum(paperDTO.getQuestionAmount());
+//            System.out.println(paperReport);
+//        }
+
+
+        List<StuAnswerDetailDTO> a = paperReportMapper.getStuAnswerDetails(paperDTO.getId(), unitIdStr);
+        System.out.println(a);
+
     }
 }

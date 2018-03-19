@@ -633,14 +633,14 @@ public class PaperDetail implements org.apache.thrift.TBase<PaperDetail, PaperDe
           case 3: // RANKING
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list8 = iprot.readListBegin();
-                struct.ranking = new ArrayList<StuAnswerDetail>(_list8.size);
-                StuAnswerDetail _elem9;
-                for (int _i10 = 0; _i10 < _list8.size; ++_i10)
+                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
+                struct.ranking = new ArrayList<StuAnswerDetail>(_list0.size);
+                StuAnswerDetail _elem1;
+                for (int _i2 = 0; _i2 < _list0.size; ++_i2)
                 {
-                  _elem9 = new StuAnswerDetail();
-                  _elem9.read(iprot);
-                  struct.ranking.add(_elem9);
+                  _elem1 = new StuAnswerDetail();
+                  _elem1.read(iprot);
+                  struct.ranking.add(_elem1);
                 }
                 iprot.readListEnd();
               }
@@ -652,14 +652,14 @@ public class PaperDetail implements org.apache.thrift.TBase<PaperDetail, PaperDe
           case 4: // QUESTION_DETAIL_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list11 = iprot.readListBegin();
-                struct.questionDetailList = new ArrayList<QuestionDetail>(_list11.size);
-                QuestionDetail _elem12;
-                for (int _i13 = 0; _i13 < _list11.size; ++_i13)
+                org.apache.thrift.protocol.TList _list3 = iprot.readListBegin();
+                struct.questionDetailList = new ArrayList<QuestionDetail>(_list3.size);
+                QuestionDetail _elem4;
+                for (int _i5 = 0; _i5 < _list3.size; ++_i5)
                 {
-                  _elem12 = new QuestionDetail();
-                  _elem12.read(iprot);
-                  struct.questionDetailList.add(_elem12);
+                  _elem4 = new QuestionDetail();
+                  _elem4.read(iprot);
+                  struct.questionDetailList.add(_elem4);
                 }
                 iprot.readListEnd();
               }
@@ -695,9 +695,9 @@ public class PaperDetail implements org.apache.thrift.TBase<PaperDetail, PaperDe
         oprot.writeFieldBegin(RANKING_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.ranking.size()));
-          for (StuAnswerDetail _iter14 : struct.ranking)
+          for (StuAnswerDetail _iter6 : struct.ranking)
           {
-            _iter14.write(oprot);
+            _iter6.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -707,9 +707,9 @@ public class PaperDetail implements org.apache.thrift.TBase<PaperDetail, PaperDe
         oprot.writeFieldBegin(QUESTION_DETAIL_LIST_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.questionDetailList.size()));
-          for (QuestionDetail _iter15 : struct.questionDetailList)
+          for (QuestionDetail _iter7 : struct.questionDetailList)
           {
-            _iter15.write(oprot);
+            _iter7.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -755,18 +755,18 @@ public class PaperDetail implements org.apache.thrift.TBase<PaperDetail, PaperDe
       if (struct.isSetRanking()) {
         {
           oprot.writeI32(struct.ranking.size());
-          for (StuAnswerDetail _iter16 : struct.ranking)
+          for (StuAnswerDetail _iter8 : struct.ranking)
           {
-            _iter16.write(oprot);
+            _iter8.write(oprot);
           }
         }
       }
       if (struct.isSetQuestionDetailList()) {
         {
           oprot.writeI32(struct.questionDetailList.size());
-          for (QuestionDetail _iter17 : struct.questionDetailList)
+          for (QuestionDetail _iter9 : struct.questionDetailList)
           {
-            _iter17.write(oprot);
+            _iter9.write(oprot);
           }
         }
       }
@@ -786,28 +786,28 @@ public class PaperDetail implements org.apache.thrift.TBase<PaperDetail, PaperDe
       }
       if (incoming.get(2)) {
         {
-          org.apache.thrift.protocol.TList _list18 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.ranking = new ArrayList<StuAnswerDetail>(_list18.size);
-          StuAnswerDetail _elem19;
-          for (int _i20 = 0; _i20 < _list18.size; ++_i20)
+          org.apache.thrift.protocol.TList _list10 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.ranking = new ArrayList<StuAnswerDetail>(_list10.size);
+          StuAnswerDetail _elem11;
+          for (int _i12 = 0; _i12 < _list10.size; ++_i12)
           {
-            _elem19 = new StuAnswerDetail();
-            _elem19.read(iprot);
-            struct.ranking.add(_elem19);
+            _elem11 = new StuAnswerDetail();
+            _elem11.read(iprot);
+            struct.ranking.add(_elem11);
           }
         }
         struct.setRankingIsSet(true);
       }
       if (incoming.get(3)) {
         {
-          org.apache.thrift.protocol.TList _list21 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.questionDetailList = new ArrayList<QuestionDetail>(_list21.size);
-          QuestionDetail _elem22;
-          for (int _i23 = 0; _i23 < _list21.size; ++_i23)
+          org.apache.thrift.protocol.TList _list13 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.questionDetailList = new ArrayList<QuestionDetail>(_list13.size);
+          QuestionDetail _elem14;
+          for (int _i15 = 0; _i15 < _list13.size; ++_i15)
           {
-            _elem22 = new QuestionDetail();
-            _elem22.read(iprot);
-            struct.questionDetailList.add(_elem22);
+            _elem14 = new QuestionDetail();
+            _elem14.read(iprot);
+            struct.questionDetailList.add(_elem14);
           }
         }
         struct.setQuestionDetailListIsSet(true);

@@ -1,6 +1,7 @@
 package com.sunlands.rpc.web.biz.service;
 
 import com.sunlands.rpc.web.biz.model.PaperReportDTO;
+import com.sunlands.rpc.web.biz.model.StuAnswerDetailDTO;
 
 import java.util.List;
 
@@ -21,5 +22,7 @@ public interface PaperReportService {
     Boolean isPaperIdValid(String paperCode);
 
     Boolean checkPaperType(String paperCode, String type);
+
+    List<StuAnswerDetailDTO> getStuAnswerDetails(Integer paperId, String unitIdStr);
 
 }

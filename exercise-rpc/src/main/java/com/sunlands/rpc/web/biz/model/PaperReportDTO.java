@@ -4,21 +4,21 @@ package com.sunlands.rpc.web.biz.model;
  * 随堂考统计数据
  */
 public class PaperReportDTO {
-    private Integer answerNumber;
-    private Float answerTime;
-    private Float answerTimeAve;
+    private Integer answerNumber; // 答题人数
+    private Float answerTime; // 总答题时间
+    private Float answerTimeAve; // 平均答题时间
     private String answerTimeAveString;
     private String answerTimeString;
-    private Integer correct;
-    private Integer correctAve;
-    private Float correctPercent;
+    private Integer correct; // 总正确题数
+    private Integer correctAve; // 平均正确题数
+    private Float correctPercent; // 正确率
     private Float evaluatedScore;
-    private String paperId;
-    private String paperName;
+    private String paperId; // 试卷id
+    private String paperName; // 试卷名称
     private Float paperTotal;
     private Float paperTotalAve;
     private Float passRate;
-    private Integer questionNum;
+    private Integer questionNum;  // 试题数量
     private String subjectId;
     private Integer userPaperId;
     private Integer wrong;

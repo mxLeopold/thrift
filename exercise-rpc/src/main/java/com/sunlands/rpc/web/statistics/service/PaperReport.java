@@ -56,7 +56,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
   private static final org.apache.thrift.protocol.TField SUBJECT_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("subjectId", org.apache.thrift.protocol.TType.STRING, (short)16);
   private static final org.apache.thrift.protocol.TField USER_PAPER_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("userPaperId", org.apache.thrift.protocol.TType.I32, (short)17);
   private static final org.apache.thrift.protocol.TField WRONG_FIELD_DESC = new org.apache.thrift.protocol.TField("wrong", org.apache.thrift.protocol.TType.I32, (short)18);
-  private static final org.apache.thrift.protocol.TField RECORD_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("recordList", org.apache.thrift.protocol.TType.LIST, (short)19);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -82,7 +81,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
   public String subjectId; // required
   public int userPaperId; // required
   public int wrong; // required
-  public List<TikuUserRecord> recordList; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -103,8 +101,7 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
     QUESTION_NUM((short)15, "questionNum"),
     SUBJECT_ID((short)16, "subjectId"),
     USER_PAPER_ID((short)17, "userPaperId"),
-    WRONG((short)18, "wrong"),
-    RECORD_LIST((short)19, "recordList");
+    WRONG((short)18, "wrong");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -155,8 +152,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
           return USER_PAPER_ID;
         case 18: // WRONG
           return WRONG;
-        case 19: // RECORD_LIST
-          return RECORD_LIST;
         default:
           return null;
       }
@@ -250,9 +245,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.WRONG, new org.apache.thrift.meta_data.FieldMetaData("wrong", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.RECORD_LIST, new org.apache.thrift.meta_data.FieldMetaData("recordList", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRUCT            , "TikuUserRecord"))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(PaperReport.class, metaDataMap);
   }
@@ -278,8 +270,7 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
     int questionNum,
     String subjectId,
     int userPaperId,
-    int wrong,
-    List<TikuUserRecord> recordList)
+    int wrong)
   {
     this();
     this.answerNumber = answerNumber;
@@ -313,7 +304,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
     setUserPaperIdIsSet(true);
     this.wrong = wrong;
     setWrongIsSet(true);
-    this.recordList = recordList;
   }
 
   /**
@@ -349,13 +339,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
     }
     this.userPaperId = other.userPaperId;
     this.wrong = other.wrong;
-    if (other.isSetRecordList()) {
-      List<TikuUserRecord> __this__recordList = new ArrayList<TikuUserRecord>(other.recordList.size());
-      for (TikuUserRecord other_element : other.recordList) {
-        __this__recordList.add(other_element);
-      }
-      this.recordList = __this__recordList;
-    }
   }
 
   public PaperReport deepCopy() {
@@ -395,7 +378,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
     this.userPaperId = 0;
     setWrongIsSet(false);
     this.wrong = 0;
-    this.recordList = null;
   }
 
   public int getAnswerNumber() {
@@ -817,45 +799,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __WRONG_ISSET_ID, value);
   }
 
-  public int getRecordListSize() {
-    return (this.recordList == null) ? 0 : this.recordList.size();
-  }
-
-  public java.util.Iterator<TikuUserRecord> getRecordListIterator() {
-    return (this.recordList == null) ? null : this.recordList.iterator();
-  }
-
-  public void addToRecordList(TikuUserRecord elem) {
-    if (this.recordList == null) {
-      this.recordList = new ArrayList<TikuUserRecord>();
-    }
-    this.recordList.add(elem);
-  }
-
-  public List<TikuUserRecord> getRecordList() {
-    return this.recordList;
-  }
-
-  public PaperReport setRecordList(List<TikuUserRecord> recordList) {
-    this.recordList = recordList;
-    return this;
-  }
-
-  public void unsetRecordList() {
-    this.recordList = null;
-  }
-
-  /** Returns true if field recordList is set (has been assigned a value) and false otherwise */
-  public boolean isSetRecordList() {
-    return this.recordList != null;
-  }
-
-  public void setRecordListIsSet(boolean value) {
-    if (!value) {
-      this.recordList = null;
-    }
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case ANSWER_NUMBER:
@@ -1002,14 +945,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
       }
       break;
 
-    case RECORD_LIST:
-      if (value == null) {
-        unsetRecordList();
-      } else {
-        setRecordList((List<TikuUserRecord>)value);
-      }
-      break;
-
     }
   }
 
@@ -1069,9 +1004,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
     case WRONG:
       return getWrong();
 
-    case RECORD_LIST:
-      return getRecordList();
-
     }
     throw new IllegalStateException();
   }
@@ -1119,8 +1051,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
       return isSetUserPaperId();
     case WRONG:
       return isSetWrong();
-    case RECORD_LIST:
-      return isSetRecordList();
     }
     throw new IllegalStateException();
   }
@@ -1300,15 +1230,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
         return false;
     }
 
-    boolean this_present_recordList = true && this.isSetRecordList();
-    boolean that_present_recordList = true && that.isSetRecordList();
-    if (this_present_recordList || that_present_recordList) {
-      if (!(this_present_recordList && that_present_recordList))
-        return false;
-      if (!this.recordList.equals(that.recordList))
-        return false;
-    }
-
     return true;
   }
 
@@ -1405,11 +1326,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
     list.add(present_wrong);
     if (present_wrong)
       list.add(wrong);
-
-    boolean present_recordList = true && (isSetRecordList());
-    list.add(present_recordList);
-    if (present_recordList)
-      list.add(recordList);
 
     return list.hashCode();
   }
@@ -1602,16 +1518,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetRecordList()).compareTo(other.isSetRecordList());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetRecordList()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.recordList, other.recordList);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     return 0;
   }
 
@@ -1722,14 +1628,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
     if (!first) sb.append(", ");
     sb.append("wrong:");
     sb.append(this.wrong);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("recordList:");
-    if (this.recordList == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.recordList);
-    }
     first = false;
     sb.append(")");
     return sb.toString();
@@ -1920,25 +1818,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 19: // RECORD_LIST
-            if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
-              {
-                org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
-                struct.recordList = new ArrayList<TikuUserRecord>(_list0.size);
-                TikuUserRecord _elem1;
-                for (int _i2 = 0; _i2 < _list0.size; ++_i2)
-                {
-                  _elem1 = new TikuUserRecord();
-                  _elem1.read(iprot);
-                  struct.recordList.add(_elem1);
-                }
-                iprot.readListEnd();
-              }
-              struct.setRecordListIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -2018,18 +1897,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
       oprot.writeFieldBegin(WRONG_FIELD_DESC);
       oprot.writeI32(struct.wrong);
       oprot.writeFieldEnd();
-      if (struct.recordList != null) {
-        oprot.writeFieldBegin(RECORD_LIST_FIELD_DESC);
-        {
-          oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.recordList.size()));
-          for (TikuUserRecord _iter3 : struct.recordList)
-          {
-            _iter3.write(oprot);
-          }
-          oprot.writeListEnd();
-        }
-        oprot.writeFieldEnd();
-      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -2102,10 +1969,7 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
       if (struct.isSetWrong()) {
         optionals.set(17);
       }
-      if (struct.isSetRecordList()) {
-        optionals.set(18);
-      }
-      oprot.writeBitSet(optionals, 19);
+      oprot.writeBitSet(optionals, 18);
       if (struct.isSetAnswerNumber()) {
         oprot.writeI32(struct.answerNumber);
       }
@@ -2160,21 +2024,12 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
       if (struct.isSetWrong()) {
         oprot.writeI32(struct.wrong);
       }
-      if (struct.isSetRecordList()) {
-        {
-          oprot.writeI32(struct.recordList.size());
-          for (TikuUserRecord _iter4 : struct.recordList)
-          {
-            _iter4.write(oprot);
-          }
-        }
-      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, PaperReport struct) throws TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(19);
+      BitSet incoming = iprot.readBitSet(18);
       if (incoming.get(0)) {
         struct.answerNumber = iprot.readI32();
         struct.setAnswerNumberIsSet(true);
@@ -2246,20 +2101,6 @@ public class PaperReport implements org.apache.thrift.TBase<PaperReport, PaperRe
       if (incoming.get(17)) {
         struct.wrong = iprot.readI32();
         struct.setWrongIsSet(true);
-      }
-      if (incoming.get(18)) {
-        {
-          org.apache.thrift.protocol.TList _list5 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.recordList = new ArrayList<TikuUserRecord>(_list5.size);
-          TikuUserRecord _elem6;
-          for (int _i7 = 0; _i7 < _list5.size; ++_i7)
-          {
-            _elem6 = new TikuUserRecord();
-            _elem6.read(iprot);
-            struct.recordList.add(_elem6);
-          }
-        }
-        struct.setRecordListIsSet(true);
       }
     }
   }

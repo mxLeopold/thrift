@@ -1,6 +1,7 @@
 package com.sunlands.rpc.web.statistics.handler;
 
 import com.sunlands.rpc.web.biz.model.PaperReportDTO;
+import com.sunlands.rpc.web.biz.model.StuAnswerDetailDTO;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
 import com.sunlands.rpc.web.statistics.service.*;
 import org.apache.thrift.TException;
@@ -41,17 +42,16 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         if (paperId == null || StringUtils.isEmpty(paperId)) {
             throw new TException("paperId不能为空");
         }
-        if (unitIdStr == null || StringUtils.isEmpty(unitIdStr)) {
+        if (unitIdStr == null || StringUtils.isEmpty(unitIdStr)) { // 必须是逗号分隔
             throw new TException("unitIdStr不能为空");
         }
         List<PaperReportDTO> quizzesPaperReportDTOS = paperReportService.getPaperReport(paperId, unitIdStr);
-        if (!CollectionUtils.isEmpty(quizzesPaperReportDTOS)) {
-            List<PaperReport> quizzesPaperReports = new ArrayList<PaperReport>();
-            BeanUtils.copyProperties(quizzesPaperReportDTOS, quizzesPaperReports);
-            return quizzesPaperReports;
-        } else {
+        if (CollectionUtils.isEmpty(quizzesPaperReportDTOS)) {
             return null;
         }
+        List<PaperReport> quizzesPaperReports = new ArrayList<PaperReport>();
+        BeanUtils.copyProperties(quizzesPaperReportDTOS, quizzesPaperReports);
+        return quizzesPaperReports;
     }
 
     @Override
@@ -60,7 +60,14 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     }
 
     @Override
-    public List<StuAnswerDetail> getStuAnswerDetail(List<TikuUserRecord> recordList) throws TException {
-        return null;
+    public List<StuAnswerDetail> getStuAnswerDetail(int paperId, String unitIdStr) throws TException {
+        List<StuAnswerDetailDTO> stuAnswerDetailDTOs = paperReportService.getStuAnswerDetails(paperId, unitIdStr);
+        if (CollectionUtils.isEmpty(stuAnswerDetailDTOs)) {
+            return null;
+        }
+        List<StuAnswerDetail> stuAnswerDetails = new ArrayList<StuAnswerDetail>();
+        BeanUtils.copyProperties(stuAnswerDetailDTOs, stuAnswerDetails);
+        return stuAnswerDetails;
     }
+
 }

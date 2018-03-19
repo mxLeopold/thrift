@@ -2,6 +2,7 @@ package com.sunlands.rpc.web.biz.dao;
 
 import com.sunlands.rpc.web.biz.model.PaperDTO;
 import com.sunlands.rpc.web.biz.model.PaperReportDTO;
+import com.sunlands.rpc.web.biz.model.StuAnswerDetailDTO;
 import com.sunlands.rpc.web.biz.model.StuAnswerStatisticsDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -23,19 +24,31 @@ public interface PaperReportMapper {
     })
     PaperDTO selectPapeByCode(@Param("paperCode") String paperCode);
 
+
     /**
-     * 查询随堂考列表
+     * 查询作业、随堂考学员答题记录
      * @param paperId
      * @param unitIds
      * @return
      */
     @Select({
-        ""
+        "SELECT count(a.id) answerNumber,sum(a.correct_question_num) correct,sum(a.total_time) answerTime ",
+        "from t_tiku_user_record_view a ",
+        "where a.t_paper_id = #{paperId} and a.delete_flag = 0 ",
+        "and a.unit_id in (#{unitIds})"
     })
-    List<PaperReportDTO> selectQuizzesPaperReport(@Param("paperId") Integer paperId, @Param("unitIds") List<String> unitIds);
+    PaperReportDTO selectPaperReport(@Param("paperId") Integer paperId, @Param("unitIds") String unitIds);
 
+    /**
+     * 查询学员成绩详情
+     * @param paperId
+     * @param unitIds
+     * @return
+     */
     @Select({
-            "SELECT a.t_paper_id paperId, count(a.id) totalNum,sum(a.total_time) totalTime from t_tiku_user_record_quiz a where a.t_paper_id = @paperId and a.unit_id = @unitId"
+            "SELECT a.stu_id stuId,a.total_time totalTime,a.correct_question_num correctQuestionCount,a.question_num - a.correct_question_num wrongQuestionCount,a.id recordId",
+            "from t_tiku_user_record_view a ",
+            "where a.delete_flag = 0 and a.t_paper_id = #{paperId} and a.unit_id in (#{unitIds})"
     })
-    StuAnswerStatisticsDTO selectStuAnswerStatistics(@Param("paperId")Integer paperId, @Param("unitId") Integer unitId);
+    List<StuAnswerDetailDTO> getStuAnswerDetails(@Param("paperId") Integer paperId, @Param("unitIds") String unitIds);
 }

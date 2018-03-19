@@ -1279,14 +1279,14 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
           case 8: // OPTION_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list24 = iprot.readListBegin();
-                struct.optionList = new ArrayList<Option>(_list24.size);
-                Option _elem25;
-                for (int _i26 = 0; _i26 < _list24.size; ++_i26)
+                org.apache.thrift.protocol.TList _list16 = iprot.readListBegin();
+                struct.optionList = new ArrayList<Option>(_list16.size);
+                Option _elem17;
+                for (int _i18 = 0; _i18 < _list16.size; ++_i18)
                 {
-                  _elem25 = new Option();
-                  _elem25.read(iprot);
-                  struct.optionList.add(_elem25);
+                  _elem17 = new Option();
+                  _elem17.read(iprot);
+                  struct.optionList.add(_elem17);
                 }
                 iprot.readListEnd();
               }
@@ -1298,14 +1298,14 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
           case 9: // BLANK_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list27 = iprot.readListBegin();
-                struct.blankList = new ArrayList<Blank>(_list27.size);
-                Blank _elem28;
-                for (int _i29 = 0; _i29 < _list27.size; ++_i29)
+                org.apache.thrift.protocol.TList _list19 = iprot.readListBegin();
+                struct.blankList = new ArrayList<Blank>(_list19.size);
+                Blank _elem20;
+                for (int _i21 = 0; _i21 < _list19.size; ++_i21)
                 {
-                  _elem28 = new Blank();
-                  _elem28.read(iprot);
-                  struct.blankList.add(_elem28);
+                  _elem20 = new Blank();
+                  _elem20.read(iprot);
+                  struct.blankList.add(_elem20);
                 }
                 iprot.readListEnd();
               }
@@ -1317,14 +1317,14 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
           case 10: // STU_ANSWERS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list30 = iprot.readListBegin();
-                struct.stuAnswers = new ArrayList<StuQuestionAnswer>(_list30.size);
-                StuQuestionAnswer _elem31;
-                for (int _i32 = 0; _i32 < _list30.size; ++_i32)
+                org.apache.thrift.protocol.TList _list22 = iprot.readListBegin();
+                struct.stuAnswers = new ArrayList<StuQuestionAnswer>(_list22.size);
+                StuQuestionAnswer _elem23;
+                for (int _i24 = 0; _i24 < _list22.size; ++_i24)
                 {
-                  _elem31 = new StuQuestionAnswer();
-                  _elem31.read(iprot);
-                  struct.stuAnswers.add(_elem31);
+                  _elem23 = new StuQuestionAnswer();
+                  _elem23.read(iprot);
+                  struct.stuAnswers.add(_elem23);
                 }
                 iprot.readListEnd();
               }
@@ -1336,14 +1336,14 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
           case 11: // SUB_QUESTION_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list33 = iprot.readListBegin();
-                struct.subQuestionList = new ArrayList<QuestionDetail>(_list33.size);
-                QuestionDetail _elem34;
-                for (int _i35 = 0; _i35 < _list33.size; ++_i35)
+                org.apache.thrift.protocol.TList _list25 = iprot.readListBegin();
+                struct.subQuestionList = new ArrayList<QuestionDetail>(_list25.size);
+                QuestionDetail _elem26;
+                for (int _i27 = 0; _i27 < _list25.size; ++_i27)
                 {
-                  _elem34 = new QuestionDetail();
-                  _elem34.read(iprot);
-                  struct.subQuestionList.add(_elem34);
+                  _elem26 = new QuestionDetail();
+                  _elem26.read(iprot);
+                  struct.subQuestionList.add(_elem26);
                 }
                 iprot.readListEnd();
               }
@@ -1400,9 +1400,9 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
         oprot.writeFieldBegin(OPTION_LIST_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.optionList.size()));
-          for (Option _iter36 : struct.optionList)
+          for (Option _iter28 : struct.optionList)
           {
-            _iter36.write(oprot);
+            _iter28.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1412,9 +1412,9 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
         oprot.writeFieldBegin(BLANK_LIST_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.blankList.size()));
-          for (Blank _iter37 : struct.blankList)
+          for (Blank _iter29 : struct.blankList)
           {
-            _iter37.write(oprot);
+            _iter29.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1424,9 +1424,9 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
         oprot.writeFieldBegin(STU_ANSWERS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.stuAnswers.size()));
-          for (StuQuestionAnswer _iter38 : struct.stuAnswers)
+          for (StuQuestionAnswer _iter30 : struct.stuAnswers)
           {
-            _iter38.write(oprot);
+            _iter30.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1436,9 +1436,9 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
         oprot.writeFieldBegin(SUB_QUESTION_LIST_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.subQuestionList.size()));
-          for (QuestionDetail _iter39 : struct.subQuestionList)
+          for (QuestionDetail _iter31 : struct.subQuestionList)
           {
-            _iter39.write(oprot);
+            _iter31.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -1520,36 +1520,36 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
       if (struct.isSetOptionList()) {
         {
           oprot.writeI32(struct.optionList.size());
-          for (Option _iter40 : struct.optionList)
+          for (Option _iter32 : struct.optionList)
           {
-            _iter40.write(oprot);
+            _iter32.write(oprot);
           }
         }
       }
       if (struct.isSetBlankList()) {
         {
           oprot.writeI32(struct.blankList.size());
-          for (Blank _iter41 : struct.blankList)
+          for (Blank _iter33 : struct.blankList)
           {
-            _iter41.write(oprot);
+            _iter33.write(oprot);
           }
         }
       }
       if (struct.isSetStuAnswers()) {
         {
           oprot.writeI32(struct.stuAnswers.size());
-          for (StuQuestionAnswer _iter42 : struct.stuAnswers)
+          for (StuQuestionAnswer _iter34 : struct.stuAnswers)
           {
-            _iter42.write(oprot);
+            _iter34.write(oprot);
           }
         }
       }
       if (struct.isSetSubQuestionList()) {
         {
           oprot.writeI32(struct.subQuestionList.size());
-          for (QuestionDetail _iter43 : struct.subQuestionList)
+          for (QuestionDetail _iter35 : struct.subQuestionList)
           {
-            _iter43.write(oprot);
+            _iter35.write(oprot);
           }
         }
       }
@@ -1589,56 +1589,56 @@ public class QuestionDetail implements org.apache.thrift.TBase<QuestionDetail, Q
       }
       if (incoming.get(7)) {
         {
-          org.apache.thrift.protocol.TList _list44 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.optionList = new ArrayList<Option>(_list44.size);
-          Option _elem45;
-          for (int _i46 = 0; _i46 < _list44.size; ++_i46)
+          org.apache.thrift.protocol.TList _list36 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.optionList = new ArrayList<Option>(_list36.size);
+          Option _elem37;
+          for (int _i38 = 0; _i38 < _list36.size; ++_i38)
           {
-            _elem45 = new Option();
-            _elem45.read(iprot);
-            struct.optionList.add(_elem45);
+            _elem37 = new Option();
+            _elem37.read(iprot);
+            struct.optionList.add(_elem37);
           }
         }
         struct.setOptionListIsSet(true);
       }
       if (incoming.get(8)) {
         {
-          org.apache.thrift.protocol.TList _list47 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.blankList = new ArrayList<Blank>(_list47.size);
-          Blank _elem48;
-          for (int _i49 = 0; _i49 < _list47.size; ++_i49)
+          org.apache.thrift.protocol.TList _list39 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.blankList = new ArrayList<Blank>(_list39.size);
+          Blank _elem40;
+          for (int _i41 = 0; _i41 < _list39.size; ++_i41)
           {
-            _elem48 = new Blank();
-            _elem48.read(iprot);
-            struct.blankList.add(_elem48);
+            _elem40 = new Blank();
+            _elem40.read(iprot);
+            struct.blankList.add(_elem40);
           }
         }
         struct.setBlankListIsSet(true);
       }
       if (incoming.get(9)) {
         {
-          org.apache.thrift.protocol.TList _list50 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.stuAnswers = new ArrayList<StuQuestionAnswer>(_list50.size);
-          StuQuestionAnswer _elem51;
-          for (int _i52 = 0; _i52 < _list50.size; ++_i52)
+          org.apache.thrift.protocol.TList _list42 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.stuAnswers = new ArrayList<StuQuestionAnswer>(_list42.size);
+          StuQuestionAnswer _elem43;
+          for (int _i44 = 0; _i44 < _list42.size; ++_i44)
           {
-            _elem51 = new StuQuestionAnswer();
-            _elem51.read(iprot);
-            struct.stuAnswers.add(_elem51);
+            _elem43 = new StuQuestionAnswer();
+            _elem43.read(iprot);
+            struct.stuAnswers.add(_elem43);
           }
         }
         struct.setStuAnswersIsSet(true);
       }
       if (incoming.get(10)) {
         {
-          org.apache.thrift.protocol.TList _list53 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.subQuestionList = new ArrayList<QuestionDetail>(_list53.size);
-          QuestionDetail _elem54;
-          for (int _i55 = 0; _i55 < _list53.size; ++_i55)
+          org.apache.thrift.protocol.TList _list45 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.subQuestionList = new ArrayList<QuestionDetail>(_list45.size);
+          QuestionDetail _elem46;
+          for (int _i47 = 0; _i47 < _list45.size; ++_i47)
           {
-            _elem54 = new QuestionDetail();
-            _elem54.read(iprot);
-            struct.subQuestionList.add(_elem54);
+            _elem46 = new QuestionDetail();
+            _elem46.read(iprot);
+            struct.subQuestionList.add(_elem46);
           }
         }
         struct.setSubQuestionListIsSet(true);
