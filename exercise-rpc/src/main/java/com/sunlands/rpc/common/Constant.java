@@ -15,10 +15,6 @@ public class Constant {
     public static final String CONTENT_TYPE_BLANK = "BLANK";
     public static final String CONTENT_TYPE_CHOICE = "CHOICE";
 
-    public static void main(String[] args) {
-        System.out.println(TikuUserRecord.getTableName(1));
-    }
-
     public static class TikuUserQuestion {
 
         public static final String TABLE_NAME = "t_tiku_user_question_";
