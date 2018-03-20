@@ -9,7 +9,7 @@ import java.util.List;
  * 试题详情 ：试题 + 解析 + 学员答题分布
  */
 public class QuestionDetailDTO {
-    private Integer questionId;
+    private Integer questionMainId;
     private Integer sequence;
     private String questionType;
     private String questionContent;
@@ -17,10 +17,21 @@ public class QuestionDetailDTO {
     private BigDecimal score;
     private String scoreStr; //分值 -- 后续无需再处理，thrift没有decimal类型，用str代替
     private String answer;
+    private String contentType;
+    private Integer questionId;
     private List<OptionDTO> optionList;
+    private List<ScorePointDTO> scorePointList;
     private List<BlankDTO> blankList;
     private List<StuQuestionAnswer> stuAnswers;
     private List<QuestionDetailDTO> subQuestionList;
+
+    public List<ScorePointDTO> getScorePointList() {
+        return scorePointList;
+    }
+
+    public void setScorePointList(List<ScorePointDTO> scorePointList) {
+        this.scorePointList = scorePointList;
+    }
 
     public Integer getQuestionId() {
         return questionId;
@@ -28,6 +39,14 @@ public class QuestionDetailDTO {
 
     public void setQuestionId(Integer questionId) {
         this.questionId = questionId;
+    }
+
+    public Integer getQuestionMainId() {
+        return questionMainId;
+    }
+
+    public void setQuestionMainId(Integer questionMainId) {
+        this.questionMainId = questionMainId;
     }
 
     public Integer getSequence() {
@@ -116,6 +135,14 @@ public class QuestionDetailDTO {
 
     public void setSubQuestionList(List<QuestionDetailDTO> subQuestionList) {
         this.subQuestionList = subQuestionList;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
 }

@@ -1,11 +1,9 @@
 package com.sunlands.rpc.test.web;
 
 import com.sun.tools.corba.se.idl.StringGen;
+import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
-import com.sunlands.rpc.web.biz.model.PaperDTO;
-import com.sunlands.rpc.web.biz.model.PaperReportDTO;
-import com.sunlands.rpc.web.biz.model.StuAnswerDetailDTO;
-import com.sunlands.rpc.web.biz.model.StuAnswerStatisticsDTO;
+import com.sunlands.rpc.web.biz.model.*;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.THttpClient;
@@ -21,6 +19,7 @@ import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -61,8 +60,8 @@ public class WebStatisticsServiceTest {
 
     @Test
     public void testNew() {
-        String paperCode = "2531";
-        String unitIdStr = "352923,1";
+        String paperCode = "2501";
+        String unitIdStr = "167107,1";
         PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
         org.springframework.util.Assert.notNull(paperDTO, "试卷不存在");
 ////        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
@@ -82,6 +81,31 @@ public class WebStatisticsServiceTest {
 
         List<StuAnswerDetailDTO> a = paperReportMapper.getStuAnswerDetails(paperDTO.getId(), unitIdStr);
         System.out.println(a);
+
+//        List<Integer> questionMainList = paperReportMapper.listRelatedQuestionByPaperId(paperDTO.getId());
+//        System.out.println(questionMainList);
+
+//        List<QuestionDetailDTO> questions = paperReportMapper.selectBigQuestionMainByPaperId(paperDTO.getId());
+//        if (!CollectionUtils.isEmpty(questions)) {
+//            for (QuestionDetailDTO questionDetailDTO : questions) {
+//                Integer questionMainId = questionDetailDTO.getQuestionMainId();
+//                // 选项
+//                if (Constant.CONTENT_TYPE_CHOICE.equals(questionDetailDTO.getContentType())) {
+//                    List<OptionDTO> optionDTOS = paperReportMapper.selectOptionsByQuestionId(questionDetailDTO.getQuestionId());
+//                    questionDetailDTO.setOptionList(optionDTOS);
+//                }
+//                // 得分点
+//                if (Constant.CONTENT_TYPE_ESSAY.equals(questionDetailDTO.getContentType())) {
+//                    List<ScorePointDTO> scorePointDTOS = paperReportMapper.selectScorePointsByQuestionId(questionDetailDTO.getQuestionId());
+//                    if (!CollectionUtils.isEmpty(scorePointDTOS)) {
+//                        questionDetailDTO.setScorePointList(scorePointDTOS);
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//        System.out.println(questions);
 
     }
 }

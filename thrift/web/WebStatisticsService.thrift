@@ -40,7 +40,7 @@ struct PaperDetail {
 }
 // 题目详情
 struct QuestionDetail {
-    1: i32 questionId;
+    1: i32 questionMainId;
     2: i32 sequence;
     3: string questionType;
     4: string questionContent;
@@ -51,6 +51,14 @@ struct QuestionDetail {
     9: list<Blank> blankList; // 填空题-空列表
     10: list<StuQuestionAnswer> stuAnswers; // 学员答题信息
     11: list<QuestionDetail> subQuestionList; // 子题
+    12: list<ScorePoint> scorePointList; // 得分点信息
+}
+// 得分点
+struct ScorePoint {
+    1: i32 id;
+    2: i32 questionId;
+    3: string content;
+    4: string score;
 }
 // 填空题 - 空
 struct Blank {

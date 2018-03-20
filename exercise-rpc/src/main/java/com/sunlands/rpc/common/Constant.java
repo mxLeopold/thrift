@@ -8,6 +8,12 @@ package com.sunlands.rpc.common;
  * @update: [变更日期yyyy-MM-dd][变更人姓名][变更描述]
  */
 public class Constant {
+    /**
+     * question_id 来源
+     */
+    public static final String CONTENT_TYPE_ESSAY = "ESSAY";
+    public static final String CONTENT_TYPE_BLANK = "BLANK";
+    public static final String CONTENT_TYPE_CHOICE = "CHOICE";
 
     public static void main(String[] args) {
         System.out.println(TikuUserRecord.getTableName(1));
