@@ -9,10 +9,6 @@ package com.sunlands.rpc.common;
  */
 public class Constant {
 
-    public static void main(String[] args) {
-        System.out.println(TikuUserRecord.getTableName(1));
-    }
-
     public static class TikuUserQuestion {
 
         public static final String TABLE_NAME = "t_tiku_user_question_";

@@ -48,7 +48,4 @@ public class DateTimeUtil {
         return DateTimeFormat.forPattern(fmt);
     }
 
-    public static void main(String[] args) {
-        System.out.println(today());
-    }
 }
