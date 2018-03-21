@@ -10,6 +10,17 @@ import java.util.List;
 @Mapper
 public interface PaperReportMapper {
     /**
+     * 查询B端试卷
+     * @param code
+     * @return
+     */
+    @Select({
+            "select id,code,name,type,question_amount questionAmount,total_score totalScore,avg_difficulty_value avgDifficultyValue,",
+            "create_time createTime,update_time updateTime,creator,operator,delete_flag deleteFlag",
+            "from t_paper_code where delete_flag = 0 and code = #{code}"
+    })
+    PaperDTO selectPaperCodeByCode(@Param("code") String code);
+    /**
      * 查询C端试卷
      * @param paperCode
      * @return

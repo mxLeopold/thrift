@@ -1,11 +1,14 @@
 package com.sunlands.rpc.web.statistics.handler;
 
+import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.model.PaperDetailDTO;
 import com.sunlands.rpc.web.biz.model.PaperReportDTO;
 import com.sunlands.rpc.web.biz.model.StuAnswerDetailDTO;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
 import com.sunlands.rpc.web.statistics.service.*;
 import org.apache.thrift.TException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -26,25 +29,17 @@ import java.util.List;
  */
 @Component
 public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
+    private static final Logger logger = LoggerFactory.getLogger(WebStatisticsServiceHandler.class);
+
     @Autowired
     private PaperReportService paperReportService;
 
     @Override
-    public boolean isPaperIdValid(String paperId) throws TException {
-        return paperReportService.isPaperIdValid(paperId);
-    }
-
-    @Override
-    public boolean checkPaperType(String paperId, String exerciseType) throws TException {
-        return paperReportService.checkPaperType(paperId, exerciseType);
-    }
-
-    @Override
     public List<PaperReport> getPaperReport(String paperId, String unitIdStr) throws TException { // TODO: 2018/3/19 加数据，以满足jsp文件跳转逻辑
-        if (paperId == null || StringUtils.isEmpty(paperId)) {
+        if (StringUtils.isEmpty(paperId)) {
             throw new TException("paperId不能为空");
         }
-        if (unitIdStr == null || StringUtils.isEmpty(unitIdStr)) { // 必须是逗号分隔
+        if (StringUtils.isEmpty(unitIdStr)) { // 必须是逗号分隔
             throw new TException("unitIdStr不能为空");
         }
         List<PaperReportDTO> quizzesPaperReportDTOS = paperReportService.getPaperReport(paperId, unitIdStr);
@@ -76,6 +71,23 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         List<StuAnswerDetail> stuAnswerDetails = new ArrayList<StuAnswerDetail>();
         BeanUtils.copyProperties(stuAnswerDetailDTOs, stuAnswerDetails);
         return stuAnswerDetails;
+    }
+
+    @Override
+    public int checkQuizId(String paperCode) throws TException {
+        logger.debug("checkQuizId(paperCode:{}) -------- start", paperCode);
+        int checkPaperId = paperReportService.checkPaperId(paperCode, Constant.PAPER_TYPE_QUIZ);
+        logger.debug("checkQuizId(paperCode:{}) -------- end, return {}", paperCode, checkPaperId);
+        return checkPaperId;
+
+    }
+
+    @Override
+    public int checkAssignmentId(String paperCode) throws TException {
+        logger.debug("checkAssignmentId(paperCode:{}) -------- start", paperCode);
+        int checkPaperId = paperReportService.checkPaperId(paperCode, Constant.PAPER_TYPE_ASSIGNMENTS);
+        logger.debug("checkAssignmentId(paperCode:{}) -------- end, return {}", paperCode, checkPaperId);
+        return checkPaperId;
     }
 
 }

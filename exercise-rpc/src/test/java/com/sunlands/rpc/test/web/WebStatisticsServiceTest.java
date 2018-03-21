@@ -4,6 +4,7 @@ import com.sun.tools.corba.se.idl.StringGen;
 import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.*;
+import com.sunlands.rpc.web.biz.service.PaperReportService;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.THttpClient;
@@ -44,6 +45,9 @@ public class WebStatisticsServiceTest {
     @Autowired
     protected PaperReportMapper paperReportMapper;
 
+    @Autowired
+    protected PaperReportService paperReportService;
+
 
     @LocalServerPort
     protected int port;
@@ -62,8 +66,8 @@ public class WebStatisticsServiceTest {
     public void testNew() {
         String paperCode = "2501";
         String unitIdStr = "167107,1";
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
-        org.springframework.util.Assert.notNull(paperDTO, "试卷不存在");
+//        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+//        org.springframework.util.Assert.notNull(paperDTO, "试卷不存在");
 ////        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
 //        PaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
 //        if (paperReport != null) {
@@ -79,8 +83,8 @@ public class WebStatisticsServiceTest {
 //        }
 
 
-        List<StuAnswerDetailDTO> a = paperReportMapper.getStuAnswerDetails(paperDTO.getId(), unitIdStr);
-        System.out.println(a);
+//        List<StuAnswerDetailDTO> a = paperReportMapper.getStuAnswerDetails(paperDTO.getId(), unitIdStr);
+//        System.out.println(a);
 
 //        List<Integer> questionMainList = paperReportMapper.listRelatedQuestionByPaperId(paperDTO.getId());
 //        System.out.println(questionMainList);
@@ -106,6 +110,11 @@ public class WebStatisticsServiceTest {
 //        }
 //
 //        System.out.println(questions);
+//        PaperDetailDTO paperDetailDTO = paperReportService.getPaperDetail(paperCode, unitIdStr);
+//        System.out.println(paperDetailDTO);
+
+        List<PaperReportDTO> paperReportDTOS = paperReportService.getPaperReport(paperCode, unitIdStr);
+        System.out.println(paperReportDTOS);
 
     }
 }

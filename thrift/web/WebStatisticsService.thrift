@@ -82,12 +82,6 @@ struct StuQuestionAnswer {
 }
 
 service WebStatisticsService {
-    // 校验试卷ID是否存在
-    bool isPaperIdValid(1: string paperId);
-
-    // 校验试卷类型是否与特定类型相符
-    bool checkPaperType(1: string paperId, 2: string exerciseType);
-
 	// 查询随堂考列表
 	list<PaperReport> getPaperReport(1: string paperId, 2: string unitIdStr);
 
@@ -96,4 +90,11 @@ service WebStatisticsService {
 
     // 成绩详情列表
     list<StuAnswerDetail> getStuAnswerDetail(1: i32 paperId, 2: string unitIdStr);
+
+    // 校验随堂考ID
+    i32 checkQuizId(1: string paperCode);
+
+    // 校验作业ID
+    i32 checkAssignmentId(1: string paperCode);
+
 }

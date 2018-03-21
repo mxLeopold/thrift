@@ -14,6 +14,11 @@ public class Constant {
     public static final String CONTENT_TYPE_ESSAY = "ESSAY";
     public static final String CONTENT_TYPE_BLANK = "BLANK";
     public static final String CONTENT_TYPE_CHOICE = "CHOICE";
+    /**
+     * 试卷类型
+     */
+    public static final String PAPER_TYPE_QUIZ = "QUIZ";
+    public static final String PAPER_TYPE_ASSIGNMENTS = "ASSIGNMENTS";
 
     public static class TikuUserQuestion {
 

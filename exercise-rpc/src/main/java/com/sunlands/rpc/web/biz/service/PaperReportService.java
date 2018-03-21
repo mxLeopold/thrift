@@ -22,8 +22,6 @@ public interface PaperReportService {
 
     Boolean isPaperIdValid(String paperCode);
 
-    Boolean checkPaperType(String paperCode, String type);
-
     List<StuAnswerDetailDTO> getStuAnswerDetails(Integer paperId, String unitIdStr);
 
     /**
@@ -33,5 +31,12 @@ public interface PaperReportService {
      * @return
      */
     PaperDetailDTO getPaperDetail(String paperId, String unitIdStr);
+
+    /**
+     * 校验试卷ID、类型
+     * @param paperCode
+     * @param type
+     */
+    int checkPaperId(String paperCode, String type);
 
 }

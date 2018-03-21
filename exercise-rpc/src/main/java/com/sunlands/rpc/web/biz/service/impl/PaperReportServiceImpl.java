@@ -4,13 +4,10 @@ import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
-import com.sunlands.rpc.web.statistics.service.QuestionDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -41,17 +38,8 @@ public class PaperReportServiceImpl implements PaperReportService {
 
     @Override
     public Boolean isPaperIdValid(String paperCode) {
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+        PaperDTO paperDTO = paperReportMapper.selectPaperCodeByCode(paperCode);  // 配置作业、随堂考时未生成C端试卷，校验B端试卷
         return  (paperDTO == null) ? false : true;
-    }
-
-    @Override
-    public Boolean checkPaperType(String paperCode, String type) {
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
-        if (paperDTO != null && paperDTO.getType().equals(type)) {
-            return true;
-        }
-        return false;
     }
 
     @Override
@@ -77,7 +65,19 @@ public class PaperReportServiceImpl implements PaperReportService {
         paperDetailDTO.setRanking(paperReportMapper.selectRankingList(paperDTO.getId(), unitIdStr)); // TODO: 2018/3/20 取ES数据？
         // 题目详情
         paperDetailDTO.setQuestionDetailList(getRelatedQuestionMain(paperDTO.getId()));
-        return null;
+        return paperDetailDTO;
+    }
+
+    @Override
+    public int checkPaperId(String paperCode, String type) {
+        PaperDTO paperDTO = paperReportMapper.selectPaperCodeByCode(paperCode); // 配置作业、随堂考时未生成C端试卷，校验B端试卷
+        if (paperDTO == null) {  // 试卷ID不存在
+            return 1;
+        }
+        if (paperDTO.getType() == null || !type.equals(paperDTO.getType())) {  // ID与类型不符
+            return 2;
+        }
+        return 0;
     }
 
     /**
@@ -89,7 +89,6 @@ public class PaperReportServiceImpl implements PaperReportService {
         List<QuestionDetailDTO> questions = paperReportMapper.selectBigQuestionMainByPaperId(paperId);
         if (!CollectionUtils.isEmpty(questions)) {
             for (QuestionDetailDTO questionDetailDTO : questions) {
-                Integer questionMainId = questionDetailDTO.getQuestionMainId();
                 // 选项
                 if (Constant.CONTENT_TYPE_CHOICE.equals(questionDetailDTO.getContentType())) {
                     List<OptionDTO> optionDTOS = paperReportMapper.selectOptionsByQuestionId(questionDetailDTO.getQuestionId());
