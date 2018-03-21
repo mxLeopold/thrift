@@ -41,7 +41,7 @@ public class ApiHomePageService {
 
     public int getSubmitQuestionCount(int ordDetailId, int studentId) throws TException;
 
-    public DailyIntelligentExerciseDTO isDailyIntelligentExerciseDone(int ordDetailId, int studentId) throws TException;
+    public DailyIntelligentExerciseDTO isDailyIntelligentExerciseDone(int studentId) throws TException;
 
   }
 
@@ -49,7 +49,7 @@ public class ApiHomePageService {
 
     public void getSubmitQuestionCount(int ordDetailId, int studentId, AsyncMethodCallback resultHandler) throws TException;
 
-    public void isDailyIntelligentExerciseDone(int ordDetailId, int studentId, AsyncMethodCallback resultHandler) throws TException;
+    public void isDailyIntelligentExerciseDone(int studentId, AsyncMethodCallback resultHandler) throws TException;
 
   }
 
@@ -97,16 +97,15 @@ public class ApiHomePageService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getSubmitQuestionCount failed: unknown result");
     }
 
-    public DailyIntelligentExerciseDTO isDailyIntelligentExerciseDone(int ordDetailId, int studentId) throws TException
+    public DailyIntelligentExerciseDTO isDailyIntelligentExerciseDone(int studentId) throws TException
     {
-      send_isDailyIntelligentExerciseDone(ordDetailId, studentId);
+      send_isDailyIntelligentExerciseDone(studentId);
       return recv_isDailyIntelligentExerciseDone();
     }
 
-    public void send_isDailyIntelligentExerciseDone(int ordDetailId, int studentId) throws TException
+    public void send_isDailyIntelligentExerciseDone(int studentId) throws TException
     {
       isDailyIntelligentExerciseDone_args args = new isDailyIntelligentExerciseDone_args();
-      args.setOrdDetailId(ordDetailId);
       args.setStudentId(studentId);
       sendBase("isDailyIntelligentExerciseDone", args);
     }
@@ -174,26 +173,23 @@ public class ApiHomePageService {
       }
     }
 
-    public void isDailyIntelligentExerciseDone(int ordDetailId, int studentId, AsyncMethodCallback resultHandler) throws TException {
+    public void isDailyIntelligentExerciseDone(int studentId, AsyncMethodCallback resultHandler) throws TException {
       checkReady();
-      isDailyIntelligentExerciseDone_call method_call = new isDailyIntelligentExerciseDone_call(ordDetailId, studentId, resultHandler, this, ___protocolFactory, ___transport);
+      isDailyIntelligentExerciseDone_call method_call = new isDailyIntelligentExerciseDone_call(studentId, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class isDailyIntelligentExerciseDone_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private int ordDetailId;
       private int studentId;
-      public isDailyIntelligentExerciseDone_call(int ordDetailId, int studentId, AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws TException {
+      public isDailyIntelligentExerciseDone_call(int studentId, AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.ordDetailId = ordDetailId;
         this.studentId = studentId;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws TException {
         prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("isDailyIntelligentExerciseDone", org.apache.thrift.protocol.TMessageType.CALL, 0));
         isDailyIntelligentExerciseDone_args args = new isDailyIntelligentExerciseDone_args();
-        args.setOrdDetailId(ordDetailId);
         args.setStudentId(studentId);
         args.write(prot);
         prot.writeMessageEnd();
@@ -263,7 +259,7 @@ public class ApiHomePageService {
 
       public isDailyIntelligentExerciseDone_result getResult(I iface, isDailyIntelligentExerciseDone_args args) throws TException {
         isDailyIntelligentExerciseDone_result result = new isDailyIntelligentExerciseDone_result();
-        result.success = iface.isDailyIntelligentExerciseDone(args.ordDetailId, args.studentId);
+        result.success = iface.isDailyIntelligentExerciseDone(args.studentId);
         return result;
       }
     }
@@ -385,7 +381,7 @@ public class ApiHomePageService {
       }
 
       public void start(I iface, isDailyIntelligentExerciseDone_args args, AsyncMethodCallback<DailyIntelligentExerciseDTO> resultHandler) throws TException {
-        iface.isDailyIntelligentExerciseDone(args.ordDetailId, args.studentId,resultHandler);
+        iface.isDailyIntelligentExerciseDone(args.studentId,resultHandler);
       }
     }
 
@@ -1213,8 +1209,7 @@ public class ApiHomePageService {
   public static class isDailyIntelligentExerciseDone_args implements org.apache.thrift.TBase<isDailyIntelligentExerciseDone_args, isDailyIntelligentExerciseDone_args._Fields>, java.io.Serializable, Cloneable, Comparable<isDailyIntelligentExerciseDone_args>   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("isDailyIntelligentExerciseDone_args");
 
-    private static final org.apache.thrift.protocol.TField ORD_DETAIL_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("ordDetailId", org.apache.thrift.protocol.TType.I32, (short)1);
-    private static final org.apache.thrift.protocol.TField STUDENT_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("studentId", org.apache.thrift.protocol.TType.I32, (short)2);
+    private static final org.apache.thrift.protocol.TField STUDENT_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("studentId", org.apache.thrift.protocol.TType.I32, (short)1);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -1222,13 +1217,11 @@ public class ApiHomePageService {
       schemes.put(TupleScheme.class, new isDailyIntelligentExerciseDone_argsTupleSchemeFactory());
     }
 
-    public int ordDetailId; // required
     public int studentId; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      ORD_DETAIL_ID((short)1, "ordDetailId"),
-      STUDENT_ID((short)2, "studentId");
+      STUDENT_ID((short)1, "studentId");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1243,9 +1236,7 @@ public class ApiHomePageService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // ORD_DETAIL_ID
-            return ORD_DETAIL_ID;
-          case 2: // STUDENT_ID
+          case 1: // STUDENT_ID
             return STUDENT_ID;
           default:
             return null;
@@ -1287,14 +1278,11 @@ public class ApiHomePageService {
     }
 
     // isset id assignments
-    private static final int __ORDDETAILID_ISSET_ID = 0;
-    private static final int __STUDENTID_ISSET_ID = 1;
+    private static final int __STUDENTID_ISSET_ID = 0;
     private byte __isset_bitfield = 0;
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.ORD_DETAIL_ID, new org.apache.thrift.meta_data.FieldMetaData("ordDetailId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
       tmpMap.put(_Fields.STUDENT_ID, new org.apache.thrift.meta_data.FieldMetaData("studentId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -1305,12 +1293,9 @@ public class ApiHomePageService {
     }
 
     public isDailyIntelligentExerciseDone_args(
-      int ordDetailId,
       int studentId)
     {
       this();
-      this.ordDetailId = ordDetailId;
-      setOrdDetailIdIsSet(true);
       this.studentId = studentId;
       setStudentIdIsSet(true);
     }
@@ -1320,7 +1305,6 @@ public class ApiHomePageService {
      */
     public isDailyIntelligentExerciseDone_args(isDailyIntelligentExerciseDone_args other) {
       __isset_bitfield = other.__isset_bitfield;
-      this.ordDetailId = other.ordDetailId;
       this.studentId = other.studentId;
     }
 
@@ -1330,33 +1314,8 @@ public class ApiHomePageService {
 
     @Override
     public void clear() {
-      setOrdDetailIdIsSet(false);
-      this.ordDetailId = 0;
       setStudentIdIsSet(false);
       this.studentId = 0;
-    }
-
-    public int getOrdDetailId() {
-      return this.ordDetailId;
-    }
-
-    public isDailyIntelligentExerciseDone_args setOrdDetailId(int ordDetailId) {
-      this.ordDetailId = ordDetailId;
-      setOrdDetailIdIsSet(true);
-      return this;
-    }
-
-    public void unsetOrdDetailId() {
-      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __ORDDETAILID_ISSET_ID);
-    }
-
-    /** Returns true if field ordDetailId is set (has been assigned a value) and false otherwise */
-    public boolean isSetOrdDetailId() {
-      return EncodingUtils.testBit(__isset_bitfield, __ORDDETAILID_ISSET_ID);
-    }
-
-    public void setOrdDetailIdIsSet(boolean value) {
-      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __ORDDETAILID_ISSET_ID, value);
     }
 
     public int getStudentId() {
@@ -1384,14 +1343,6 @@ public class ApiHomePageService {
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case ORD_DETAIL_ID:
-        if (value == null) {
-          unsetOrdDetailId();
-        } else {
-          setOrdDetailId((Integer)value);
-        }
-        break;
-
       case STUDENT_ID:
         if (value == null) {
           unsetStudentId();
@@ -1405,9 +1356,6 @@ public class ApiHomePageService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case ORD_DETAIL_ID:
-        return getOrdDetailId();
-
       case STUDENT_ID:
         return getStudentId();
 
@@ -1422,8 +1370,6 @@ public class ApiHomePageService {
       }
 
       switch (field) {
-      case ORD_DETAIL_ID:
-        return isSetOrdDetailId();
       case STUDENT_ID:
         return isSetStudentId();
       }
@@ -1443,15 +1389,6 @@ public class ApiHomePageService {
       if (that == null)
         return false;
 
-      boolean this_present_ordDetailId = true;
-      boolean that_present_ordDetailId = true;
-      if (this_present_ordDetailId || that_present_ordDetailId) {
-        if (!(this_present_ordDetailId && that_present_ordDetailId))
-          return false;
-        if (this.ordDetailId != that.ordDetailId)
-          return false;
-      }
-
       boolean this_present_studentId = true;
       boolean that_present_studentId = true;
       if (this_present_studentId || that_present_studentId) {
@@ -1467,11 +1404,6 @@ public class ApiHomePageService {
     @Override
     public int hashCode() {
       List<Object> list = new ArrayList<Object>();
-
-      boolean present_ordDetailId = true;
-      list.add(present_ordDetailId);
-      if (present_ordDetailId)
-        list.add(ordDetailId);
 
       boolean present_studentId = true;
       list.add(present_studentId);
@@ -1489,16 +1421,6 @@ public class ApiHomePageService {
 
       int lastComparison = 0;
 
-      lastComparison = Boolean.valueOf(isSetOrdDetailId()).compareTo(other.isSetOrdDetailId());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetOrdDetailId()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.ordDetailId, other.ordDetailId);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
       lastComparison = Boolean.valueOf(isSetStudentId()).compareTo(other.isSetStudentId());
       if (lastComparison != 0) {
         return lastComparison;
@@ -1529,10 +1451,6 @@ public class ApiHomePageService {
       StringBuilder sb = new StringBuilder("isDailyIntelligentExerciseDone_args(");
       boolean first = true;
 
-      sb.append("ordDetailId:");
-      sb.append(this.ordDetailId);
-      first = false;
-      if (!first) sb.append(", ");
       sb.append("studentId:");
       sb.append(this.studentId);
       first = false;
@@ -1581,15 +1499,7 @@ public class ApiHomePageService {
             break;
           }
           switch (schemeField.id) {
-            case 1: // ORD_DETAIL_ID
-              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-                struct.ordDetailId = iprot.readI32();
-                struct.setOrdDetailIdIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            case 2: // STUDENT_ID
+            case 1: // STUDENT_ID
               if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
                 struct.studentId = iprot.readI32();
                 struct.setStudentIdIsSet(true);
@@ -1612,9 +1522,6 @@ public class ApiHomePageService {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        oprot.writeFieldBegin(ORD_DETAIL_ID_FIELD_DESC);
-        oprot.writeI32(struct.ordDetailId);
-        oprot.writeFieldEnd();
         oprot.writeFieldBegin(STUDENT_ID_FIELD_DESC);
         oprot.writeI32(struct.studentId);
         oprot.writeFieldEnd();
@@ -1636,16 +1543,10 @@ public class ApiHomePageService {
       public void write(org.apache.thrift.protocol.TProtocol prot, isDailyIntelligentExerciseDone_args struct) throws TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
-        if (struct.isSetOrdDetailId()) {
+        if (struct.isSetStudentId()) {
           optionals.set(0);
         }
-        if (struct.isSetStudentId()) {
-          optionals.set(1);
-        }
-        oprot.writeBitSet(optionals, 2);
-        if (struct.isSetOrdDetailId()) {
-          oprot.writeI32(struct.ordDetailId);
-        }
+        oprot.writeBitSet(optionals, 1);
         if (struct.isSetStudentId()) {
           oprot.writeI32(struct.studentId);
         }
@@ -1654,12 +1555,8 @@ public class ApiHomePageService {
       @Override
       public void read(org.apache.thrift.protocol.TProtocol prot, isDailyIntelligentExerciseDone_args struct) throws TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(2);
+        BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.ordDetailId = iprot.readI32();
-          struct.setOrdDetailIdIsSet(true);
-        }
-        if (incoming.get(1)) {
           struct.studentId = iprot.readI32();
           struct.setStudentIdIsSet(true);
         }

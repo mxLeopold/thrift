@@ -1,14 +1,12 @@
 package com.sunlands.entrpc.service.impl;
 
-import com.sunlands.entrpc.model.EntSubjectIdListDTO;
 import com.sunlands.entrpc.model.SubjectDTO;
 import com.sunlands.entrpc.model.TermSubjectDTO;
 import com.sunlands.entrpc.service.StudentRpcService;
 import com.sunlands.entrpc.thriftservice.ApiStudentService;
+import com.sunlands.entrpc.thriftservice.IntelligentExerciseSubject;
 import com.sunlands.entrpc.thriftservice.Subject;
-import com.sunlands.entrpc.thriftservice.SubjectKnowledgeTreeDTO;
 import com.sunlands.entrpc.thriftservice.termSubject;
-import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
@@ -78,26 +76,22 @@ public class StudentRpcServiceImpl implements StudentRpcService {
     }
 
     @Override
-    public EntSubjectIdListDTO getSubjectIdsByDetailId(Integer detailId) throws Exception {
-        if (detailId == null) {
-            throw new RuntimeException("传入参数detailId为空!");
+    public boolean hasIntelligentExercise(Integer studentId) throws Exception {
+        if (studentId == null) {
+            throw new RuntimeException("传入参数 studentId 为空!");
         }
-        SubjectKnowledgeTreeDTO subjectHasKnowledgeTree = null;
         try {
-            log.info("请求RPC接口 getSubjectIdsByDetailId");
+            log.info("请求RPC接口 getStuIntelligentExerciseSubject");
             ApiStudentService.Client client = getClientInstance();
-            subjectHasKnowledgeTree = client.getSubjectHasKnowledgeTree(detailId);
-        } catch (TException e) {
+            IntelligentExerciseSubject intelligentExercise = client.getStuIntelligentExerciseSubject(studentId);
+            if (null != intelligentExercise && -1 != intelligentExercise.getSubjectId()) {
+                return true;
+            }
+        } catch (Exception e) {
             log.error("调用接口失败！" + e.getMessage(), e);
-            throw new RuntimeException("调用RPC接口 getSubjectIdsByDetailId 失败！传入参数:" + "detailId=" + detailId + ";报错信息:" + e.getMessage());
+            throw new RuntimeException("调用RPC接口 getStuIntelligentExerciseSubject 失败！传入参数:" + "studentId=" + studentId + ";报错信息:" + e.getMessage());
         }
-        if (null == subjectHasKnowledgeTree) {
-            return new EntSubjectIdListDTO();
-        }
-        EntSubjectIdListDTO result = new EntSubjectIdListDTO();
-        result.setHasKnowledgeTree(subjectHasKnowledgeTree.getHasKnowledgeTree());
-        result.setSubjectIds(subjectHasKnowledgeTree.getSubjectIdList());
-        return result;
+        return false;
     }
 
     private void formatTermSubjectList(List<TermSubjectDTO> res, List<termSubject> rsts) {

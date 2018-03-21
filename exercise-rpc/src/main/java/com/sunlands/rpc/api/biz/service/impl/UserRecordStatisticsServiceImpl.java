@@ -36,11 +36,10 @@ public class UserRecordStatisticsServiceImpl implements UserRecordStatisticsServ
 
     @Override
     @ReadConnection
-    public int isExerciseDone(int studentId, String date, List<Integer> subjectIds, String exerciseType) {
+    public int isExerciseDone(int studentId, String date, String exerciseType) {
         log.info("<--- isExerciseDone(studentId: {}, date: {}, exerciseType: {}) start --->", studentId, date, exerciseType);
         String tableName = Constant.TikuUserRecord.getTableName(studentId);
-        String ids = getIdsString(subjectIds);
-        int count = tikuUserRecordMapper.countCompleteRecordByExerciseTypeAndDate(tableName, studentId, date, exerciseType, ids);
+        int count = tikuUserRecordMapper.countCompleteRecordByExerciseTypeAndDate(tableName, studentId, date, exerciseType);
         count = count == 0 ? 0 : 1;
         log.info("<--- isExerciseDone result {}: {}", count, count == 0 ? "未完成" : "完成");
         return count;

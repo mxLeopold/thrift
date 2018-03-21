@@ -101,8 +101,6 @@ public class ApiStudentService {
 
     public IntelligentExerciseSubject getStuIntelligentExerciseSubject(int stuId) throws TException;
 
-    public SubjectKnowledgeTreeDTO getSubjectHasKnowledgeTree(int detailId) throws TException;
-
   }
 
   public interface AsyncIface {
@@ -168,8 +166,6 @@ public class ApiStudentService {
     public void getAllTermSubjectByDetailId(int detailId, AsyncMethodCallback resultHandler) throws TException;
 
     public void getStuIntelligentExerciseSubject(int stuId, AsyncMethodCallback resultHandler) throws TException;
-
-    public void getSubjectHasKnowledgeTree(int detailId, AsyncMethodCallback resultHandler) throws TException;
 
   }
 
@@ -914,29 +910,6 @@ public class ApiStudentService {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getStuIntelligentExerciseSubject failed: unknown result");
-    }
-
-    public SubjectKnowledgeTreeDTO getSubjectHasKnowledgeTree(int detailId) throws TException
-    {
-      send_getSubjectHasKnowledgeTree(detailId);
-      return recv_getSubjectHasKnowledgeTree();
-    }
-
-    public void send_getSubjectHasKnowledgeTree(int detailId) throws TException
-    {
-      getSubjectHasKnowledgeTree_args args = new getSubjectHasKnowledgeTree_args();
-      args.setDetailId(detailId);
-      sendBase("getSubjectHasKnowledgeTree", args);
-    }
-
-    public SubjectKnowledgeTreeDTO recv_getSubjectHasKnowledgeTree() throws TException
-    {
-      getSubjectHasKnowledgeTree_result result = new getSubjectHasKnowledgeTree_result();
-      receiveBase(result, "getSubjectHasKnowledgeTree");
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getSubjectHasKnowledgeTree failed: unknown result");
     }
 
   }
@@ -1988,38 +1961,6 @@ public class ApiStudentService {
       }
     }
 
-    public void getSubjectHasKnowledgeTree(int detailId, AsyncMethodCallback resultHandler) throws TException {
-      checkReady();
-      getSubjectHasKnowledgeTree_call method_call = new getSubjectHasKnowledgeTree_call(detailId, resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class getSubjectHasKnowledgeTree_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private int detailId;
-      public getSubjectHasKnowledgeTree_call(int detailId, AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.detailId = detailId;
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getSubjectHasKnowledgeTree", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getSubjectHasKnowledgeTree_args args = new getSubjectHasKnowledgeTree_args();
-        args.setDetailId(detailId);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public SubjectKnowledgeTreeDTO getResult() throws TException {
-        if (getState() != State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getSubjectHasKnowledgeTree();
-      }
-    }
-
   }
 
   public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I> implements org.apache.thrift.TProcessor {
@@ -2064,7 +2005,6 @@ public class ApiStudentService {
       processMap.put("getCurrentTermSubjectByStuId", new getCurrentTermSubjectByStuId());
       processMap.put("getAllTermSubjectByDetailId", new getAllTermSubjectByDetailId());
       processMap.put("getStuIntelligentExerciseSubject", new getStuIntelligentExerciseSubject());
-      processMap.put("getSubjectHasKnowledgeTree", new getSubjectHasKnowledgeTree());
       return processMap;
     }
 
@@ -2692,26 +2632,6 @@ public class ApiStudentService {
       }
     }
 
-    public static class getSubjectHasKnowledgeTree<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getSubjectHasKnowledgeTree_args> {
-      public getSubjectHasKnowledgeTree() {
-        super("getSubjectHasKnowledgeTree");
-      }
-
-      public getSubjectHasKnowledgeTree_args getEmptyArgsInstance() {
-        return new getSubjectHasKnowledgeTree_args();
-      }
-
-      protected boolean isOneway() {
-        return false;
-      }
-
-      public getSubjectHasKnowledgeTree_result getResult(I iface, getSubjectHasKnowledgeTree_args args) throws TException {
-        getSubjectHasKnowledgeTree_result result = new getSubjectHasKnowledgeTree_result();
-        result.success = iface.getSubjectHasKnowledgeTree(args.detailId);
-        return result;
-      }
-    }
-
   }
 
   public static class AsyncProcessor<I extends AsyncIface> extends org.apache.thrift.TBaseAsyncProcessor<I> {
@@ -2756,7 +2676,6 @@ public class ApiStudentService {
       processMap.put("getCurrentTermSubjectByStuId", new getCurrentTermSubjectByStuId());
       processMap.put("getAllTermSubjectByDetailId", new getAllTermSubjectByDetailId());
       processMap.put("getStuIntelligentExerciseSubject", new getStuIntelligentExerciseSubject());
-      processMap.put("getSubjectHasKnowledgeTree", new getSubjectHasKnowledgeTree());
       return processMap;
     }
 
@@ -4344,57 +4263,6 @@ public class ApiStudentService {
       }
     }
 
-    public static class getSubjectHasKnowledgeTree<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getSubjectHasKnowledgeTree_args, SubjectKnowledgeTreeDTO> {
-      public getSubjectHasKnowledgeTree() {
-        super("getSubjectHasKnowledgeTree");
-      }
-
-      public getSubjectHasKnowledgeTree_args getEmptyArgsInstance() {
-        return new getSubjectHasKnowledgeTree_args();
-      }
-
-      public AsyncMethodCallback<SubjectKnowledgeTreeDTO> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
-        final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<SubjectKnowledgeTreeDTO>() { 
-          public void onComplete(SubjectKnowledgeTreeDTO o) {
-            getSubjectHasKnowledgeTree_result result = new getSubjectHasKnowledgeTree_result();
-            result.success = o;
-            try {
-              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
-              return;
-            } catch (Exception e) {
-              LOGGER.error("Exception writing to internal frame buffer", e);
-            }
-            fb.close();
-          }
-          public void onError(Exception e) {
-            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
-            org.apache.thrift.TBase msg;
-            getSubjectHasKnowledgeTree_result result = new getSubjectHasKnowledgeTree_result();
-            {
-              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
-              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
-            }
-            try {
-              fcall.sendResponse(fb,msg,msgType,seqid);
-              return;
-            } catch (Exception ex) {
-              LOGGER.error("Exception writing to internal frame buffer", ex);
-            }
-            fb.close();
-          }
-        };
-      }
-
-      protected boolean isOneway() {
-        return false;
-      }
-
-      public void start(I iface, getSubjectHasKnowledgeTree_args args, AsyncMethodCallback<SubjectKnowledgeTreeDTO> resultHandler) throws TException {
-        iface.getSubjectHasKnowledgeTree(args.detailId,resultHandler);
-      }
-    }
-
   }
 
   public static class isVip_args implements org.apache.thrift.TBase<isVip_args, isVip_args._Fields>, java.io.Serializable, Cloneable, Comparable<isVip_args>   {
@@ -4710,13 +4578,13 @@ public class ApiStudentService {
             case 1: // STU_IDS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list56 = iprot.readListBegin();
-                  struct.stuIds = new ArrayList<Integer>(_list56.size);
-                  int _elem57;
-                  for (int _i58 = 0; _i58 < _list56.size; ++_i58)
+                  org.apache.thrift.protocol.TList _list48 = iprot.readListBegin();
+                  struct.stuIds = new ArrayList<Integer>(_list48.size);
+                  int _elem49;
+                  for (int _i50 = 0; _i50 < _list48.size; ++_i50)
                   {
-                    _elem57 = iprot.readI32();
-                    struct.stuIds.add(_elem57);
+                    _elem49 = iprot.readI32();
+                    struct.stuIds.add(_elem49);
                   }
                   iprot.readListEnd();
                 }
@@ -4744,9 +4612,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(STU_IDS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.stuIds.size()));
-            for (int _iter59 : struct.stuIds)
+            for (int _iter51 : struct.stuIds)
             {
-              oprot.writeI32(_iter59);
+              oprot.writeI32(_iter51);
             }
             oprot.writeListEnd();
           }
@@ -4777,9 +4645,9 @@ public class ApiStudentService {
         if (struct.isSetStuIds()) {
           {
             oprot.writeI32(struct.stuIds.size());
-            for (int _iter60 : struct.stuIds)
+            for (int _iter52 : struct.stuIds)
             {
-              oprot.writeI32(_iter60);
+              oprot.writeI32(_iter52);
             }
           }
         }
@@ -4791,13 +4659,13 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list61 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
-            struct.stuIds = new ArrayList<Integer>(_list61.size);
-            int _elem62;
-            for (int _i63 = 0; _i63 < _list61.size; ++_i63)
+            org.apache.thrift.protocol.TList _list53 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+            struct.stuIds = new ArrayList<Integer>(_list53.size);
+            int _elem54;
+            for (int _i55 = 0; _i55 < _list53.size; ++_i55)
             {
-              _elem62 = iprot.readI32();
-              struct.stuIds.add(_elem62);
+              _elem54 = iprot.readI32();
+              struct.stuIds.add(_elem54);
             }
           }
           struct.setStuIdsIsSet(true);
@@ -5117,15 +4985,15 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.MAP) {
                 {
-                  org.apache.thrift.protocol.TMap _map64 = iprot.readMapBegin();
-                  struct.success = new HashMap<Integer,Short>(2*_map64.size);
-                  int _key65;
-                  short _val66;
-                  for (int _i67 = 0; _i67 < _map64.size; ++_i67)
+                  org.apache.thrift.protocol.TMap _map56 = iprot.readMapBegin();
+                  struct.success = new HashMap<Integer,Short>(2*_map56.size);
+                  int _key57;
+                  short _val58;
+                  for (int _i59 = 0; _i59 < _map56.size; ++_i59)
                   {
-                    _key65 = iprot.readI32();
-                    _val66 = iprot.readI16();
-                    struct.success.put(_key65, _val66);
+                    _key57 = iprot.readI32();
+                    _val58 = iprot.readI16();
+                    struct.success.put(_key57, _val58);
                   }
                   iprot.readMapEnd();
                 }
@@ -5153,10 +5021,10 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.I16, struct.success.size()));
-            for (Map.Entry<Integer, Short> _iter68 : struct.success.entrySet())
+            for (Map.Entry<Integer, Short> _iter60 : struct.success.entrySet())
             {
-              oprot.writeI32(_iter68.getKey());
-              oprot.writeI16(_iter68.getValue());
+              oprot.writeI32(_iter60.getKey());
+              oprot.writeI16(_iter60.getValue());
             }
             oprot.writeMapEnd();
           }
@@ -5187,10 +5055,10 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Map.Entry<Integer, Short> _iter69 : struct.success.entrySet())
+            for (Map.Entry<Integer, Short> _iter61 : struct.success.entrySet())
             {
-              oprot.writeI32(_iter69.getKey());
-              oprot.writeI16(_iter69.getValue());
+              oprot.writeI32(_iter61.getKey());
+              oprot.writeI16(_iter61.getValue());
             }
           }
         }
@@ -5202,15 +5070,15 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TMap _map70 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.I16, iprot.readI32());
-            struct.success = new HashMap<Integer,Short>(2*_map70.size);
-            int _key71;
-            short _val72;
-            for (int _i73 = 0; _i73 < _map70.size; ++_i73)
+            org.apache.thrift.protocol.TMap _map62 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.I32, org.apache.thrift.protocol.TType.I16, iprot.readI32());
+            struct.success = new HashMap<Integer,Short>(2*_map62.size);
+            int _key63;
+            short _val64;
+            for (int _i65 = 0; _i65 < _map62.size; ++_i65)
             {
-              _key71 = iprot.readI32();
-              _val72 = iprot.readI16();
-              struct.success.put(_key71, _val72);
+              _key63 = iprot.readI32();
+              _val64 = iprot.readI16();
+              struct.success.put(_key63, _val64);
             }
           }
           struct.setSuccessIsSet(true);
@@ -5891,15 +5759,15 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.MAP) {
                 {
-                  org.apache.thrift.protocol.TMap _map74 = iprot.readMapBegin();
-                  struct.success = new HashMap<String,String>(2*_map74.size);
-                  String _key75;
-                  String _val76;
-                  for (int _i77 = 0; _i77 < _map74.size; ++_i77)
+                  org.apache.thrift.protocol.TMap _map66 = iprot.readMapBegin();
+                  struct.success = new HashMap<String,String>(2*_map66.size);
+                  String _key67;
+                  String _val68;
+                  for (int _i69 = 0; _i69 < _map66.size; ++_i69)
                   {
-                    _key75 = iprot.readString();
-                    _val76 = iprot.readString();
-                    struct.success.put(_key75, _val76);
+                    _key67 = iprot.readString();
+                    _val68 = iprot.readString();
+                    struct.success.put(_key67, _val68);
                   }
                   iprot.readMapEnd();
                 }
@@ -5927,10 +5795,10 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, struct.success.size()));
-            for (Map.Entry<String, String> _iter78 : struct.success.entrySet())
+            for (Map.Entry<String, String> _iter70 : struct.success.entrySet())
             {
-              oprot.writeString(_iter78.getKey());
-              oprot.writeString(_iter78.getValue());
+              oprot.writeString(_iter70.getKey());
+              oprot.writeString(_iter70.getValue());
             }
             oprot.writeMapEnd();
           }
@@ -5961,10 +5829,10 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Map.Entry<String, String> _iter79 : struct.success.entrySet())
+            for (Map.Entry<String, String> _iter71 : struct.success.entrySet())
             {
-              oprot.writeString(_iter79.getKey());
-              oprot.writeString(_iter79.getValue());
+              oprot.writeString(_iter71.getKey());
+              oprot.writeString(_iter71.getValue());
             }
           }
         }
@@ -5976,15 +5844,15 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TMap _map80 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.success = new HashMap<String,String>(2*_map80.size);
-            String _key81;
-            String _val82;
-            for (int _i83 = 0; _i83 < _map80.size; ++_i83)
+            org.apache.thrift.protocol.TMap _map72 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.success = new HashMap<String,String>(2*_map72.size);
+            String _key73;
+            String _val74;
+            for (int _i75 = 0; _i75 < _map72.size; ++_i75)
             {
-              _key81 = iprot.readString();
-              _val82 = iprot.readString();
-              struct.success.put(_key81, _val82);
+              _key73 = iprot.readString();
+              _val74 = iprot.readString();
+              struct.success.put(_key73, _val74);
             }
           }
           struct.setSuccessIsSet(true);
@@ -6397,13 +6265,13 @@ public class ApiStudentService {
             case 2: // ORD_STATUS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list84 = iprot.readListBegin();
-                  struct.ordStatus = new ArrayList<String>(_list84.size);
-                  String _elem85;
-                  for (int _i86 = 0; _i86 < _list84.size; ++_i86)
+                  org.apache.thrift.protocol.TList _list76 = iprot.readListBegin();
+                  struct.ordStatus = new ArrayList<String>(_list76.size);
+                  String _elem77;
+                  for (int _i78 = 0; _i78 < _list76.size; ++_i78)
                   {
-                    _elem85 = iprot.readString();
-                    struct.ordStatus.add(_elem85);
+                    _elem77 = iprot.readString();
+                    struct.ordStatus.add(_elem77);
                   }
                   iprot.readListEnd();
                 }
@@ -6434,9 +6302,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(ORD_STATUS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.ordStatus.size()));
-            for (String _iter87 : struct.ordStatus)
+            for (String _iter79 : struct.ordStatus)
             {
-              oprot.writeString(_iter87);
+              oprot.writeString(_iter79);
             }
             oprot.writeListEnd();
           }
@@ -6473,9 +6341,9 @@ public class ApiStudentService {
         if (struct.isSetOrdStatus()) {
           {
             oprot.writeI32(struct.ordStatus.size());
-            for (String _iter88 : struct.ordStatus)
+            for (String _iter80 : struct.ordStatus)
             {
-              oprot.writeString(_iter88);
+              oprot.writeString(_iter80);
             }
           }
         }
@@ -6491,13 +6359,13 @@ public class ApiStudentService {
         }
         if (incoming.get(1)) {
           {
-            org.apache.thrift.protocol.TList _list89 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.ordStatus = new ArrayList<String>(_list89.size);
-            String _elem90;
-            for (int _i91 = 0; _i91 < _list89.size; ++_i91)
+            org.apache.thrift.protocol.TList _list81 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.ordStatus = new ArrayList<String>(_list81.size);
+            String _elem82;
+            for (int _i83 = 0; _i83 < _list81.size; ++_i83)
             {
-              _elem90 = iprot.readString();
-              struct.ordStatus.add(_elem90);
+              _elem82 = iprot.readString();
+              struct.ordStatus.add(_elem82);
             }
           }
           struct.setOrdStatusIsSet(true);
@@ -9820,14 +9688,14 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list92 = iprot.readListBegin();
-                  struct.success = new ArrayList<Student>(_list92.size);
-                  Student _elem93;
-                  for (int _i94 = 0; _i94 < _list92.size; ++_i94)
+                  org.apache.thrift.protocol.TList _list84 = iprot.readListBegin();
+                  struct.success = new ArrayList<Student>(_list84.size);
+                  Student _elem85;
+                  for (int _i86 = 0; _i86 < _list84.size; ++_i86)
                   {
-                    _elem93 = new Student();
-                    _elem93.read(iprot);
-                    struct.success.add(_elem93);
+                    _elem85 = new Student();
+                    _elem85.read(iprot);
+                    struct.success.add(_elem85);
                   }
                   iprot.readListEnd();
                 }
@@ -9855,9 +9723,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Student _iter95 : struct.success)
+            for (Student _iter87 : struct.success)
             {
-              _iter95.write(oprot);
+              _iter87.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -9888,9 +9756,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Student _iter96 : struct.success)
+            for (Student _iter88 : struct.success)
             {
-              _iter96.write(oprot);
+              _iter88.write(oprot);
             }
           }
         }
@@ -9902,14 +9770,14 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list97 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Student>(_list97.size);
-            Student _elem98;
-            for (int _i99 = 0; _i99 < _list97.size; ++_i99)
+            org.apache.thrift.protocol.TList _list89 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Student>(_list89.size);
+            Student _elem90;
+            for (int _i91 = 0; _i91 < _list89.size; ++_i91)
             {
-              _elem98 = new Student();
-              _elem98.read(iprot);
-              struct.success.add(_elem98);
+              _elem90 = new Student();
+              _elem90.read(iprot);
+              struct.success.add(_elem90);
             }
           }
           struct.setSuccessIsSet(true);
@@ -12039,15 +11907,15 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.MAP) {
                 {
-                  org.apache.thrift.protocol.TMap _map100 = iprot.readMapBegin();
-                  struct.success = new HashMap<String,String>(2*_map100.size);
-                  String _key101;
-                  String _val102;
-                  for (int _i103 = 0; _i103 < _map100.size; ++_i103)
+                  org.apache.thrift.protocol.TMap _map92 = iprot.readMapBegin();
+                  struct.success = new HashMap<String,String>(2*_map92.size);
+                  String _key93;
+                  String _val94;
+                  for (int _i95 = 0; _i95 < _map92.size; ++_i95)
                   {
-                    _key101 = iprot.readString();
-                    _val102 = iprot.readString();
-                    struct.success.put(_key101, _val102);
+                    _key93 = iprot.readString();
+                    _val94 = iprot.readString();
+                    struct.success.put(_key93, _val94);
                   }
                   iprot.readMapEnd();
                 }
@@ -12075,10 +11943,10 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, struct.success.size()));
-            for (Map.Entry<String, String> _iter104 : struct.success.entrySet())
+            for (Map.Entry<String, String> _iter96 : struct.success.entrySet())
             {
-              oprot.writeString(_iter104.getKey());
-              oprot.writeString(_iter104.getValue());
+              oprot.writeString(_iter96.getKey());
+              oprot.writeString(_iter96.getValue());
             }
             oprot.writeMapEnd();
           }
@@ -12109,10 +11977,10 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Map.Entry<String, String> _iter105 : struct.success.entrySet())
+            for (Map.Entry<String, String> _iter97 : struct.success.entrySet())
             {
-              oprot.writeString(_iter105.getKey());
-              oprot.writeString(_iter105.getValue());
+              oprot.writeString(_iter97.getKey());
+              oprot.writeString(_iter97.getValue());
             }
           }
         }
@@ -12124,15 +11992,15 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TMap _map106 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.success = new HashMap<String,String>(2*_map106.size);
-            String _key107;
-            String _val108;
-            for (int _i109 = 0; _i109 < _map106.size; ++_i109)
+            org.apache.thrift.protocol.TMap _map98 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.success = new HashMap<String,String>(2*_map98.size);
+            String _key99;
+            String _val100;
+            for (int _i101 = 0; _i101 < _map98.size; ++_i101)
             {
-              _key107 = iprot.readString();
-              _val108 = iprot.readString();
-              struct.success.put(_key107, _val108);
+              _key99 = iprot.readString();
+              _val100 = iprot.readString();
+              struct.success.put(_key99, _val100);
             }
           }
           struct.setSuccessIsSet(true);
@@ -12455,13 +12323,13 @@ public class ApiStudentService {
             case 1: // ROUND_IDS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list110 = iprot.readListBegin();
-                  struct.roundIds = new ArrayList<Integer>(_list110.size);
-                  int _elem111;
-                  for (int _i112 = 0; _i112 < _list110.size; ++_i112)
+                  org.apache.thrift.protocol.TList _list102 = iprot.readListBegin();
+                  struct.roundIds = new ArrayList<Integer>(_list102.size);
+                  int _elem103;
+                  for (int _i104 = 0; _i104 < _list102.size; ++_i104)
                   {
-                    _elem111 = iprot.readI32();
-                    struct.roundIds.add(_elem111);
+                    _elem103 = iprot.readI32();
+                    struct.roundIds.add(_elem103);
                   }
                   iprot.readListEnd();
                 }
@@ -12489,9 +12357,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(ROUND_IDS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.roundIds.size()));
-            for (int _iter113 : struct.roundIds)
+            for (int _iter105 : struct.roundIds)
             {
-              oprot.writeI32(_iter113);
+              oprot.writeI32(_iter105);
             }
             oprot.writeListEnd();
           }
@@ -12522,9 +12390,9 @@ public class ApiStudentService {
         if (struct.isSetRoundIds()) {
           {
             oprot.writeI32(struct.roundIds.size());
-            for (int _iter114 : struct.roundIds)
+            for (int _iter106 : struct.roundIds)
             {
-              oprot.writeI32(_iter114);
+              oprot.writeI32(_iter106);
             }
           }
         }
@@ -12536,13 +12404,13 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list115 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
-            struct.roundIds = new ArrayList<Integer>(_list115.size);
-            int _elem116;
-            for (int _i117 = 0; _i117 < _list115.size; ++_i117)
+            org.apache.thrift.protocol.TList _list107 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+            struct.roundIds = new ArrayList<Integer>(_list107.size);
+            int _elem108;
+            for (int _i109 = 0; _i109 < _list107.size; ++_i109)
             {
-              _elem116 = iprot.readI32();
-              struct.roundIds.add(_elem116);
+              _elem108 = iprot.readI32();
+              struct.roundIds.add(_elem108);
             }
           }
           struct.setRoundIdsIsSet(true);
@@ -12865,13 +12733,13 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list118 = iprot.readListBegin();
-                  struct.success = new ArrayList<Integer>(_list118.size);
-                  int _elem119;
-                  for (int _i120 = 0; _i120 < _list118.size; ++_i120)
+                  org.apache.thrift.protocol.TList _list110 = iprot.readListBegin();
+                  struct.success = new ArrayList<Integer>(_list110.size);
+                  int _elem111;
+                  for (int _i112 = 0; _i112 < _list110.size; ++_i112)
                   {
-                    _elem119 = iprot.readI32();
-                    struct.success.add(_elem119);
+                    _elem111 = iprot.readI32();
+                    struct.success.add(_elem111);
                   }
                   iprot.readListEnd();
                 }
@@ -12899,9 +12767,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.success.size()));
-            for (int _iter121 : struct.success)
+            for (int _iter113 : struct.success)
             {
-              oprot.writeI32(_iter121);
+              oprot.writeI32(_iter113);
             }
             oprot.writeListEnd();
           }
@@ -12932,9 +12800,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (int _iter122 : struct.success)
+            for (int _iter114 : struct.success)
             {
-              oprot.writeI32(_iter122);
+              oprot.writeI32(_iter114);
             }
           }
         }
@@ -12946,13 +12814,13 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list123 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
-            struct.success = new ArrayList<Integer>(_list123.size);
-            int _elem124;
-            for (int _i125 = 0; _i125 < _list123.size; ++_i125)
+            org.apache.thrift.protocol.TList _list115 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+            struct.success = new ArrayList<Integer>(_list115.size);
+            int _elem116;
+            for (int _i117 = 0; _i117 < _list115.size; ++_i117)
             {
-              _elem124 = iprot.readI32();
-              struct.success.add(_elem124);
+              _elem116 = iprot.readI32();
+              struct.success.add(_elem116);
             }
           }
           struct.setSuccessIsSet(true);
@@ -13637,14 +13505,14 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list126 = iprot.readListBegin();
-                  struct.success = new ArrayList<StuRound>(_list126.size);
-                  StuRound _elem127;
-                  for (int _i128 = 0; _i128 < _list126.size; ++_i128)
+                  org.apache.thrift.protocol.TList _list118 = iprot.readListBegin();
+                  struct.success = new ArrayList<StuRound>(_list118.size);
+                  StuRound _elem119;
+                  for (int _i120 = 0; _i120 < _list118.size; ++_i120)
                   {
-                    _elem127 = new StuRound();
-                    _elem127.read(iprot);
-                    struct.success.add(_elem127);
+                    _elem119 = new StuRound();
+                    _elem119.read(iprot);
+                    struct.success.add(_elem119);
                   }
                   iprot.readListEnd();
                 }
@@ -13672,9 +13540,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (StuRound _iter129 : struct.success)
+            for (StuRound _iter121 : struct.success)
             {
-              _iter129.write(oprot);
+              _iter121.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -13705,9 +13573,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (StuRound _iter130 : struct.success)
+            for (StuRound _iter122 : struct.success)
             {
-              _iter130.write(oprot);
+              _iter122.write(oprot);
             }
           }
         }
@@ -13719,14 +13587,14 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list131 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<StuRound>(_list131.size);
-            StuRound _elem132;
-            for (int _i133 = 0; _i133 < _list131.size; ++_i133)
+            org.apache.thrift.protocol.TList _list123 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<StuRound>(_list123.size);
+            StuRound _elem124;
+            for (int _i125 = 0; _i125 < _list123.size; ++_i125)
             {
-              _elem132 = new StuRound();
-              _elem132.read(iprot);
-              struct.success.add(_elem132);
+              _elem124 = new StuRound();
+              _elem124.read(iprot);
+              struct.success.add(_elem124);
             }
           }
           struct.setSuccessIsSet(true);
@@ -14410,13 +14278,13 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list134 = iprot.readListBegin();
-                  struct.success = new ArrayList<Integer>(_list134.size);
-                  int _elem135;
-                  for (int _i136 = 0; _i136 < _list134.size; ++_i136)
+                  org.apache.thrift.protocol.TList _list126 = iprot.readListBegin();
+                  struct.success = new ArrayList<Integer>(_list126.size);
+                  int _elem127;
+                  for (int _i128 = 0; _i128 < _list126.size; ++_i128)
                   {
-                    _elem135 = iprot.readI32();
-                    struct.success.add(_elem135);
+                    _elem127 = iprot.readI32();
+                    struct.success.add(_elem127);
                   }
                   iprot.readListEnd();
                 }
@@ -14444,9 +14312,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.success.size()));
-            for (int _iter137 : struct.success)
+            for (int _iter129 : struct.success)
             {
-              oprot.writeI32(_iter137);
+              oprot.writeI32(_iter129);
             }
             oprot.writeListEnd();
           }
@@ -14477,9 +14345,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (int _iter138 : struct.success)
+            for (int _iter130 : struct.success)
             {
-              oprot.writeI32(_iter138);
+              oprot.writeI32(_iter130);
             }
           }
         }
@@ -14491,13 +14359,13 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list139 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
-            struct.success = new ArrayList<Integer>(_list139.size);
-            int _elem140;
-            for (int _i141 = 0; _i141 < _list139.size; ++_i141)
+            org.apache.thrift.protocol.TList _list131 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+            struct.success = new ArrayList<Integer>(_list131.size);
+            int _elem132;
+            for (int _i133 = 0; _i133 < _list131.size; ++_i133)
             {
-              _elem140 = iprot.readI32();
-              struct.success.add(_elem140);
+              _elem132 = iprot.readI32();
+              struct.success.add(_elem132);
             }
           }
           struct.setSuccessIsSet(true);
@@ -15176,15 +15044,15 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.MAP) {
                 {
-                  org.apache.thrift.protocol.TMap _map142 = iprot.readMapBegin();
-                  struct.success = new HashMap<String,Integer>(2*_map142.size);
-                  String _key143;
-                  int _val144;
-                  for (int _i145 = 0; _i145 < _map142.size; ++_i145)
+                  org.apache.thrift.protocol.TMap _map134 = iprot.readMapBegin();
+                  struct.success = new HashMap<String,Integer>(2*_map134.size);
+                  String _key135;
+                  int _val136;
+                  for (int _i137 = 0; _i137 < _map134.size; ++_i137)
                   {
-                    _key143 = iprot.readString();
-                    _val144 = iprot.readI32();
-                    struct.success.put(_key143, _val144);
+                    _key135 = iprot.readString();
+                    _val136 = iprot.readI32();
+                    struct.success.put(_key135, _val136);
                   }
                   iprot.readMapEnd();
                 }
@@ -15212,10 +15080,10 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeMapBegin(new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.I32, struct.success.size()));
-            for (Map.Entry<String, Integer> _iter146 : struct.success.entrySet())
+            for (Map.Entry<String, Integer> _iter138 : struct.success.entrySet())
             {
-              oprot.writeString(_iter146.getKey());
-              oprot.writeI32(_iter146.getValue());
+              oprot.writeString(_iter138.getKey());
+              oprot.writeI32(_iter138.getValue());
             }
             oprot.writeMapEnd();
           }
@@ -15246,10 +15114,10 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Map.Entry<String, Integer> _iter147 : struct.success.entrySet())
+            for (Map.Entry<String, Integer> _iter139 : struct.success.entrySet())
             {
-              oprot.writeString(_iter147.getKey());
-              oprot.writeI32(_iter147.getValue());
+              oprot.writeString(_iter139.getKey());
+              oprot.writeI32(_iter139.getValue());
             }
           }
         }
@@ -15261,15 +15129,15 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TMap _map148 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.I32, iprot.readI32());
-            struct.success = new HashMap<String,Integer>(2*_map148.size);
-            String _key149;
-            int _val150;
-            for (int _i151 = 0; _i151 < _map148.size; ++_i151)
+            org.apache.thrift.protocol.TMap _map140 = new org.apache.thrift.protocol.TMap(org.apache.thrift.protocol.TType.STRING, org.apache.thrift.protocol.TType.I32, iprot.readI32());
+            struct.success = new HashMap<String,Integer>(2*_map140.size);
+            String _key141;
+            int _val142;
+            for (int _i143 = 0; _i143 < _map140.size; ++_i143)
             {
-              _key149 = iprot.readString();
-              _val150 = iprot.readI32();
-              struct.success.put(_key149, _val150);
+              _key141 = iprot.readString();
+              _val142 = iprot.readI32();
+              struct.success.put(_key141, _val142);
             }
           }
           struct.setSuccessIsSet(true);
@@ -16295,13 +16163,13 @@ public class ApiStudentService {
             case 1: // EMAIL
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list152 = iprot.readListBegin();
-                  struct.email = new ArrayList<String>(_list152.size);
-                  String _elem153;
-                  for (int _i154 = 0; _i154 < _list152.size; ++_i154)
+                  org.apache.thrift.protocol.TList _list144 = iprot.readListBegin();
+                  struct.email = new ArrayList<String>(_list144.size);
+                  String _elem145;
+                  for (int _i146 = 0; _i146 < _list144.size; ++_i146)
                   {
-                    _elem153 = iprot.readString();
-                    struct.email.add(_elem153);
+                    _elem145 = iprot.readString();
+                    struct.email.add(_elem145);
                   }
                   iprot.readListEnd();
                 }
@@ -16321,13 +16189,13 @@ public class ApiStudentService {
             case 3: // ORD_STATUS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list155 = iprot.readListBegin();
-                  struct.ordStatus = new ArrayList<String>(_list155.size);
-                  String _elem156;
-                  for (int _i157 = 0; _i157 < _list155.size; ++_i157)
+                  org.apache.thrift.protocol.TList _list147 = iprot.readListBegin();
+                  struct.ordStatus = new ArrayList<String>(_list147.size);
+                  String _elem148;
+                  for (int _i149 = 0; _i149 < _list147.size; ++_i149)
                   {
-                    _elem156 = iprot.readString();
-                    struct.ordStatus.add(_elem156);
+                    _elem148 = iprot.readString();
+                    struct.ordStatus.add(_elem148);
                   }
                   iprot.readListEnd();
                 }
@@ -16339,13 +16207,13 @@ public class ApiStudentService {
             case 4: // PACKAGE_IDS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list158 = iprot.readListBegin();
-                  struct.packageIds = new ArrayList<Integer>(_list158.size);
-                  int _elem159;
-                  for (int _i160 = 0; _i160 < _list158.size; ++_i160)
+                  org.apache.thrift.protocol.TList _list150 = iprot.readListBegin();
+                  struct.packageIds = new ArrayList<Integer>(_list150.size);
+                  int _elem151;
+                  for (int _i152 = 0; _i152 < _list150.size; ++_i152)
                   {
-                    _elem159 = iprot.readI32();
-                    struct.packageIds.add(_elem159);
+                    _elem151 = iprot.readI32();
+                    struct.packageIds.add(_elem151);
                   }
                   iprot.readListEnd();
                 }
@@ -16357,13 +16225,13 @@ public class ApiStudentService {
             case 5: // PROVINCE_IDS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list161 = iprot.readListBegin();
-                  struct.provinceIds = new ArrayList<Integer>(_list161.size);
-                  int _elem162;
-                  for (int _i163 = 0; _i163 < _list161.size; ++_i163)
+                  org.apache.thrift.protocol.TList _list153 = iprot.readListBegin();
+                  struct.provinceIds = new ArrayList<Integer>(_list153.size);
+                  int _elem154;
+                  for (int _i155 = 0; _i155 < _list153.size; ++_i155)
                   {
-                    _elem162 = iprot.readI32();
-                    struct.provinceIds.add(_elem162);
+                    _elem154 = iprot.readI32();
+                    struct.provinceIds.add(_elem154);
                   }
                   iprot.readListEnd();
                 }
@@ -16423,9 +16291,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(EMAIL_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.email.size()));
-            for (String _iter164 : struct.email)
+            for (String _iter156 : struct.email)
             {
-              oprot.writeString(_iter164);
+              oprot.writeString(_iter156);
             }
             oprot.writeListEnd();
           }
@@ -16440,9 +16308,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(ORD_STATUS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.ordStatus.size()));
-            for (String _iter165 : struct.ordStatus)
+            for (String _iter157 : struct.ordStatus)
             {
-              oprot.writeString(_iter165);
+              oprot.writeString(_iter157);
             }
             oprot.writeListEnd();
           }
@@ -16452,9 +16320,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(PACKAGE_IDS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.packageIds.size()));
-            for (int _iter166 : struct.packageIds)
+            for (int _iter158 : struct.packageIds)
             {
-              oprot.writeI32(_iter166);
+              oprot.writeI32(_iter158);
             }
             oprot.writeListEnd();
           }
@@ -16464,9 +16332,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(PROVINCE_IDS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.provinceIds.size()));
-            for (int _iter167 : struct.provinceIds)
+            for (int _iter159 : struct.provinceIds)
             {
-              oprot.writeI32(_iter167);
+              oprot.writeI32(_iter159);
             }
             oprot.writeListEnd();
           }
@@ -16537,9 +16405,9 @@ public class ApiStudentService {
         if (struct.isSetEmail()) {
           {
             oprot.writeI32(struct.email.size());
-            for (String _iter168 : struct.email)
+            for (String _iter160 : struct.email)
             {
-              oprot.writeString(_iter168);
+              oprot.writeString(_iter160);
             }
           }
         }
@@ -16549,27 +16417,27 @@ public class ApiStudentService {
         if (struct.isSetOrdStatus()) {
           {
             oprot.writeI32(struct.ordStatus.size());
-            for (String _iter169 : struct.ordStatus)
+            for (String _iter161 : struct.ordStatus)
             {
-              oprot.writeString(_iter169);
+              oprot.writeString(_iter161);
             }
           }
         }
         if (struct.isSetPackageIds()) {
           {
             oprot.writeI32(struct.packageIds.size());
-            for (int _iter170 : struct.packageIds)
+            for (int _iter162 : struct.packageIds)
             {
-              oprot.writeI32(_iter170);
+              oprot.writeI32(_iter162);
             }
           }
         }
         if (struct.isSetProvinceIds()) {
           {
             oprot.writeI32(struct.provinceIds.size());
-            for (int _iter171 : struct.provinceIds)
+            for (int _iter163 : struct.provinceIds)
             {
-              oprot.writeI32(_iter171);
+              oprot.writeI32(_iter163);
             }
           }
         }
@@ -16593,13 +16461,13 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(9);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list172 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.email = new ArrayList<String>(_list172.size);
-            String _elem173;
-            for (int _i174 = 0; _i174 < _list172.size; ++_i174)
+            org.apache.thrift.protocol.TList _list164 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.email = new ArrayList<String>(_list164.size);
+            String _elem165;
+            for (int _i166 = 0; _i166 < _list164.size; ++_i166)
             {
-              _elem173 = iprot.readString();
-              struct.email.add(_elem173);
+              _elem165 = iprot.readString();
+              struct.email.add(_elem165);
             }
           }
           struct.setEmailIsSet(true);
@@ -16610,39 +16478,39 @@ public class ApiStudentService {
         }
         if (incoming.get(2)) {
           {
-            org.apache.thrift.protocol.TList _list175 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.ordStatus = new ArrayList<String>(_list175.size);
-            String _elem176;
-            for (int _i177 = 0; _i177 < _list175.size; ++_i177)
+            org.apache.thrift.protocol.TList _list167 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.ordStatus = new ArrayList<String>(_list167.size);
+            String _elem168;
+            for (int _i169 = 0; _i169 < _list167.size; ++_i169)
             {
-              _elem176 = iprot.readString();
-              struct.ordStatus.add(_elem176);
+              _elem168 = iprot.readString();
+              struct.ordStatus.add(_elem168);
             }
           }
           struct.setOrdStatusIsSet(true);
         }
         if (incoming.get(3)) {
           {
-            org.apache.thrift.protocol.TList _list178 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
-            struct.packageIds = new ArrayList<Integer>(_list178.size);
-            int _elem179;
-            for (int _i180 = 0; _i180 < _list178.size; ++_i180)
+            org.apache.thrift.protocol.TList _list170 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+            struct.packageIds = new ArrayList<Integer>(_list170.size);
+            int _elem171;
+            for (int _i172 = 0; _i172 < _list170.size; ++_i172)
             {
-              _elem179 = iprot.readI32();
-              struct.packageIds.add(_elem179);
+              _elem171 = iprot.readI32();
+              struct.packageIds.add(_elem171);
             }
           }
           struct.setPackageIdsIsSet(true);
         }
         if (incoming.get(4)) {
           {
-            org.apache.thrift.protocol.TList _list181 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
-            struct.provinceIds = new ArrayList<Integer>(_list181.size);
-            int _elem182;
-            for (int _i183 = 0; _i183 < _list181.size; ++_i183)
+            org.apache.thrift.protocol.TList _list173 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+            struct.provinceIds = new ArrayList<Integer>(_list173.size);
+            int _elem174;
+            for (int _i175 = 0; _i175 < _list173.size; ++_i175)
             {
-              _elem182 = iprot.readI32();
-              struct.provinceIds.add(_elem182);
+              _elem174 = iprot.readI32();
+              struct.provinceIds.add(_elem174);
             }
           }
           struct.setProvinceIdsIsSet(true);
@@ -17347,13 +17215,13 @@ public class ApiStudentService {
             case 1: // EMAIL
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list184 = iprot.readListBegin();
-                  struct.email = new ArrayList<String>(_list184.size);
-                  String _elem185;
-                  for (int _i186 = 0; _i186 < _list184.size; ++_i186)
+                  org.apache.thrift.protocol.TList _list176 = iprot.readListBegin();
+                  struct.email = new ArrayList<String>(_list176.size);
+                  String _elem177;
+                  for (int _i178 = 0; _i178 < _list176.size; ++_i178)
                   {
-                    _elem185 = iprot.readString();
-                    struct.email.add(_elem185);
+                    _elem177 = iprot.readString();
+                    struct.email.add(_elem177);
                   }
                   iprot.readListEnd();
                 }
@@ -17381,9 +17249,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(EMAIL_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.email.size()));
-            for (String _iter187 : struct.email)
+            for (String _iter179 : struct.email)
             {
-              oprot.writeString(_iter187);
+              oprot.writeString(_iter179);
             }
             oprot.writeListEnd();
           }
@@ -17414,9 +17282,9 @@ public class ApiStudentService {
         if (struct.isSetEmail()) {
           {
             oprot.writeI32(struct.email.size());
-            for (String _iter188 : struct.email)
+            for (String _iter180 : struct.email)
             {
-              oprot.writeString(_iter188);
+              oprot.writeString(_iter180);
             }
           }
         }
@@ -17428,13 +17296,13 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list189 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.email = new ArrayList<String>(_list189.size);
-            String _elem190;
-            for (int _i191 = 0; _i191 < _list189.size; ++_i191)
+            org.apache.thrift.protocol.TList _list181 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.email = new ArrayList<String>(_list181.size);
+            String _elem182;
+            for (int _i183 = 0; _i183 < _list181.size; ++_i183)
             {
-              _elem190 = iprot.readString();
-              struct.email.add(_elem190);
+              _elem182 = iprot.readString();
+              struct.email.add(_elem182);
             }
           }
           struct.setEmailIsSet(true);
@@ -17760,14 +17628,14 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list192 = iprot.readListBegin();
-                  struct.success = new ArrayList<TeacherInfo>(_list192.size);
-                  TeacherInfo _elem193;
-                  for (int _i194 = 0; _i194 < _list192.size; ++_i194)
+                  org.apache.thrift.protocol.TList _list184 = iprot.readListBegin();
+                  struct.success = new ArrayList<TeacherInfo>(_list184.size);
+                  TeacherInfo _elem185;
+                  for (int _i186 = 0; _i186 < _list184.size; ++_i186)
                   {
-                    _elem193 = new TeacherInfo();
-                    _elem193.read(iprot);
-                    struct.success.add(_elem193);
+                    _elem185 = new TeacherInfo();
+                    _elem185.read(iprot);
+                    struct.success.add(_elem185);
                   }
                   iprot.readListEnd();
                 }
@@ -17795,9 +17663,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (TeacherInfo _iter195 : struct.success)
+            for (TeacherInfo _iter187 : struct.success)
             {
-              _iter195.write(oprot);
+              _iter187.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -17828,9 +17696,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (TeacherInfo _iter196 : struct.success)
+            for (TeacherInfo _iter188 : struct.success)
             {
-              _iter196.write(oprot);
+              _iter188.write(oprot);
             }
           }
         }
@@ -17842,14 +17710,14 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list197 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<TeacherInfo>(_list197.size);
-            TeacherInfo _elem198;
-            for (int _i199 = 0; _i199 < _list197.size; ++_i199)
+            org.apache.thrift.protocol.TList _list189 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<TeacherInfo>(_list189.size);
+            TeacherInfo _elem190;
+            for (int _i191 = 0; _i191 < _list189.size; ++_i191)
             {
-              _elem198 = new TeacherInfo();
-              _elem198.read(iprot);
-              struct.success.add(_elem198);
+              _elem190 = new TeacherInfo();
+              _elem190.read(iprot);
+              struct.success.add(_elem190);
             }
           }
           struct.setSuccessIsSet(true);
@@ -18991,13 +18859,13 @@ public class ApiStudentService {
             case 1: // IM_IDS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list200 = iprot.readListBegin();
-                  struct.imIds = new ArrayList<String>(_list200.size);
-                  String _elem201;
-                  for (int _i202 = 0; _i202 < _list200.size; ++_i202)
+                  org.apache.thrift.protocol.TList _list192 = iprot.readListBegin();
+                  struct.imIds = new ArrayList<String>(_list192.size);
+                  String _elem193;
+                  for (int _i194 = 0; _i194 < _list192.size; ++_i194)
                   {
-                    _elem201 = iprot.readString();
-                    struct.imIds.add(_elem201);
+                    _elem193 = iprot.readString();
+                    struct.imIds.add(_elem193);
                   }
                   iprot.readListEnd();
                 }
@@ -19009,13 +18877,13 @@ public class ApiStudentService {
             case 2: // USER_IDS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list203 = iprot.readListBegin();
-                  struct.userIds = new ArrayList<Integer>(_list203.size);
-                  int _elem204;
-                  for (int _i205 = 0; _i205 < _list203.size; ++_i205)
+                  org.apache.thrift.protocol.TList _list195 = iprot.readListBegin();
+                  struct.userIds = new ArrayList<Integer>(_list195.size);
+                  int _elem196;
+                  for (int _i197 = 0; _i197 < _list195.size; ++_i197)
                   {
-                    _elem204 = iprot.readI32();
-                    struct.userIds.add(_elem204);
+                    _elem196 = iprot.readI32();
+                    struct.userIds.add(_elem196);
                   }
                   iprot.readListEnd();
                 }
@@ -19043,9 +18911,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(IM_IDS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.imIds.size()));
-            for (String _iter206 : struct.imIds)
+            for (String _iter198 : struct.imIds)
             {
-              oprot.writeString(_iter206);
+              oprot.writeString(_iter198);
             }
             oprot.writeListEnd();
           }
@@ -19055,9 +18923,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(USER_IDS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.userIds.size()));
-            for (int _iter207 : struct.userIds)
+            for (int _iter199 : struct.userIds)
             {
-              oprot.writeI32(_iter207);
+              oprot.writeI32(_iter199);
             }
             oprot.writeListEnd();
           }
@@ -19091,18 +18959,18 @@ public class ApiStudentService {
         if (struct.isSetImIds()) {
           {
             oprot.writeI32(struct.imIds.size());
-            for (String _iter208 : struct.imIds)
+            for (String _iter200 : struct.imIds)
             {
-              oprot.writeString(_iter208);
+              oprot.writeString(_iter200);
             }
           }
         }
         if (struct.isSetUserIds()) {
           {
             oprot.writeI32(struct.userIds.size());
-            for (int _iter209 : struct.userIds)
+            for (int _iter201 : struct.userIds)
             {
-              oprot.writeI32(_iter209);
+              oprot.writeI32(_iter201);
             }
           }
         }
@@ -19114,26 +18982,26 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list210 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.imIds = new ArrayList<String>(_list210.size);
-            String _elem211;
-            for (int _i212 = 0; _i212 < _list210.size; ++_i212)
+            org.apache.thrift.protocol.TList _list202 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.imIds = new ArrayList<String>(_list202.size);
+            String _elem203;
+            for (int _i204 = 0; _i204 < _list202.size; ++_i204)
             {
-              _elem211 = iprot.readString();
-              struct.imIds.add(_elem211);
+              _elem203 = iprot.readString();
+              struct.imIds.add(_elem203);
             }
           }
           struct.setImIdsIsSet(true);
         }
         if (incoming.get(1)) {
           {
-            org.apache.thrift.protocol.TList _list213 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
-            struct.userIds = new ArrayList<Integer>(_list213.size);
-            int _elem214;
-            for (int _i215 = 0; _i215 < _list213.size; ++_i215)
+            org.apache.thrift.protocol.TList _list205 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+            struct.userIds = new ArrayList<Integer>(_list205.size);
+            int _elem206;
+            for (int _i207 = 0; _i207 < _list205.size; ++_i207)
             {
-              _elem214 = iprot.readI32();
-              struct.userIds.add(_elem214);
+              _elem206 = iprot.readI32();
+              struct.userIds.add(_elem206);
             }
           }
           struct.setUserIdsIsSet(true);
@@ -19459,14 +19327,14 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list216 = iprot.readListBegin();
-                  struct.success = new ArrayList<Student>(_list216.size);
-                  Student _elem217;
-                  for (int _i218 = 0; _i218 < _list216.size; ++_i218)
+                  org.apache.thrift.protocol.TList _list208 = iprot.readListBegin();
+                  struct.success = new ArrayList<Student>(_list208.size);
+                  Student _elem209;
+                  for (int _i210 = 0; _i210 < _list208.size; ++_i210)
                   {
-                    _elem217 = new Student();
-                    _elem217.read(iprot);
-                    struct.success.add(_elem217);
+                    _elem209 = new Student();
+                    _elem209.read(iprot);
+                    struct.success.add(_elem209);
                   }
                   iprot.readListEnd();
                 }
@@ -19494,9 +19362,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Student _iter219 : struct.success)
+            for (Student _iter211 : struct.success)
             {
-              _iter219.write(oprot);
+              _iter211.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -19527,9 +19395,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Student _iter220 : struct.success)
+            for (Student _iter212 : struct.success)
             {
-              _iter220.write(oprot);
+              _iter212.write(oprot);
             }
           }
         }
@@ -19541,14 +19409,14 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list221 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Student>(_list221.size);
-            Student _elem222;
-            for (int _i223 = 0; _i223 < _list221.size; ++_i223)
+            org.apache.thrift.protocol.TList _list213 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Student>(_list213.size);
+            Student _elem214;
+            for (int _i215 = 0; _i215 < _list213.size; ++_i215)
             {
-              _elem222 = new Student();
-              _elem222.read(iprot);
-              struct.success.add(_elem222);
+              _elem214 = new Student();
+              _elem214.read(iprot);
+              struct.success.add(_elem214);
             }
           }
           struct.setSuccessIsSet(true);
@@ -20122,14 +19990,14 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list224 = iprot.readListBegin();
-                  struct.success = new ArrayList<Province>(_list224.size);
-                  Province _elem225;
-                  for (int _i226 = 0; _i226 < _list224.size; ++_i226)
+                  org.apache.thrift.protocol.TList _list216 = iprot.readListBegin();
+                  struct.success = new ArrayList<Province>(_list216.size);
+                  Province _elem217;
+                  for (int _i218 = 0; _i218 < _list216.size; ++_i218)
                   {
-                    _elem225 = new Province();
-                    _elem225.read(iprot);
-                    struct.success.add(_elem225);
+                    _elem217 = new Province();
+                    _elem217.read(iprot);
+                    struct.success.add(_elem217);
                   }
                   iprot.readListEnd();
                 }
@@ -20157,9 +20025,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (Province _iter227 : struct.success)
+            for (Province _iter219 : struct.success)
             {
-              _iter227.write(oprot);
+              _iter219.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -20190,9 +20058,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (Province _iter228 : struct.success)
+            for (Province _iter220 : struct.success)
             {
-              _iter228.write(oprot);
+              _iter220.write(oprot);
             }
           }
         }
@@ -20204,14 +20072,14 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list229 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<Province>(_list229.size);
-            Province _elem230;
-            for (int _i231 = 0; _i231 < _list229.size; ++_i231)
+            org.apache.thrift.protocol.TList _list221 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<Province>(_list221.size);
+            Province _elem222;
+            for (int _i223 = 0; _i223 < _list221.size; ++_i223)
             {
-              _elem230 = new Province();
-              _elem230.read(iprot);
-              struct.success.add(_elem230);
+              _elem222 = new Province();
+              _elem222.read(iprot);
+              struct.success.add(_elem222);
             }
           }
           struct.setSuccessIsSet(true);
@@ -20534,13 +20402,13 @@ public class ApiStudentService {
             case 1: // EMAILS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list232 = iprot.readListBegin();
-                  struct.emails = new ArrayList<String>(_list232.size);
-                  String _elem233;
-                  for (int _i234 = 0; _i234 < _list232.size; ++_i234)
+                  org.apache.thrift.protocol.TList _list224 = iprot.readListBegin();
+                  struct.emails = new ArrayList<String>(_list224.size);
+                  String _elem225;
+                  for (int _i226 = 0; _i226 < _list224.size; ++_i226)
                   {
-                    _elem233 = iprot.readString();
-                    struct.emails.add(_elem233);
+                    _elem225 = iprot.readString();
+                    struct.emails.add(_elem225);
                   }
                   iprot.readListEnd();
                 }
@@ -20568,9 +20436,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(EMAILS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.emails.size()));
-            for (String _iter235 : struct.emails)
+            for (String _iter227 : struct.emails)
             {
-              oprot.writeString(_iter235);
+              oprot.writeString(_iter227);
             }
             oprot.writeListEnd();
           }
@@ -20601,9 +20469,9 @@ public class ApiStudentService {
         if (struct.isSetEmails()) {
           {
             oprot.writeI32(struct.emails.size());
-            for (String _iter236 : struct.emails)
+            for (String _iter228 : struct.emails)
             {
-              oprot.writeString(_iter236);
+              oprot.writeString(_iter228);
             }
           }
         }
@@ -20615,13 +20483,13 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list237 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.emails = new ArrayList<String>(_list237.size);
-            String _elem238;
-            for (int _i239 = 0; _i239 < _list237.size; ++_i239)
+            org.apache.thrift.protocol.TList _list229 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.emails = new ArrayList<String>(_list229.size);
+            String _elem230;
+            for (int _i231 = 0; _i231 < _list229.size; ++_i231)
             {
-              _elem238 = iprot.readString();
-              struct.emails.add(_elem238);
+              _elem230 = iprot.readString();
+              struct.emails.add(_elem230);
             }
           }
           struct.setEmailsIsSet(true);
@@ -20947,14 +20815,14 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list240 = iprot.readListBegin();
-                  struct.success = new ArrayList<BaseIdNameDto>(_list240.size);
-                  BaseIdNameDto _elem241;
-                  for (int _i242 = 0; _i242 < _list240.size; ++_i242)
+                  org.apache.thrift.protocol.TList _list232 = iprot.readListBegin();
+                  struct.success = new ArrayList<BaseIdNameDto>(_list232.size);
+                  BaseIdNameDto _elem233;
+                  for (int _i234 = 0; _i234 < _list232.size; ++_i234)
                   {
-                    _elem241 = new BaseIdNameDto();
-                    _elem241.read(iprot);
-                    struct.success.add(_elem241);
+                    _elem233 = new BaseIdNameDto();
+                    _elem233.read(iprot);
+                    struct.success.add(_elem233);
                   }
                   iprot.readListEnd();
                 }
@@ -20982,9 +20850,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (BaseIdNameDto _iter243 : struct.success)
+            for (BaseIdNameDto _iter235 : struct.success)
             {
-              _iter243.write(oprot);
+              _iter235.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -21015,9 +20883,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (BaseIdNameDto _iter244 : struct.success)
+            for (BaseIdNameDto _iter236 : struct.success)
             {
-              _iter244.write(oprot);
+              _iter236.write(oprot);
             }
           }
         }
@@ -21029,14 +20897,14 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list245 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<BaseIdNameDto>(_list245.size);
-            BaseIdNameDto _elem246;
-            for (int _i247 = 0; _i247 < _list245.size; ++_i247)
+            org.apache.thrift.protocol.TList _list237 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<BaseIdNameDto>(_list237.size);
+            BaseIdNameDto _elem238;
+            for (int _i239 = 0; _i239 < _list237.size; ++_i239)
             {
-              _elem246 = new BaseIdNameDto();
-              _elem246.read(iprot);
-              struct.success.add(_elem246);
+              _elem238 = new BaseIdNameDto();
+              _elem238.read(iprot);
+              struct.success.add(_elem238);
             }
           }
           struct.setSuccessIsSet(true);
@@ -23623,13 +23491,13 @@ public class ApiStudentService {
             case 1: // STU_IDS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list248 = iprot.readListBegin();
-                  struct.stuIds = new ArrayList<Integer>(_list248.size);
-                  int _elem249;
-                  for (int _i250 = 0; _i250 < _list248.size; ++_i250)
+                  org.apache.thrift.protocol.TList _list240 = iprot.readListBegin();
+                  struct.stuIds = new ArrayList<Integer>(_list240.size);
+                  int _elem241;
+                  for (int _i242 = 0; _i242 < _list240.size; ++_i242)
                   {
-                    _elem249 = iprot.readI32();
-                    struct.stuIds.add(_elem249);
+                    _elem241 = iprot.readI32();
+                    struct.stuIds.add(_elem241);
                   }
                   iprot.readListEnd();
                 }
@@ -23657,9 +23525,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(STU_IDS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.stuIds.size()));
-            for (int _iter251 : struct.stuIds)
+            for (int _iter243 : struct.stuIds)
             {
-              oprot.writeI32(_iter251);
+              oprot.writeI32(_iter243);
             }
             oprot.writeListEnd();
           }
@@ -23690,9 +23558,9 @@ public class ApiStudentService {
         if (struct.isSetStuIds()) {
           {
             oprot.writeI32(struct.stuIds.size());
-            for (int _iter252 : struct.stuIds)
+            for (int _iter244 : struct.stuIds)
             {
-              oprot.writeI32(_iter252);
+              oprot.writeI32(_iter244);
             }
           }
         }
@@ -23704,13 +23572,13 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list253 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
-            struct.stuIds = new ArrayList<Integer>(_list253.size);
-            int _elem254;
-            for (int _i255 = 0; _i255 < _list253.size; ++_i255)
+            org.apache.thrift.protocol.TList _list245 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+            struct.stuIds = new ArrayList<Integer>(_list245.size);
+            int _elem246;
+            for (int _i247 = 0; _i247 < _list245.size; ++_i247)
             {
-              _elem254 = iprot.readI32();
-              struct.stuIds.add(_elem254);
+              _elem246 = iprot.readI32();
+              struct.stuIds.add(_elem246);
             }
           }
           struct.setStuIdsIsSet(true);
@@ -24036,14 +23904,14 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list256 = iprot.readListBegin();
-                  struct.success = new ArrayList<StuEvaluateCount>(_list256.size);
-                  StuEvaluateCount _elem257;
-                  for (int _i258 = 0; _i258 < _list256.size; ++_i258)
+                  org.apache.thrift.protocol.TList _list248 = iprot.readListBegin();
+                  struct.success = new ArrayList<StuEvaluateCount>(_list248.size);
+                  StuEvaluateCount _elem249;
+                  for (int _i250 = 0; _i250 < _list248.size; ++_i250)
                   {
-                    _elem257 = new StuEvaluateCount();
-                    _elem257.read(iprot);
-                    struct.success.add(_elem257);
+                    _elem249 = new StuEvaluateCount();
+                    _elem249.read(iprot);
+                    struct.success.add(_elem249);
                   }
                   iprot.readListEnd();
                 }
@@ -24071,9 +23939,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (StuEvaluateCount _iter259 : struct.success)
+            for (StuEvaluateCount _iter251 : struct.success)
             {
-              _iter259.write(oprot);
+              _iter251.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -24104,9 +23972,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (StuEvaluateCount _iter260 : struct.success)
+            for (StuEvaluateCount _iter252 : struct.success)
             {
-              _iter260.write(oprot);
+              _iter252.write(oprot);
             }
           }
         }
@@ -24118,14 +23986,14 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list261 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<StuEvaluateCount>(_list261.size);
-            StuEvaluateCount _elem262;
-            for (int _i263 = 0; _i263 < _list261.size; ++_i263)
+            org.apache.thrift.protocol.TList _list253 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<StuEvaluateCount>(_list253.size);
+            StuEvaluateCount _elem254;
+            for (int _i255 = 0; _i255 < _list253.size; ++_i255)
             {
-              _elem262 = new StuEvaluateCount();
-              _elem262.read(iprot);
-              struct.success.add(_elem262);
+              _elem254 = new StuEvaluateCount();
+              _elem254.read(iprot);
+              struct.success.add(_elem254);
             }
           }
           struct.setSuccessIsSet(true);
@@ -24448,13 +24316,13 @@ public class ApiStudentService {
             case 1: // STU_IDS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list264 = iprot.readListBegin();
-                  struct.stuIds = new ArrayList<Integer>(_list264.size);
-                  int _elem265;
-                  for (int _i266 = 0; _i266 < _list264.size; ++_i266)
+                  org.apache.thrift.protocol.TList _list256 = iprot.readListBegin();
+                  struct.stuIds = new ArrayList<Integer>(_list256.size);
+                  int _elem257;
+                  for (int _i258 = 0; _i258 < _list256.size; ++_i258)
                   {
-                    _elem265 = iprot.readI32();
-                    struct.stuIds.add(_elem265);
+                    _elem257 = iprot.readI32();
+                    struct.stuIds.add(_elem257);
                   }
                   iprot.readListEnd();
                 }
@@ -24482,9 +24350,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(STU_IDS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.stuIds.size()));
-            for (int _iter267 : struct.stuIds)
+            for (int _iter259 : struct.stuIds)
             {
-              oprot.writeI32(_iter267);
+              oprot.writeI32(_iter259);
             }
             oprot.writeListEnd();
           }
@@ -24515,9 +24383,9 @@ public class ApiStudentService {
         if (struct.isSetStuIds()) {
           {
             oprot.writeI32(struct.stuIds.size());
-            for (int _iter268 : struct.stuIds)
+            for (int _iter260 : struct.stuIds)
             {
-              oprot.writeI32(_iter268);
+              oprot.writeI32(_iter260);
             }
           }
         }
@@ -24529,13 +24397,13 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list269 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
-            struct.stuIds = new ArrayList<Integer>(_list269.size);
-            int _elem270;
-            for (int _i271 = 0; _i271 < _list269.size; ++_i271)
+            org.apache.thrift.protocol.TList _list261 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+            struct.stuIds = new ArrayList<Integer>(_list261.size);
+            int _elem262;
+            for (int _i263 = 0; _i263 < _list261.size; ++_i263)
             {
-              _elem270 = iprot.readI32();
-              struct.stuIds.add(_elem270);
+              _elem262 = iprot.readI32();
+              struct.stuIds.add(_elem262);
             }
           }
           struct.setStuIdsIsSet(true);
@@ -24861,14 +24729,14 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list272 = iprot.readListBegin();
-                  struct.success = new ArrayList<StuNPSCount>(_list272.size);
-                  StuNPSCount _elem273;
-                  for (int _i274 = 0; _i274 < _list272.size; ++_i274)
+                  org.apache.thrift.protocol.TList _list264 = iprot.readListBegin();
+                  struct.success = new ArrayList<StuNPSCount>(_list264.size);
+                  StuNPSCount _elem265;
+                  for (int _i266 = 0; _i266 < _list264.size; ++_i266)
                   {
-                    _elem273 = new StuNPSCount();
-                    _elem273.read(iprot);
-                    struct.success.add(_elem273);
+                    _elem265 = new StuNPSCount();
+                    _elem265.read(iprot);
+                    struct.success.add(_elem265);
                   }
                   iprot.readListEnd();
                 }
@@ -24896,9 +24764,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (StuNPSCount _iter275 : struct.success)
+            for (StuNPSCount _iter267 : struct.success)
             {
-              _iter275.write(oprot);
+              _iter267.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -24929,9 +24797,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (StuNPSCount _iter276 : struct.success)
+            for (StuNPSCount _iter268 : struct.success)
             {
-              _iter276.write(oprot);
+              _iter268.write(oprot);
             }
           }
         }
@@ -24943,14 +24811,14 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list277 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<StuNPSCount>(_list277.size);
-            StuNPSCount _elem278;
-            for (int _i279 = 0; _i279 < _list277.size; ++_i279)
+            org.apache.thrift.protocol.TList _list269 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<StuNPSCount>(_list269.size);
+            StuNPSCount _elem270;
+            for (int _i271 = 0; _i271 < _list269.size; ++_i271)
             {
-              _elem278 = new StuNPSCount();
-              _elem278.read(iprot);
-              struct.success.add(_elem278);
+              _elem270 = new StuNPSCount();
+              _elem270.read(iprot);
+              struct.success.add(_elem270);
             }
           }
           struct.setSuccessIsSet(true);
@@ -27192,14 +27060,14 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list280 = iprot.readListBegin();
-                  struct.success = new ArrayList<OrdServiceTeam>(_list280.size);
-                  OrdServiceTeam _elem281;
-                  for (int _i282 = 0; _i282 < _list280.size; ++_i282)
+                  org.apache.thrift.protocol.TList _list272 = iprot.readListBegin();
+                  struct.success = new ArrayList<OrdServiceTeam>(_list272.size);
+                  OrdServiceTeam _elem273;
+                  for (int _i274 = 0; _i274 < _list272.size; ++_i274)
                   {
-                    _elem281 = new OrdServiceTeam();
-                    _elem281.read(iprot);
-                    struct.success.add(_elem281);
+                    _elem273 = new OrdServiceTeam();
+                    _elem273.read(iprot);
+                    struct.success.add(_elem273);
                   }
                   iprot.readListEnd();
                 }
@@ -27227,9 +27095,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (OrdServiceTeam _iter283 : struct.success)
+            for (OrdServiceTeam _iter275 : struct.success)
             {
-              _iter283.write(oprot);
+              _iter275.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -27260,9 +27128,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (OrdServiceTeam _iter284 : struct.success)
+            for (OrdServiceTeam _iter276 : struct.success)
             {
-              _iter284.write(oprot);
+              _iter276.write(oprot);
             }
           }
         }
@@ -27274,14 +27142,14 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list285 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<OrdServiceTeam>(_list285.size);
-            OrdServiceTeam _elem286;
-            for (int _i287 = 0; _i287 < _list285.size; ++_i287)
+            org.apache.thrift.protocol.TList _list277 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<OrdServiceTeam>(_list277.size);
+            OrdServiceTeam _elem278;
+            for (int _i279 = 0; _i279 < _list277.size; ++_i279)
             {
-              _elem286 = new OrdServiceTeam();
-              _elem286.read(iprot);
-              struct.success.add(_elem286);
+              _elem278 = new OrdServiceTeam();
+              _elem278.read(iprot);
+              struct.success.add(_elem278);
             }
           }
           struct.setSuccessIsSet(true);
@@ -27966,14 +27834,14 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list288 = iprot.readListBegin();
-                  struct.success = new ArrayList<OrdDetailTermSubject>(_list288.size);
-                  OrdDetailTermSubject _elem289;
-                  for (int _i290 = 0; _i290 < _list288.size; ++_i290)
+                  org.apache.thrift.protocol.TList _list280 = iprot.readListBegin();
+                  struct.success = new ArrayList<OrdDetailTermSubject>(_list280.size);
+                  OrdDetailTermSubject _elem281;
+                  for (int _i282 = 0; _i282 < _list280.size; ++_i282)
                   {
-                    _elem289 = new OrdDetailTermSubject();
-                    _elem289.read(iprot);
-                    struct.success.add(_elem289);
+                    _elem281 = new OrdDetailTermSubject();
+                    _elem281.read(iprot);
+                    struct.success.add(_elem281);
                   }
                   iprot.readListEnd();
                 }
@@ -28001,9 +27869,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (OrdDetailTermSubject _iter291 : struct.success)
+            for (OrdDetailTermSubject _iter283 : struct.success)
             {
-              _iter291.write(oprot);
+              _iter283.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -28034,9 +27902,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (OrdDetailTermSubject _iter292 : struct.success)
+            for (OrdDetailTermSubject _iter284 : struct.success)
             {
-              _iter292.write(oprot);
+              _iter284.write(oprot);
             }
           }
         }
@@ -28048,14 +27916,14 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list293 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<OrdDetailTermSubject>(_list293.size);
-            OrdDetailTermSubject _elem294;
-            for (int _i295 = 0; _i295 < _list293.size; ++_i295)
+            org.apache.thrift.protocol.TList _list285 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<OrdDetailTermSubject>(_list285.size);
+            OrdDetailTermSubject _elem286;
+            for (int _i287 = 0; _i287 < _list285.size; ++_i287)
             {
-              _elem294 = new OrdDetailTermSubject();
-              _elem294.read(iprot);
-              struct.success.add(_elem294);
+              _elem286 = new OrdDetailTermSubject();
+              _elem286.read(iprot);
+              struct.success.add(_elem286);
             }
           }
           struct.setSuccessIsSet(true);
@@ -28740,14 +28608,14 @@ public class ApiStudentService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list296 = iprot.readListBegin();
-                  struct.success = new ArrayList<termSubject>(_list296.size);
-                  termSubject _elem297;
-                  for (int _i298 = 0; _i298 < _list296.size; ++_i298)
+                  org.apache.thrift.protocol.TList _list288 = iprot.readListBegin();
+                  struct.success = new ArrayList<termSubject>(_list288.size);
+                  termSubject _elem289;
+                  for (int _i290 = 0; _i290 < _list288.size; ++_i290)
                   {
-                    _elem297 = new termSubject();
-                    _elem297.read(iprot);
-                    struct.success.add(_elem297);
+                    _elem289 = new termSubject();
+                    _elem289.read(iprot);
+                    struct.success.add(_elem289);
                   }
                   iprot.readListEnd();
                 }
@@ -28775,9 +28643,9 @@ public class ApiStudentService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (termSubject _iter299 : struct.success)
+            for (termSubject _iter291 : struct.success)
             {
-              _iter299.write(oprot);
+              _iter291.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -28808,9 +28676,9 @@ public class ApiStudentService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (termSubject _iter300 : struct.success)
+            for (termSubject _iter292 : struct.success)
             {
-              _iter300.write(oprot);
+              _iter292.write(oprot);
             }
           }
         }
@@ -28822,14 +28690,14 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list301 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<termSubject>(_list301.size);
-            termSubject _elem302;
-            for (int _i303 = 0; _i303 < _list301.size; ++_i303)
+            org.apache.thrift.protocol.TList _list293 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<termSubject>(_list293.size);
+            termSubject _elem294;
+            for (int _i295 = 0; _i295 < _list293.size; ++_i295)
             {
-              _elem302 = new termSubject();
-              _elem302.read(iprot);
-              struct.success.add(_elem302);
+              _elem294 = new termSubject();
+              _elem294.read(iprot);
+              struct.success.add(_elem294);
             }
           }
           struct.setSuccessIsSet(true);
@@ -29556,731 +29424,6 @@ public class ApiStudentService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           struct.success = new IntelligentExerciseSubject();
-          struct.success.read(iprot);
-          struct.setSuccessIsSet(true);
-        }
-      }
-    }
-
-  }
-
-  public static class getSubjectHasKnowledgeTree_args implements org.apache.thrift.TBase<getSubjectHasKnowledgeTree_args, getSubjectHasKnowledgeTree_args._Fields>, java.io.Serializable, Cloneable, Comparable<getSubjectHasKnowledgeTree_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getSubjectHasKnowledgeTree_args");
-
-    private static final org.apache.thrift.protocol.TField DETAIL_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("detailId", org.apache.thrift.protocol.TType.I32, (short)1);
-
-    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-    static {
-      schemes.put(StandardScheme.class, new getSubjectHasKnowledgeTree_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new getSubjectHasKnowledgeTree_argsTupleSchemeFactory());
-    }
-
-    public int detailId; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      DETAIL_ID((short)1, "detailId");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // DETAIL_ID
-            return DETAIL_ID;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-    private static final int __DETAILID_ISSET_ID = 0;
-    private byte __isset_bitfield = 0;
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.DETAIL_ID, new org.apache.thrift.meta_data.FieldMetaData("detailId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getSubjectHasKnowledgeTree_args.class, metaDataMap);
-    }
-
-    public getSubjectHasKnowledgeTree_args() {
-    }
-
-    public getSubjectHasKnowledgeTree_args(
-      int detailId)
-    {
-      this();
-      this.detailId = detailId;
-      setDetailIdIsSet(true);
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getSubjectHasKnowledgeTree_args(getSubjectHasKnowledgeTree_args other) {
-      __isset_bitfield = other.__isset_bitfield;
-      this.detailId = other.detailId;
-    }
-
-    public getSubjectHasKnowledgeTree_args deepCopy() {
-      return new getSubjectHasKnowledgeTree_args(this);
-    }
-
-    @Override
-    public void clear() {
-      setDetailIdIsSet(false);
-      this.detailId = 0;
-    }
-
-    public int getDetailId() {
-      return this.detailId;
-    }
-
-    public getSubjectHasKnowledgeTree_args setDetailId(int detailId) {
-      this.detailId = detailId;
-      setDetailIdIsSet(true);
-      return this;
-    }
-
-    public void unsetDetailId() {
-      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __DETAILID_ISSET_ID);
-    }
-
-    /** Returns true if field detailId is set (has been assigned a value) and false otherwise */
-    public boolean isSetDetailId() {
-      return EncodingUtils.testBit(__isset_bitfield, __DETAILID_ISSET_ID);
-    }
-
-    public void setDetailIdIsSet(boolean value) {
-      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __DETAILID_ISSET_ID, value);
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case DETAIL_ID:
-        if (value == null) {
-          unsetDetailId();
-        } else {
-          setDetailId((Integer)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case DETAIL_ID:
-        return getDetailId();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case DETAIL_ID:
-        return isSetDetailId();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getSubjectHasKnowledgeTree_args)
-        return this.equals((getSubjectHasKnowledgeTree_args)that);
-      return false;
-    }
-
-    public boolean equals(getSubjectHasKnowledgeTree_args that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_detailId = true;
-      boolean that_present_detailId = true;
-      if (this_present_detailId || that_present_detailId) {
-        if (!(this_present_detailId && that_present_detailId))
-          return false;
-        if (this.detailId != that.detailId)
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      List<Object> list = new ArrayList<Object>();
-
-      boolean present_detailId = true;
-      list.add(present_detailId);
-      if (present_detailId)
-        list.add(detailId);
-
-      return list.hashCode();
-    }
-
-    @Override
-    public int compareTo(getSubjectHasKnowledgeTree_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-
-      lastComparison = Boolean.valueOf(isSetDetailId()).compareTo(other.isSetDetailId());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetDetailId()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.detailId, other.detailId);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws TException {
-      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws TException {
-      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getSubjectHasKnowledgeTree_args(");
-      boolean first = true;
-
-      sb.append("detailId:");
-      sb.append(this.detailId);
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws TException {
-      // check for required fields
-      // check for sub-struct validity
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-        __isset_bitfield = 0;
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private static class getSubjectHasKnowledgeTree_argsStandardSchemeFactory implements SchemeFactory {
-      public getSubjectHasKnowledgeTree_argsStandardScheme getScheme() {
-        return new getSubjectHasKnowledgeTree_argsStandardScheme();
-      }
-    }
-
-    private static class getSubjectHasKnowledgeTree_argsStandardScheme extends StandardScheme<getSubjectHasKnowledgeTree_args> {
-
-      public void read(org.apache.thrift.protocol.TProtocol iprot, getSubjectHasKnowledgeTree_args struct) throws TException {
-        org.apache.thrift.protocol.TField schemeField;
-        iprot.readStructBegin();
-        while (true)
-        {
-          schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
-            break;
-          }
-          switch (schemeField.id) {
-            case 1: // DETAIL_ID
-              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-                struct.detailId = iprot.readI32();
-                struct.setDetailIdIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            default:
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-          }
-          iprot.readFieldEnd();
-        }
-        iprot.readStructEnd();
-
-        // check for required fields of primitive type, which can't be checked in the validate method
-        struct.validate();
-      }
-
-      public void write(org.apache.thrift.protocol.TProtocol oprot, getSubjectHasKnowledgeTree_args struct) throws TException {
-        struct.validate();
-
-        oprot.writeStructBegin(STRUCT_DESC);
-        oprot.writeFieldBegin(DETAIL_ID_FIELD_DESC);
-        oprot.writeI32(struct.detailId);
-        oprot.writeFieldEnd();
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-      }
-
-    }
-
-    private static class getSubjectHasKnowledgeTree_argsTupleSchemeFactory implements SchemeFactory {
-      public getSubjectHasKnowledgeTree_argsTupleScheme getScheme() {
-        return new getSubjectHasKnowledgeTree_argsTupleScheme();
-      }
-    }
-
-    private static class getSubjectHasKnowledgeTree_argsTupleScheme extends TupleScheme<getSubjectHasKnowledgeTree_args> {
-
-      @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, getSubjectHasKnowledgeTree_args struct) throws TException {
-        TTupleProtocol oprot = (TTupleProtocol) prot;
-        BitSet optionals = new BitSet();
-        if (struct.isSetDetailId()) {
-          optionals.set(0);
-        }
-        oprot.writeBitSet(optionals, 1);
-        if (struct.isSetDetailId()) {
-          oprot.writeI32(struct.detailId);
-        }
-      }
-
-      @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, getSubjectHasKnowledgeTree_args struct) throws TException {
-        TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
-        if (incoming.get(0)) {
-          struct.detailId = iprot.readI32();
-          struct.setDetailIdIsSet(true);
-        }
-      }
-    }
-
-  }
-
-  public static class getSubjectHasKnowledgeTree_result implements org.apache.thrift.TBase<getSubjectHasKnowledgeTree_result, getSubjectHasKnowledgeTree_result._Fields>, java.io.Serializable, Cloneable, Comparable<getSubjectHasKnowledgeTree_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getSubjectHasKnowledgeTree_result");
-
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
-
-    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-    static {
-      schemes.put(StandardScheme.class, new getSubjectHasKnowledgeTree_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new getSubjectHasKnowledgeTree_resultTupleSchemeFactory());
-    }
-
-    public SubjectKnowledgeTreeDTO success; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      SUCCESS((short)0, "success");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, SubjectKnowledgeTreeDTO.class)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getSubjectHasKnowledgeTree_result.class, metaDataMap);
-    }
-
-    public getSubjectHasKnowledgeTree_result() {
-    }
-
-    public getSubjectHasKnowledgeTree_result(
-      SubjectKnowledgeTreeDTO success)
-    {
-      this();
-      this.success = success;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public getSubjectHasKnowledgeTree_result(getSubjectHasKnowledgeTree_result other) {
-      if (other.isSetSuccess()) {
-        this.success = new SubjectKnowledgeTreeDTO(other.success);
-      }
-    }
-
-    public getSubjectHasKnowledgeTree_result deepCopy() {
-      return new getSubjectHasKnowledgeTree_result(this);
-    }
-
-    @Override
-    public void clear() {
-      this.success = null;
-    }
-
-    public SubjectKnowledgeTreeDTO getSuccess() {
-      return this.success;
-    }
-
-    public getSubjectHasKnowledgeTree_result setSuccess(SubjectKnowledgeTreeDTO success) {
-      this.success = success;
-      return this;
-    }
-
-    public void unsetSuccess() {
-      this.success = null;
-    }
-
-    /** Returns true if field success is set (has been assigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return this.success != null;
-    }
-
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
-        this.success = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case SUCCESS:
-        if (value == null) {
-          unsetSuccess();
-        } else {
-          setSuccess((SubjectKnowledgeTreeDTO)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case SUCCESS:
-        return getSuccess();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof getSubjectHasKnowledgeTree_result)
-        return this.equals((getSubjectHasKnowledgeTree_result)that);
-      return false;
-    }
-
-    public boolean equals(getSubjectHasKnowledgeTree_result that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
-          return false;
-        if (!this.success.equals(that.success))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      List<Object> list = new ArrayList<Object>();
-
-      boolean present_success = true && (isSetSuccess());
-      list.add(present_success);
-      if (present_success)
-        list.add(success);
-
-      return list.hashCode();
-    }
-
-    @Override
-    public int compareTo(getSubjectHasKnowledgeTree_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetSuccess()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws TException {
-      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws TException {
-      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-      }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("getSubjectHasKnowledgeTree_result(");
-      boolean first = true;
-
-      sb.append("success:");
-      if (this.success == null) {
-        sb.append("null");
-      } else {
-        sb.append(this.success);
-      }
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws TException {
-      // check for required fields
-      // check for sub-struct validity
-      if (success != null) {
-        success.validate();
-      }
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private static class getSubjectHasKnowledgeTree_resultStandardSchemeFactory implements SchemeFactory {
-      public getSubjectHasKnowledgeTree_resultStandardScheme getScheme() {
-        return new getSubjectHasKnowledgeTree_resultStandardScheme();
-      }
-    }
-
-    private static class getSubjectHasKnowledgeTree_resultStandardScheme extends StandardScheme<getSubjectHasKnowledgeTree_result> {
-
-      public void read(org.apache.thrift.protocol.TProtocol iprot, getSubjectHasKnowledgeTree_result struct) throws TException {
-        org.apache.thrift.protocol.TField schemeField;
-        iprot.readStructBegin();
-        while (true)
-        {
-          schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
-            break;
-          }
-          switch (schemeField.id) {
-            case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.success = new SubjectKnowledgeTreeDTO();
-                struct.success.read(iprot);
-                struct.setSuccessIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            default:
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-          }
-          iprot.readFieldEnd();
-        }
-        iprot.readStructEnd();
-
-        // check for required fields of primitive type, which can't be checked in the validate method
-        struct.validate();
-      }
-
-      public void write(org.apache.thrift.protocol.TProtocol oprot, getSubjectHasKnowledgeTree_result struct) throws TException {
-        struct.validate();
-
-        oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.success != null) {
-          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-          struct.success.write(oprot);
-          oprot.writeFieldEnd();
-        }
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-      }
-
-    }
-
-    private static class getSubjectHasKnowledgeTree_resultTupleSchemeFactory implements SchemeFactory {
-      public getSubjectHasKnowledgeTree_resultTupleScheme getScheme() {
-        return new getSubjectHasKnowledgeTree_resultTupleScheme();
-      }
-    }
-
-    private static class getSubjectHasKnowledgeTree_resultTupleScheme extends TupleScheme<getSubjectHasKnowledgeTree_result> {
-
-      @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, getSubjectHasKnowledgeTree_result struct) throws TException {
-        TTupleProtocol oprot = (TTupleProtocol) prot;
-        BitSet optionals = new BitSet();
-        if (struct.isSetSuccess()) {
-          optionals.set(0);
-        }
-        oprot.writeBitSet(optionals, 1);
-        if (struct.isSetSuccess()) {
-          struct.success.write(oprot);
-        }
-      }
-
-      @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, getSubjectHasKnowledgeTree_result struct) throws TException {
-        TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
-        if (incoming.get(0)) {
-          struct.success = new SubjectKnowledgeTreeDTO();
           struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }

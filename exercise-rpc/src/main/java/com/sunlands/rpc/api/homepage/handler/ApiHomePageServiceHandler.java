@@ -1,21 +1,22 @@
 package com.sunlands.rpc.api.homepage.handler;
 
+import com.sunlands.entrpc.model.SubjectDTO;
+import com.sunlands.entrpc.model.TermSubjectDTO;
+import com.sunlands.entrpc.service.StudentRpcService;
 import com.sunlands.rpc.api.biz.service.UserRecordStatisticsService;
 import com.sunlands.rpc.api.homepage.service.ApiHomePageService;
 import com.sunlands.rpc.api.homepage.service.DailyIntelligentExerciseDTO;
 import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.common.DateTimeUtil;
-import com.sunlands.entrpc.model.EntSubjectIdListDTO;
-import com.sunlands.entrpc.model.SubjectDTO;
-import com.sunlands.entrpc.model.TermSubjectDTO;
-import com.sunlands.entrpc.service.StudentRpcService;
 import org.apache.thrift.TException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * B端首页服务处理器
@@ -30,10 +31,10 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
     private static final Logger log = LoggerFactory.getLogger(ApiHomePageServiceHandler.class);
 
     @Autowired
-    private UserRecordStatisticsService userRecordStatisticsService;
+    UserRecordStatisticsService userRecordStatisticsService;
 
     @Autowired
-    private StudentRpcService studentRpcService;
+    StudentRpcService studentRpcService;
 
     @Override
     public int getSubmitQuestionCount(int ordDetailId, int studentId) throws TException {
@@ -54,25 +55,20 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
     }
 
     @Override
-    public DailyIntelligentExerciseDTO isDailyIntelligentExerciseDone(int ordDetailId, int studentId) throws TException {
+    public DailyIntelligentExerciseDTO isDailyIntelligentExerciseDone(int studentId) throws TException {
         // 说明, 返回结果集里的TIKU是董森下游需要用的字段. 本RPC直接返回默认值TIKU
         final String type = "TIKU";
-        EntSubjectIdListDTO subjectIdListDTO = null;
-        try {
-            subjectIdListDTO = studentRpcService.getSubjectIdsByDetailId(ordDetailId);
-        } catch (Exception e) {
-            log.error("请求StudentRPC.getSubjectIdsByDetailId 发生异常, message: {}", e.getMessage());
-            return new DailyIntelligentExerciseDTO(0, 0,  type);
-        }
-        // 如果不包含题库, 或者产品包下科目为空, 直接返回不展示, 未完成结果
-        if (!subjectIdListDTO.hasTiku()) {
-            return new DailyIntelligentExerciseDTO(0, 0,  type);
-        } else if (null == subjectIdListDTO.getSubjectIds() || subjectIdListDTO.getSubjectIds().isEmpty()) {
-            return new DailyIntelligentExerciseDTO(0, 0,  type);
-        }
         // 查询今日智能练习是否完成
-        int exerciseDone = userRecordStatisticsService.isExerciseDone(studentId, DateTimeUtil.today(), subjectIdListDTO.getSubjectIds(), Constant.TikuUserRecord.ExerciseTypeEnum.INTELLIGENT_EXERCISE.getCode());
-        return new DailyIntelligentExerciseDTO(exerciseDone, 1, type);
+        int exerciseDone = userRecordStatisticsService.isExerciseDone(studentId, DateTimeUtil.today(), Constant.TikuUserRecord.ExerciseTypeEnum.INTELLIGENT_EXERCISE.getCode());
+        boolean hasIntelligentExercise = true;
+        if (exerciseDone == 0) {
+            try {
+                hasIntelligentExercise = studentRpcService.hasIntelligentExercise(studentId);
+            } catch (Exception e) {
+                log.error("请求StudentRPC.getSubjectIdsByStudentId 发生异常, message: {}", e.getMessage());
+                return new DailyIntelligentExerciseDTO(0, 0,  type);
+            }
+        }
+        return new DailyIntelligentExerciseDTO(exerciseDone, hasIntelligentExercise ? 1 : 0, type);
     }
-
 }
