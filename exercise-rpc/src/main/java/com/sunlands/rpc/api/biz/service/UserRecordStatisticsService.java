@@ -1,7 +1,9 @@
 package com.sunlands.rpc.api.biz.service;
 
 import java.util.Collection;
-import java.util.Set; /**
+import java.util.List;
+
+/**
  * 用户做题记录统计
  *
  * @Author: 吴雨佳
@@ -14,10 +16,11 @@ public interface UserRecordStatisticsService {
      * 统计学员某日练习是否完成
      * @param studentId 学员ID
      * @param date 日期格式: yyyy-MM-dd
+     * @param subjectIds
      * @param exerciseType 练习类型
      * @return 1. 完成  0. 未完成
      */
-    int isExerciseDone(int studentId, String date, String exerciseType);
+    int isExerciseDone(int studentId, String date, List<Integer> subjectIds, String exerciseType);
 
     /**
      * 统计学员做过所有科目下的题目数

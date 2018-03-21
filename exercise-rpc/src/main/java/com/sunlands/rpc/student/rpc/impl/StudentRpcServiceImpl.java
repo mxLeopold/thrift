@@ -1,5 +1,7 @@
 package com.sunlands.rpc.student.rpc.impl;
 
+import com.sunlands.rpc.api.homepage.service.DailyIntelligentExerciseDTO;
+import com.sunlands.rpc.student.model.EntSubjectIdListDTO;
 import com.sunlands.rpc.student.model.SubjectDTO;
 import com.sunlands.rpc.student.model.TermSubjectDTO;
 import com.sunlands.rpc.student.rpc.StudentRpcService;
@@ -73,6 +75,14 @@ public class StudentRpcServiceImpl implements StudentRpcService {
             throw new RuntimeException("调用RPC接口getAllTermSubjectByDetailId失败！传入参数:" + "detailId=" + detailId + ";报错信息:" + e.getMessage());
         }
         return res;
+    }
+
+    @Override
+    public EntSubjectIdListDTO getSubjectIdsByDetailId(Integer detailId) throws Exception {
+        if (detailId == null) {
+            throw new RuntimeException("传入参数detailId为空!");
+        }
+        return new EntSubjectIdListDTO();
     }
 
     private void formatTermSubjectList(List<TermSubjectDTO> res, List<termSubject> rsts) {

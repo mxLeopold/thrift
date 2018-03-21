@@ -2,6 +2,7 @@ package com.sunlands.rpc.test.api;
 
 import com.sunlands.rpc.api.homepage.handler.ApiHomePageServiceHandler;
 import com.sunlands.rpc.api.homepage.service.ApiHomePageService;
+import com.sunlands.rpc.api.homepage.service.DailyIntelligentExerciseDTO;
 import com.sunlands.rpc.web.statistics.service.WebStatisticsService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocol;
@@ -63,8 +64,9 @@ public class ApiHomePageServiceTest {
         int size = stuIds.size();
         DateTime before = DateTime.now();
         for (Integer stuId : stuIds) {
-            int done = client.isDailyIntelligentExerciseDone(stuId);
-            System.out.println(done == 0 ? "未完成" : "完成");
+            DailyIntelligentExerciseDTO dailyIntelligentExerciseDone = client.isDailyIntelligentExerciseDone(3975512, 3975512);
+            System.out.println(dailyIntelligentExerciseDone.done + "|" + dailyIntelligentExerciseDone.hasTiku);
+            break;
         }
         DateTime end = DateTime.now();
         printTimeSpend(before, end, size);

@@ -22,6 +22,7 @@ public interface TikuUserRecordMapper {
      * @param studentId     学员ID
      * @param date          统计日期
      * @param exerciseType  统计类型
+     * @param subjectIds    逗号拼接的科目ID
      * @return
      */
     @Select({
@@ -30,10 +31,12 @@ public interface TikuUserRecordMapper {
             "AND status_code = 'COMPLETE'",
             "AND DATE(end_time) = DATE(#{date})",
             "AND exercise_type = #{exerciseType}",
+            "AND subject_id IN (${subjectIds})",
             "AND delete_flag = 0"
     })
     int countCompleteRecordByExerciseTypeAndDate(@Param("tableName") String tableName,
                                                  @Param("studentId") int studentId,
                                                  @Param("date") String date,
-                                                 @Param("exerciseType") String exerciseType);
+                                                 @Param("exerciseType") String exerciseType,
+                                                 @Param("subjectIds") String subjectIds);
 }

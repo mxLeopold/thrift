@@ -1,5 +1,7 @@
 package com.sunlands.rpc.student.rpc;
 
+import com.sunlands.rpc.api.homepage.service.DailyIntelligentExerciseDTO;
+import com.sunlands.rpc.student.model.EntSubjectIdListDTO;
 import com.sunlands.rpc.student.model.TermSubjectDTO;
 
 import java.util.List;
@@ -21,4 +23,11 @@ public interface StudentRpcService {
      * @throws Exception
      */
     List<TermSubjectDTO> getAllTermSubjectByDetailId(Integer detailId) throws Exception;
+
+    /**
+     * 根据订单详情ID
+     * @param detailId
+     * @return
+     */
+    EntSubjectIdListDTO getSubjectIdsByDetailId(Integer detailId) throws Exception;
 }

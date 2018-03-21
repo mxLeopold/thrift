@@ -2,8 +2,10 @@ package com.sunlands.rpc.api.homepage.handler;
 
 import com.sunlands.rpc.api.biz.service.UserRecordStatisticsService;
 import com.sunlands.rpc.api.homepage.service.ApiHomePageService;
+import com.sunlands.rpc.api.homepage.service.DailyIntelligentExerciseDTO;
 import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.common.DateTimeUtil;
+import com.sunlands.rpc.student.model.EntSubjectIdListDTO;
 import com.sunlands.rpc.student.model.SubjectDTO;
 import com.sunlands.rpc.student.model.TermSubjectDTO;
 import com.sunlands.rpc.student.rpc.StudentRpcService;
@@ -39,7 +41,7 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
         try {
             termList = studentRpcService.getAllTermSubjectByDetailId(ordDetailId);
         } catch (Exception e) {
-            log.error("请求StudentRPC发生异常, message: {}", e.getMessage());
+            log.error("请求StudentRPC.getAllTermSubjectByDetailId发生异常, message: {}", e.getMessage());
             return 0;
         }
         Set<Integer> subjectIdList = new HashSet<>();
@@ -52,8 +54,25 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
     }
 
     @Override
-    public int isDailyIntelligentExerciseDone(int studentId) throws TException {
-        return userRecordStatisticsService.isExerciseDone(studentId, DateTimeUtil.today(), Constant.TikuUserRecord.ExerciseTypeEnum.INTELLIGENT_EXERCISE.getCode());
+    public DailyIntelligentExerciseDTO isDailyIntelligentExerciseDone(int ordDetailId, int studentId) throws TException {
+        // 说明, 返回结果集里的TIKU是董森下游需要用的字段. 本RPC直接返回默认值TIKU
+        final String type = "TIKU";
+        EntSubjectIdListDTO subjectIdListDTO = null;
+        try {
+            subjectIdListDTO = studentRpcService.getSubjectIdsByDetailId(ordDetailId);
+        } catch (Exception e) {
+            log.error("请求StudentRPC.getSubjectIdsByDetailId发生异常, message: {}", e.getMessage());
+            return new DailyIntelligentExerciseDTO(0, 0,  type);
+        }
+        // 如果不包含题库, 或者产品包下科目为空, 直接返回不展示, 未完成结果
+        if (!subjectIdListDTO.hasTiku()) {
+            return new DailyIntelligentExerciseDTO(0, 0,  type);
+        } else if (null == subjectIdListDTO.getSubjectIds() || subjectIdListDTO.getSubjectIds().isEmpty()) {
+            return new DailyIntelligentExerciseDTO(0, 0,  type);
+        }
+        // 查询今日智能练习是否完成
+        int exerciseDone = userRecordStatisticsService.isExerciseDone(studentId, DateTimeUtil.today(), subjectIdListDTO.getSubjectIds(), Constant.TikuUserRecord.ExerciseTypeEnum.INTELLIGENT_EXERCISE.getCode());
+        return new DailyIntelligentExerciseDTO(exerciseDone, 1, type);
     }
 
 }

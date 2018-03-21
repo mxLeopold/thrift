@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * 用户做题记录统计
@@ -35,10 +36,11 @@ public class UserRecordStatisticsServiceImpl implements UserRecordStatisticsServ
 
     @Override
     @ReadConnection
-    public int isExerciseDone(int studentId, String date, String exerciseType) {
+    public int isExerciseDone(int studentId, String date, List<Integer> subjectIds, String exerciseType) {
         log.info("<--- isExerciseDone(studentId: {}, date: {}, exerciseType: {}) start --->", studentId, date, exerciseType);
         String tableName = Constant.TikuUserRecord.getTableName(studentId);
-        int count = tikuUserRecordMapper.countCompleteRecordByExerciseTypeAndDate(tableName, studentId, date, exerciseType);
+        String ids = getIdsString(subjectIds);
+        int count = tikuUserRecordMapper.countCompleteRecordByExerciseTypeAndDate(tableName, studentId, date, exerciseType, ids);
         count = count == 0 ? 0 : 1;
         log.info("<--- isExerciseDone result {}: {}", count, count == 0 ? "未完成" : "完成");
         return count;
