@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.sunlands.rpc.student.sv;
+package com.sunlands.entrpc.thriftservice;
 
 
 import org.apache.thrift.TEnum;

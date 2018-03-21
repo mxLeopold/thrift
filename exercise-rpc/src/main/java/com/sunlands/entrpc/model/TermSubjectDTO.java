@@ -1,4 +1,4 @@
-package com.sunlands.rpc.student.model;
+package com.sunlands.entrpc.model;
 
 import java.util.List;
 

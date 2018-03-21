@@ -1,8 +1,7 @@
-package com.sunlands.rpc.student.rpc;
+package com.sunlands.entrpc.service;
 
-import com.sunlands.rpc.api.homepage.service.DailyIntelligentExerciseDTO;
-import com.sunlands.rpc.student.model.EntSubjectIdListDTO;
-import com.sunlands.rpc.student.model.TermSubjectDTO;
+import com.sunlands.entrpc.model.TermSubjectDTO;
+import com.sunlands.entrpc.model.EntSubjectIdListDTO;
 
 import java.util.List;
 

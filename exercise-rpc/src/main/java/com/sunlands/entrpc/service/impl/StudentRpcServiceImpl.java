@@ -1,13 +1,12 @@
-package com.sunlands.rpc.student.rpc.impl;
+package com.sunlands.entrpc.service.impl;
 
-import com.sunlands.rpc.api.homepage.service.DailyIntelligentExerciseDTO;
-import com.sunlands.rpc.student.model.EntSubjectIdListDTO;
-import com.sunlands.rpc.student.model.SubjectDTO;
-import com.sunlands.rpc.student.model.TermSubjectDTO;
-import com.sunlands.rpc.student.rpc.StudentRpcService;
-import com.sunlands.rpc.student.sv.ApiStudentService;
-import com.sunlands.rpc.student.sv.Subject;
-import com.sunlands.rpc.student.sv.termSubject;
+import com.sunlands.entrpc.model.EntSubjectIdListDTO;
+import com.sunlands.entrpc.model.SubjectDTO;
+import com.sunlands.entrpc.model.TermSubjectDTO;
+import com.sunlands.entrpc.service.StudentRpcService;
+import com.sunlands.entrpc.thriftservice.ApiStudentService;
+import com.sunlands.entrpc.thriftservice.Subject;
+import com.sunlands.entrpc.thriftservice.termSubject;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * 类描述
@@ -33,7 +31,7 @@ public class StudentRpcServiceImpl implements StudentRpcService {
 
     private static final Logger log = LoggerFactory.getLogger(StudentRpcServiceImpl.class);
 
-    @Value("${rpc.student-rpc-url:}")
+    @Value("${service.student-service-url:}")
     private String rpcServerUrl;
 
     private static TProtocol protocol = null;
