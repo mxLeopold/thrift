@@ -6,7 +6,9 @@ import com.sunlands.entrpc.model.TermSubjectDTO;
 import com.sunlands.entrpc.service.StudentRpcService;
 import com.sunlands.entrpc.thriftservice.ApiStudentService;
 import com.sunlands.entrpc.thriftservice.Subject;
+import com.sunlands.entrpc.thriftservice.SubjectKnowledgeTreeDTO;
 import com.sunlands.entrpc.thriftservice.termSubject;
+import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
@@ -80,7 +82,22 @@ public class StudentRpcServiceImpl implements StudentRpcService {
         if (detailId == null) {
             throw new RuntimeException("传入参数detailId为空!");
         }
-        return new EntSubjectIdListDTO();
+        SubjectKnowledgeTreeDTO subjectHasKnowledgeTree = null;
+        try {
+            log.info("请求RPC接口 getSubjectIdsByDetailId");
+            ApiStudentService.Client client = getClientInstance();
+            subjectHasKnowledgeTree = client.getSubjectHasKnowledgeTree(detailId);
+        } catch (TException e) {
+            log.error("调用接口失败！" + e.getMessage(), e);
+            throw new RuntimeException("调用RPC接口 getSubjectIdsByDetailId 失败！传入参数:" + "detailId=" + detailId + ";报错信息:" + e.getMessage());
+        }
+        if (null == subjectHasKnowledgeTree) {
+            return new EntSubjectIdListDTO();
+        }
+        EntSubjectIdListDTO result = new EntSubjectIdListDTO();
+        result.setHasKnowledgeTree(subjectHasKnowledgeTree.getHasKnowledgeTree());
+        result.setSubjectIds(subjectHasKnowledgeTree.getSubjectIdList());
+        return result;
     }
 
     private void formatTermSubjectList(List<TermSubjectDTO> res, List<termSubject> rsts) {

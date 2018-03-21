@@ -61,7 +61,7 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
         try {
             subjectIdListDTO = studentRpcService.getSubjectIdsByDetailId(ordDetailId);
         } catch (Exception e) {
-            log.error("请求StudentRPC.getSubjectIdsByDetailId发生异常, message: {}", e.getMessage());
+            log.error("请求StudentRPC.getSubjectIdsByDetailId 发生异常, message: {}", e.getMessage());
             return new DailyIntelligentExerciseDTO(0, 0,  type);
         }
         // 如果不包含题库, 或者产品包下科目为空, 直接返回不展示, 未完成结果

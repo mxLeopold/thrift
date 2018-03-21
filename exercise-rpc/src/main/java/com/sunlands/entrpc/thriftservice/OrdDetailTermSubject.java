@@ -773,14 +773,14 @@ public class OrdDetailTermSubject implements org.apache.thrift.TBase<OrdDetailTe
           case 6: // TERMS
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
-                org.apache.thrift.protocol.TList _list24 = iprot.readListBegin();
-                struct.terms = new ArrayList<termSubject>(_list24.size);
-                termSubject _elem25;
-                for (int _i26 = 0; _i26 < _list24.size; ++_i26)
+                org.apache.thrift.protocol.TList _list40 = iprot.readListBegin();
+                struct.terms = new ArrayList<termSubject>(_list40.size);
+                termSubject _elem41;
+                for (int _i42 = 0; _i42 < _list40.size; ++_i42)
                 {
-                  _elem25 = new termSubject();
-                  _elem25.read(iprot);
-                  struct.terms.add(_elem25);
+                  _elem41 = new termSubject();
+                  _elem41.read(iprot);
+                  struct.terms.add(_elem41);
                 }
                 iprot.readListEnd();
               }
@@ -825,9 +825,9 @@ public class OrdDetailTermSubject implements org.apache.thrift.TBase<OrdDetailTe
         oprot.writeFieldBegin(TERMS_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.terms.size()));
-          for (termSubject _iter27 : struct.terms)
+          for (termSubject _iter43 : struct.terms)
           {
-            _iter27.write(oprot);
+            _iter43.write(oprot);
           }
           oprot.writeListEnd();
         }
@@ -888,9 +888,9 @@ public class OrdDetailTermSubject implements org.apache.thrift.TBase<OrdDetailTe
       if (struct.isSetTerms()) {
         {
           oprot.writeI32(struct.terms.size());
-          for (termSubject _iter28 : struct.terms)
+          for (termSubject _iter44 : struct.terms)
           {
-            _iter28.write(oprot);
+            _iter44.write(oprot);
           }
         }
       }
@@ -922,14 +922,14 @@ public class OrdDetailTermSubject implements org.apache.thrift.TBase<OrdDetailTe
       }
       if (incoming.get(5)) {
         {
-          org.apache.thrift.protocol.TList _list29 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-          struct.terms = new ArrayList<termSubject>(_list29.size);
-          termSubject _elem30;
-          for (int _i31 = 0; _i31 < _list29.size; ++_i31)
+          org.apache.thrift.protocol.TList _list45 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+          struct.terms = new ArrayList<termSubject>(_list45.size);
+          termSubject _elem46;
+          for (int _i47 = 0; _i47 < _list45.size; ++_i47)
           {
-            _elem30 = new termSubject();
-            _elem30.read(iprot);
-            struct.terms.add(_elem30);
+            _elem46 = new termSubject();
+            _elem46.read(iprot);
+            struct.terms.add(_elem46);
           }
         }
         struct.setTermsIsSet(true);

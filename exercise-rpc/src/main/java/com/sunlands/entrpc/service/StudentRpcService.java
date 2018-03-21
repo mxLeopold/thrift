@@ -25,8 +25,10 @@ public interface StudentRpcService {
 
     /**
      * 根据订单详情ID
+     *
      * @param detailId
      * @return
+     * @throws Exception
      */
     EntSubjectIdListDTO getSubjectIdsByDetailId(Integer detailId) throws Exception;
 }
