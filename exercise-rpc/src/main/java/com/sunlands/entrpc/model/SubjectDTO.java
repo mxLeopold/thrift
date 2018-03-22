@@ -1,4 +1,4 @@
-package com.sunlands.rpc.student.model;
+package com.sunlands.entrpc.model;
 
 /**
  * Created by PC on 2018/1/2.

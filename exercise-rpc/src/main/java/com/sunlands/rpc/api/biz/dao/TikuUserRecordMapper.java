@@ -35,5 +35,6 @@ public interface TikuUserRecordMapper {
     int countCompleteRecordByExerciseTypeAndDate(@Param("tableName") String tableName,
                                                  @Param("studentId") int studentId,
                                                  @Param("date") String date,
-                                                 @Param("exerciseType") String exerciseType);
+                                                 @Param("exerciseType") String exerciseType
+    );
 }

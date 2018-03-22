@@ -57,5 +57,5 @@ server:
 logging: 
     level: 
         com.sunlands: DEBUG
-rpc:
-    student-rpc-url: http://172.16.100.203:9094/student
+service:
+    student-service-url: http://172.16.100.203:9094/student

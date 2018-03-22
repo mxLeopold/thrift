@@ -1,6 +1,6 @@
-package com.sunlands.rpc.student.rpc;
+package com.sunlands.entrpc.service;
 
-import com.sunlands.rpc.student.model.TermSubjectDTO;
+import com.sunlands.entrpc.model.TermSubjectDTO;
 
 import java.util.List;
 
@@ -21,4 +21,13 @@ public interface StudentRpcService {
      * @throws Exception
      */
     List<TermSubjectDTO> getAllTermSubjectByDetailId(Integer detailId) throws Exception;
+
+    /**
+     * 是否有智能练习题
+     *
+     * @param studentId
+     * @return
+     * @throws Exception
+     */
+    boolean hasIntelligentExercise(Integer studentId) throws Exception;
 }
