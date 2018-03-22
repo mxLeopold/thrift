@@ -39,15 +39,17 @@ public class WebStatisticsService {
 
   public interface Iface {
 
-    public List<PaperReport> getPaperReport(String paperId, String unitIdStr) throws TException;
+    public List<WorkPaperReport> getPaperReport(String paperId, String unitIdStr) throws TException;
 
     public PaperDetail getPaperDetail(String paperId, String unitIdStr) throws TException;
 
-    public List<StuAnswerDetail> getStuAnswerDetail(int paperId, String unitIdStr) throws TException;
+    public StuAnswerResult getStuAnswerResult(StuAnswerResult stuAnswerResult) throws TException;
 
     public int checkQuizId(String paperCode) throws TException;
 
     public int checkAssignmentId(String paperCode) throws TException;
+
+    public WorkPaperReportList selectWorkPaperReport(WorkPaperReportList workPaperReportList) throws TException;
 
   }
 
@@ -57,11 +59,13 @@ public class WebStatisticsService {
 
     public void getPaperDetail(String paperId, String unitIdStr, AsyncMethodCallback resultHandler) throws TException;
 
-    public void getStuAnswerDetail(int paperId, String unitIdStr, AsyncMethodCallback resultHandler) throws TException;
+    public void getStuAnswerResult(StuAnswerResult stuAnswerResult, AsyncMethodCallback resultHandler) throws TException;
 
     public void checkQuizId(String paperCode, AsyncMethodCallback resultHandler) throws TException;
 
     public void checkAssignmentId(String paperCode, AsyncMethodCallback resultHandler) throws TException;
+
+    public void selectWorkPaperReport(WorkPaperReportList workPaperReportList, AsyncMethodCallback resultHandler) throws TException;
 
   }
 
@@ -85,7 +89,7 @@ public class WebStatisticsService {
       super(iprot, oprot);
     }
 
-    public List<PaperReport> getPaperReport(String paperId, String unitIdStr) throws TException
+    public List<WorkPaperReport> getPaperReport(String paperId, String unitIdStr) throws TException
     {
       send_getPaperReport(paperId, unitIdStr);
       return recv_getPaperReport();
@@ -99,7 +103,7 @@ public class WebStatisticsService {
       sendBase("getPaperReport", args);
     }
 
-    public List<PaperReport> recv_getPaperReport() throws TException
+    public List<WorkPaperReport> recv_getPaperReport() throws TException
     {
       getPaperReport_result result = new getPaperReport_result();
       receiveBase(result, "getPaperReport");
@@ -133,28 +137,27 @@ public class WebStatisticsService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getPaperDetail failed: unknown result");
     }
 
-    public List<StuAnswerDetail> getStuAnswerDetail(int paperId, String unitIdStr) throws TException
+    public StuAnswerResult getStuAnswerResult(StuAnswerResult stuAnswerResult) throws TException
     {
-      send_getStuAnswerDetail(paperId, unitIdStr);
-      return recv_getStuAnswerDetail();
+      send_getStuAnswerResult(stuAnswerResult);
+      return recv_getStuAnswerResult();
     }
 
-    public void send_getStuAnswerDetail(int paperId, String unitIdStr) throws TException
+    public void send_getStuAnswerResult(StuAnswerResult stuAnswerResult) throws TException
     {
-      getStuAnswerDetail_args args = new getStuAnswerDetail_args();
-      args.setPaperId(paperId);
-      args.setUnitIdStr(unitIdStr);
-      sendBase("getStuAnswerDetail", args);
+      getStuAnswerResult_args args = new getStuAnswerResult_args();
+      args.setStuAnswerResult(stuAnswerResult);
+      sendBase("getStuAnswerResult", args);
     }
 
-    public List<StuAnswerDetail> recv_getStuAnswerDetail() throws TException
+    public StuAnswerResult recv_getStuAnswerResult() throws TException
     {
-      getStuAnswerDetail_result result = new getStuAnswerDetail_result();
-      receiveBase(result, "getStuAnswerDetail");
+      getStuAnswerResult_result result = new getStuAnswerResult_result();
+      receiveBase(result, "getStuAnswerResult");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getStuAnswerDetail failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getStuAnswerResult failed: unknown result");
     }
 
     public int checkQuizId(String paperCode) throws TException
@@ -203,6 +206,29 @@ public class WebStatisticsService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "checkAssignmentId failed: unknown result");
     }
 
+    public WorkPaperReportList selectWorkPaperReport(WorkPaperReportList workPaperReportList) throws TException
+    {
+      send_selectWorkPaperReport(workPaperReportList);
+      return recv_selectWorkPaperReport();
+    }
+
+    public void send_selectWorkPaperReport(WorkPaperReportList workPaperReportList) throws TException
+    {
+      selectWorkPaperReport_args args = new selectWorkPaperReport_args();
+      args.setWorkPaperReportList(workPaperReportList);
+      sendBase("selectWorkPaperReport", args);
+    }
+
+    public WorkPaperReportList recv_selectWorkPaperReport() throws TException
+    {
+      selectWorkPaperReport_result result = new selectWorkPaperReport_result();
+      receiveBase(result, "selectWorkPaperReport");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "selectWorkPaperReport failed: unknown result");
+    }
+
   }
   public static class AsyncClient extends org.apache.thrift.async.TAsyncClient implements AsyncIface {
     public static class Factory implements org.apache.thrift.async.TAsyncClientFactory<AsyncClient> {
@@ -246,7 +272,7 @@ public class WebStatisticsService {
         prot.writeMessageEnd();
       }
 
-      public List<PaperReport> getResult() throws TException {
+      public List<WorkPaperReport> getResult() throws TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -291,38 +317,35 @@ public class WebStatisticsService {
       }
     }
 
-    public void getStuAnswerDetail(int paperId, String unitIdStr, AsyncMethodCallback resultHandler) throws TException {
+    public void getStuAnswerResult(StuAnswerResult stuAnswerResult, AsyncMethodCallback resultHandler) throws TException {
       checkReady();
-      getStuAnswerDetail_call method_call = new getStuAnswerDetail_call(paperId, unitIdStr, resultHandler, this, ___protocolFactory, ___transport);
+      getStuAnswerResult_call method_call = new getStuAnswerResult_call(stuAnswerResult, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class getStuAnswerDetail_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private int paperId;
-      private String unitIdStr;
-      public getStuAnswerDetail_call(int paperId, String unitIdStr, AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws TException {
+    public static class getStuAnswerResult_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private StuAnswerResult stuAnswerResult;
+      public getStuAnswerResult_call(StuAnswerResult stuAnswerResult, AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.paperId = paperId;
-        this.unitIdStr = unitIdStr;
+        this.stuAnswerResult = stuAnswerResult;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getStuAnswerDetail", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        getStuAnswerDetail_args args = new getStuAnswerDetail_args();
-        args.setPaperId(paperId);
-        args.setUnitIdStr(unitIdStr);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getStuAnswerResult", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getStuAnswerResult_args args = new getStuAnswerResult_args();
+        args.setStuAnswerResult(stuAnswerResult);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<StuAnswerDetail> getResult() throws TException {
+      public StuAnswerResult getResult() throws TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_getStuAnswerDetail();
+        return (new Client(prot)).recv_getStuAnswerResult();
       }
     }
 
@@ -390,6 +413,38 @@ public class WebStatisticsService {
       }
     }
 
+    public void selectWorkPaperReport(WorkPaperReportList workPaperReportList, AsyncMethodCallback resultHandler) throws TException {
+      checkReady();
+      selectWorkPaperReport_call method_call = new selectWorkPaperReport_call(workPaperReportList, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class selectWorkPaperReport_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private WorkPaperReportList workPaperReportList;
+      public selectWorkPaperReport_call(WorkPaperReportList workPaperReportList, AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.workPaperReportList = workPaperReportList;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("selectWorkPaperReport", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        selectWorkPaperReport_args args = new selectWorkPaperReport_args();
+        args.setWorkPaperReportList(workPaperReportList);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public WorkPaperReportList getResult() throws TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_selectWorkPaperReport();
+      }
+    }
+
   }
 
   public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I> implements org.apache.thrift.TProcessor {
@@ -405,9 +460,10 @@ public class WebStatisticsService {
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getPaperReport", new getPaperReport());
       processMap.put("getPaperDetail", new getPaperDetail());
-      processMap.put("getStuAnswerDetail", new getStuAnswerDetail());
+      processMap.put("getStuAnswerResult", new getStuAnswerResult());
       processMap.put("checkQuizId", new checkQuizId());
       processMap.put("checkAssignmentId", new checkAssignmentId());
+      processMap.put("selectWorkPaperReport", new selectWorkPaperReport());
       return processMap;
     }
 
@@ -451,22 +507,22 @@ public class WebStatisticsService {
       }
     }
 
-    public static class getStuAnswerDetail<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getStuAnswerDetail_args> {
-      public getStuAnswerDetail() {
-        super("getStuAnswerDetail");
+    public static class getStuAnswerResult<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getStuAnswerResult_args> {
+      public getStuAnswerResult() {
+        super("getStuAnswerResult");
       }
 
-      public getStuAnswerDetail_args getEmptyArgsInstance() {
-        return new getStuAnswerDetail_args();
+      public getStuAnswerResult_args getEmptyArgsInstance() {
+        return new getStuAnswerResult_args();
       }
 
       protected boolean isOneway() {
         return false;
       }
 
-      public getStuAnswerDetail_result getResult(I iface, getStuAnswerDetail_args args) throws TException {
-        getStuAnswerDetail_result result = new getStuAnswerDetail_result();
-        result.success = iface.getStuAnswerDetail(args.paperId, args.unitIdStr);
+      public getStuAnswerResult_result getResult(I iface, getStuAnswerResult_args args) throws TException {
+        getStuAnswerResult_result result = new getStuAnswerResult_result();
+        result.success = iface.getStuAnswerResult(args.stuAnswerResult);
         return result;
       }
     }
@@ -513,6 +569,26 @@ public class WebStatisticsService {
       }
     }
 
+    public static class selectWorkPaperReport<I extends Iface> extends org.apache.thrift.ProcessFunction<I, selectWorkPaperReport_args> {
+      public selectWorkPaperReport() {
+        super("selectWorkPaperReport");
+      }
+
+      public selectWorkPaperReport_args getEmptyArgsInstance() {
+        return new selectWorkPaperReport_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public selectWorkPaperReport_result getResult(I iface, selectWorkPaperReport_args args) throws TException {
+        selectWorkPaperReport_result result = new selectWorkPaperReport_result();
+        result.success = iface.selectWorkPaperReport(args.workPaperReportList);
+        return result;
+      }
+    }
+
   }
 
   public static class AsyncProcessor<I extends AsyncIface> extends org.apache.thrift.TBaseAsyncProcessor<I> {
@@ -528,13 +604,14 @@ public class WebStatisticsService {
     private static <I extends AsyncIface> Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase,?>> getProcessMap(Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase, ?>> processMap) {
       processMap.put("getPaperReport", new getPaperReport());
       processMap.put("getPaperDetail", new getPaperDetail());
-      processMap.put("getStuAnswerDetail", new getStuAnswerDetail());
+      processMap.put("getStuAnswerResult", new getStuAnswerResult());
       processMap.put("checkQuizId", new checkQuizId());
       processMap.put("checkAssignmentId", new checkAssignmentId());
+      processMap.put("selectWorkPaperReport", new selectWorkPaperReport());
       return processMap;
     }
 
-    public static class getPaperReport<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getPaperReport_args, List<PaperReport>> {
+    public static class getPaperReport<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getPaperReport_args, List<WorkPaperReport>> {
       public getPaperReport() {
         super("getPaperReport");
       }
@@ -543,10 +620,10 @@ public class WebStatisticsService {
         return new getPaperReport_args();
       }
 
-      public AsyncMethodCallback<List<PaperReport>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+      public AsyncMethodCallback<List<WorkPaperReport>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<List<PaperReport>>() { 
-          public void onComplete(List<PaperReport> o) {
+        return new AsyncMethodCallback<List<WorkPaperReport>>() { 
+          public void onComplete(List<WorkPaperReport> o) {
             getPaperReport_result result = new getPaperReport_result();
             result.success = o;
             try {
@@ -580,7 +657,7 @@ public class WebStatisticsService {
         return false;
       }
 
-      public void start(I iface, getPaperReport_args args, AsyncMethodCallback<List<PaperReport>> resultHandler) throws TException {
+      public void start(I iface, getPaperReport_args args, AsyncMethodCallback<List<WorkPaperReport>> resultHandler) throws TException {
         iface.getPaperReport(args.paperId, args.unitIdStr,resultHandler);
       }
     }
@@ -636,20 +713,20 @@ public class WebStatisticsService {
       }
     }
 
-    public static class getStuAnswerDetail<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getStuAnswerDetail_args, List<StuAnswerDetail>> {
-      public getStuAnswerDetail() {
-        super("getStuAnswerDetail");
+    public static class getStuAnswerResult<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getStuAnswerResult_args, StuAnswerResult> {
+      public getStuAnswerResult() {
+        super("getStuAnswerResult");
       }
 
-      public getStuAnswerDetail_args getEmptyArgsInstance() {
-        return new getStuAnswerDetail_args();
+      public getStuAnswerResult_args getEmptyArgsInstance() {
+        return new getStuAnswerResult_args();
       }
 
-      public AsyncMethodCallback<List<StuAnswerDetail>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+      public AsyncMethodCallback<StuAnswerResult> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<List<StuAnswerDetail>>() { 
-          public void onComplete(List<StuAnswerDetail> o) {
-            getStuAnswerDetail_result result = new getStuAnswerDetail_result();
+        return new AsyncMethodCallback<StuAnswerResult>() { 
+          public void onComplete(StuAnswerResult o) {
+            getStuAnswerResult_result result = new getStuAnswerResult_result();
             result.success = o;
             try {
               fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
@@ -662,7 +739,7 @@ public class WebStatisticsService {
           public void onError(Exception e) {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
-            getStuAnswerDetail_result result = new getStuAnswerDetail_result();
+            getStuAnswerResult_result result = new getStuAnswerResult_result();
             {
               msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
               msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
@@ -682,8 +759,8 @@ public class WebStatisticsService {
         return false;
       }
 
-      public void start(I iface, getStuAnswerDetail_args args, AsyncMethodCallback<List<StuAnswerDetail>> resultHandler) throws TException {
-        iface.getStuAnswerDetail(args.paperId, args.unitIdStr,resultHandler);
+      public void start(I iface, getStuAnswerResult_args args, AsyncMethodCallback<StuAnswerResult> resultHandler) throws TException {
+        iface.getStuAnswerResult(args.stuAnswerResult,resultHandler);
       }
     }
 
@@ -788,6 +865,57 @@ public class WebStatisticsService {
 
       public void start(I iface, checkAssignmentId_args args, AsyncMethodCallback<Integer> resultHandler) throws TException {
         iface.checkAssignmentId(args.paperCode,resultHandler);
+      }
+    }
+
+    public static class selectWorkPaperReport<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, selectWorkPaperReport_args, WorkPaperReportList> {
+      public selectWorkPaperReport() {
+        super("selectWorkPaperReport");
+      }
+
+      public selectWorkPaperReport_args getEmptyArgsInstance() {
+        return new selectWorkPaperReport_args();
+      }
+
+      public AsyncMethodCallback<WorkPaperReportList> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+        final org.apache.thrift.AsyncProcessFunction fcall = this;
+        return new AsyncMethodCallback<WorkPaperReportList>() { 
+          public void onComplete(WorkPaperReportList o) {
+            selectWorkPaperReport_result result = new selectWorkPaperReport_result();
+            result.success = o;
+            try {
+              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
+              return;
+            } catch (Exception e) {
+              LOGGER.error("Exception writing to internal frame buffer", e);
+            }
+            fb.close();
+          }
+          public void onError(Exception e) {
+            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+            org.apache.thrift.TBase msg;
+            selectWorkPaperReport_result result = new selectWorkPaperReport_result();
+            {
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+            }
+            try {
+              fcall.sendResponse(fb,msg,msgType,seqid);
+              return;
+            } catch (Exception ex) {
+              LOGGER.error("Exception writing to internal frame buffer", ex);
+            }
+            fb.close();
+          }
+        };
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public void start(I iface, selectWorkPaperReport_args args, AsyncMethodCallback<WorkPaperReportList> resultHandler) throws TException {
+        iface.selectWorkPaperReport(args.workPaperReportList,resultHandler);
       }
     }
 
@@ -1270,7 +1398,7 @@ public class WebStatisticsService {
       schemes.put(TupleScheme.class, new getPaperReport_resultTupleSchemeFactory());
     }
 
-    public List<PaperReport> success; // required
+    public List<WorkPaperReport> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -1336,7 +1464,7 @@ public class WebStatisticsService {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, PaperReport.class))));
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, WorkPaperReport.class))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getPaperReport_result.class, metaDataMap);
     }
@@ -1345,7 +1473,7 @@ public class WebStatisticsService {
     }
 
     public getPaperReport_result(
-      List<PaperReport> success)
+      List<WorkPaperReport> success)
     {
       this();
       this.success = success;
@@ -1356,9 +1484,9 @@ public class WebStatisticsService {
      */
     public getPaperReport_result(getPaperReport_result other) {
       if (other.isSetSuccess()) {
-        List<PaperReport> __this__success = new ArrayList<PaperReport>(other.success.size());
-        for (PaperReport other_element : other.success) {
-          __this__success.add(new PaperReport(other_element));
+        List<WorkPaperReport> __this__success = new ArrayList<WorkPaperReport>(other.success.size());
+        for (WorkPaperReport other_element : other.success) {
+          __this__success.add(new WorkPaperReport(other_element));
         }
         this.success = __this__success;
       }
@@ -1377,22 +1505,22 @@ public class WebStatisticsService {
       return (this.success == null) ? 0 : this.success.size();
     }
 
-    public java.util.Iterator<PaperReport> getSuccessIterator() {
+    public java.util.Iterator<WorkPaperReport> getSuccessIterator() {
       return (this.success == null) ? null : this.success.iterator();
     }
 
-    public void addToSuccess(PaperReport elem) {
+    public void addToSuccess(WorkPaperReport elem) {
       if (this.success == null) {
-        this.success = new ArrayList<PaperReport>();
+        this.success = new ArrayList<WorkPaperReport>();
       }
       this.success.add(elem);
     }
 
-    public List<PaperReport> getSuccess() {
+    public List<WorkPaperReport> getSuccess() {
       return this.success;
     }
 
-    public getPaperReport_result setSuccess(List<PaperReport> success) {
+    public getPaperReport_result setSuccess(List<WorkPaperReport> success) {
       this.success = success;
       return this;
     }
@@ -1418,7 +1546,7 @@ public class WebStatisticsService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<PaperReport>)value);
+          setSuccess((List<WorkPaperReport>)value);
         }
         break;
 
@@ -1575,14 +1703,14 @@ public class WebStatisticsService {
             case 0: // SUCCESS
               if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TList _list56 = iprot.readListBegin();
-                  struct.success = new ArrayList<PaperReport>(_list56.size);
-                  PaperReport _elem57;
-                  for (int _i58 = 0; _i58 < _list56.size; ++_i58)
+                  org.apache.thrift.protocol.TList _list72 = iprot.readListBegin();
+                  struct.success = new ArrayList<WorkPaperReport>(_list72.size);
+                  WorkPaperReport _elem73;
+                  for (int _i74 = 0; _i74 < _list72.size; ++_i74)
                   {
-                    _elem57 = new PaperReport();
-                    _elem57.read(iprot);
-                    struct.success.add(_elem57);
+                    _elem73 = new WorkPaperReport();
+                    _elem73.read(iprot);
+                    struct.success.add(_elem73);
                   }
                   iprot.readListEnd();
                 }
@@ -1610,9 +1738,9 @@ public class WebStatisticsService {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
             oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (PaperReport _iter59 : struct.success)
+            for (WorkPaperReport _iter75 : struct.success)
             {
-              _iter59.write(oprot);
+              _iter75.write(oprot);
             }
             oprot.writeListEnd();
           }
@@ -1643,9 +1771,9 @@ public class WebStatisticsService {
         if (struct.isSetSuccess()) {
           {
             oprot.writeI32(struct.success.size());
-            for (PaperReport _iter60 : struct.success)
+            for (WorkPaperReport _iter76 : struct.success)
             {
-              _iter60.write(oprot);
+              _iter76.write(oprot);
             }
           }
         }
@@ -1657,14 +1785,14 @@ public class WebStatisticsService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TList _list61 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<PaperReport>(_list61.size);
-            PaperReport _elem62;
-            for (int _i63 = 0; _i63 < _list61.size; ++_i63)
+            org.apache.thrift.protocol.TList _list77 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new ArrayList<WorkPaperReport>(_list77.size);
+            WorkPaperReport _elem78;
+            for (int _i79 = 0; _i79 < _list77.size; ++_i79)
             {
-              _elem62 = new PaperReport();
-              _elem62.read(iprot);
-              struct.success.add(_elem62);
+              _elem78 = new WorkPaperReport();
+              _elem78.read(iprot);
+              struct.success.add(_elem78);
             }
           }
           struct.setSuccessIsSet(true);
@@ -2506,25 +2634,22 @@ public class WebStatisticsService {
 
   }
 
-  public static class getStuAnswerDetail_args implements org.apache.thrift.TBase<getStuAnswerDetail_args, getStuAnswerDetail_args._Fields>, java.io.Serializable, Cloneable, Comparable<getStuAnswerDetail_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getStuAnswerDetail_args");
+  public static class getStuAnswerResult_args implements org.apache.thrift.TBase<getStuAnswerResult_args, getStuAnswerResult_args._Fields>, java.io.Serializable, Cloneable, Comparable<getStuAnswerResult_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getStuAnswerResult_args");
 
-    private static final org.apache.thrift.protocol.TField PAPER_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("paperId", org.apache.thrift.protocol.TType.I32, (short)1);
-    private static final org.apache.thrift.protocol.TField UNIT_ID_STR_FIELD_DESC = new org.apache.thrift.protocol.TField("unitIdStr", org.apache.thrift.protocol.TType.STRING, (short)2);
+    private static final org.apache.thrift.protocol.TField STU_ANSWER_RESULT_FIELD_DESC = new org.apache.thrift.protocol.TField("stuAnswerResult", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new getStuAnswerDetail_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new getStuAnswerDetail_argsTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new getStuAnswerResult_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getStuAnswerResult_argsTupleSchemeFactory());
     }
 
-    public int paperId; // required
-    public String unitIdStr; // required
+    public StuAnswerResult stuAnswerResult; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      PAPER_ID((short)1, "paperId"),
-      UNIT_ID_STR((short)2, "unitIdStr");
+      STU_ANSWER_RESULT((short)1, "stuAnswerResult");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -2539,10 +2664,8 @@ public class WebStatisticsService {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // PAPER_ID
-            return PAPER_ID;
-          case 2: // UNIT_ID_STR
-            return UNIT_ID_STR;
+          case 1: // STU_ANSWER_RESULT
+            return STU_ANSWER_RESULT;
           default:
             return null;
         }
@@ -2583,116 +2706,74 @@ public class WebStatisticsService {
     }
 
     // isset id assignments
-    private static final int __PAPERID_ISSET_ID = 0;
-    private byte __isset_bitfield = 0;
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.PAPER_ID, new org.apache.thrift.meta_data.FieldMetaData("paperId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-      tmpMap.put(_Fields.UNIT_ID_STR, new org.apache.thrift.meta_data.FieldMetaData("unitIdStr", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.STU_ANSWER_RESULT, new org.apache.thrift.meta_data.FieldMetaData("stuAnswerResult", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, StuAnswerResult.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getStuAnswerDetail_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getStuAnswerResult_args.class, metaDataMap);
     }
 
-    public getStuAnswerDetail_args() {
+    public getStuAnswerResult_args() {
     }
 
-    public getStuAnswerDetail_args(
-      int paperId,
-      String unitIdStr)
+    public getStuAnswerResult_args(
+      StuAnswerResult stuAnswerResult)
     {
       this();
-      this.paperId = paperId;
-      setPaperIdIsSet(true);
-      this.unitIdStr = unitIdStr;
+      this.stuAnswerResult = stuAnswerResult;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getStuAnswerDetail_args(getStuAnswerDetail_args other) {
-      __isset_bitfield = other.__isset_bitfield;
-      this.paperId = other.paperId;
-      if (other.isSetUnitIdStr()) {
-        this.unitIdStr = other.unitIdStr;
+    public getStuAnswerResult_args(getStuAnswerResult_args other) {
+      if (other.isSetStuAnswerResult()) {
+        this.stuAnswerResult = new StuAnswerResult(other.stuAnswerResult);
       }
     }
 
-    public getStuAnswerDetail_args deepCopy() {
-      return new getStuAnswerDetail_args(this);
+    public getStuAnswerResult_args deepCopy() {
+      return new getStuAnswerResult_args(this);
     }
 
     @Override
     public void clear() {
-      setPaperIdIsSet(false);
-      this.paperId = 0;
-      this.unitIdStr = null;
+      this.stuAnswerResult = null;
     }
 
-    public int getPaperId() {
-      return this.paperId;
+    public StuAnswerResult getStuAnswerResult() {
+      return this.stuAnswerResult;
     }
 
-    public getStuAnswerDetail_args setPaperId(int paperId) {
-      this.paperId = paperId;
-      setPaperIdIsSet(true);
+    public getStuAnswerResult_args setStuAnswerResult(StuAnswerResult stuAnswerResult) {
+      this.stuAnswerResult = stuAnswerResult;
       return this;
     }
 
-    public void unsetPaperId() {
-      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __PAPERID_ISSET_ID);
+    public void unsetStuAnswerResult() {
+      this.stuAnswerResult = null;
     }
 
-    /** Returns true if field paperId is set (has been assigned a value) and false otherwise */
-    public boolean isSetPaperId() {
-      return EncodingUtils.testBit(__isset_bitfield, __PAPERID_ISSET_ID);
+    /** Returns true if field stuAnswerResult is set (has been assigned a value) and false otherwise */
+    public boolean isSetStuAnswerResult() {
+      return this.stuAnswerResult != null;
     }
 
-    public void setPaperIdIsSet(boolean value) {
-      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PAPERID_ISSET_ID, value);
-    }
-
-    public String getUnitIdStr() {
-      return this.unitIdStr;
-    }
-
-    public getStuAnswerDetail_args setUnitIdStr(String unitIdStr) {
-      this.unitIdStr = unitIdStr;
-      return this;
-    }
-
-    public void unsetUnitIdStr() {
-      this.unitIdStr = null;
-    }
-
-    /** Returns true if field unitIdStr is set (has been assigned a value) and false otherwise */
-    public boolean isSetUnitIdStr() {
-      return this.unitIdStr != null;
-    }
-
-    public void setUnitIdStrIsSet(boolean value) {
+    public void setStuAnswerResultIsSet(boolean value) {
       if (!value) {
-        this.unitIdStr = null;
+        this.stuAnswerResult = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case PAPER_ID:
+      case STU_ANSWER_RESULT:
         if (value == null) {
-          unsetPaperId();
+          unsetStuAnswerResult();
         } else {
-          setPaperId((Integer)value);
-        }
-        break;
-
-      case UNIT_ID_STR:
-        if (value == null) {
-          unsetUnitIdStr();
-        } else {
-          setUnitIdStr((String)value);
+          setStuAnswerResult((StuAnswerResult)value);
         }
         break;
 
@@ -2701,11 +2782,8 @@ public class WebStatisticsService {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case PAPER_ID:
-        return getPaperId();
-
-      case UNIT_ID_STR:
-        return getUnitIdStr();
+      case STU_ANSWER_RESULT:
+        return getStuAnswerResult();
 
       }
       throw new IllegalStateException();
@@ -2718,10 +2796,8 @@ public class WebStatisticsService {
       }
 
       switch (field) {
-      case PAPER_ID:
-        return isSetPaperId();
-      case UNIT_ID_STR:
-        return isSetUnitIdStr();
+      case STU_ANSWER_RESULT:
+        return isSetStuAnswerResult();
       }
       throw new IllegalStateException();
     }
@@ -2730,30 +2806,21 @@ public class WebStatisticsService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getStuAnswerDetail_args)
-        return this.equals((getStuAnswerDetail_args)that);
+      if (that instanceof getStuAnswerResult_args)
+        return this.equals((getStuAnswerResult_args)that);
       return false;
     }
 
-    public boolean equals(getStuAnswerDetail_args that) {
+    public boolean equals(getStuAnswerResult_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_paperId = true;
-      boolean that_present_paperId = true;
-      if (this_present_paperId || that_present_paperId) {
-        if (!(this_present_paperId && that_present_paperId))
+      boolean this_present_stuAnswerResult = true && this.isSetStuAnswerResult();
+      boolean that_present_stuAnswerResult = true && that.isSetStuAnswerResult();
+      if (this_present_stuAnswerResult || that_present_stuAnswerResult) {
+        if (!(this_present_stuAnswerResult && that_present_stuAnswerResult))
           return false;
-        if (this.paperId != that.paperId)
-          return false;
-      }
-
-      boolean this_present_unitIdStr = true && this.isSetUnitIdStr();
-      boolean that_present_unitIdStr = true && that.isSetUnitIdStr();
-      if (this_present_unitIdStr || that_present_unitIdStr) {
-        if (!(this_present_unitIdStr && that_present_unitIdStr))
-          return false;
-        if (!this.unitIdStr.equals(that.unitIdStr))
+        if (!this.stuAnswerResult.equals(that.stuAnswerResult))
           return false;
       }
 
@@ -2764,43 +2831,28 @@ public class WebStatisticsService {
     public int hashCode() {
       List<Object> list = new ArrayList<Object>();
 
-      boolean present_paperId = true;
-      list.add(present_paperId);
-      if (present_paperId)
-        list.add(paperId);
-
-      boolean present_unitIdStr = true && (isSetUnitIdStr());
-      list.add(present_unitIdStr);
-      if (present_unitIdStr)
-        list.add(unitIdStr);
+      boolean present_stuAnswerResult = true && (isSetStuAnswerResult());
+      list.add(present_stuAnswerResult);
+      if (present_stuAnswerResult)
+        list.add(stuAnswerResult);
 
       return list.hashCode();
     }
 
     @Override
-    public int compareTo(getStuAnswerDetail_args other) {
+    public int compareTo(getStuAnswerResult_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
 
-      lastComparison = Boolean.valueOf(isSetPaperId()).compareTo(other.isSetPaperId());
+      lastComparison = Boolean.valueOf(isSetStuAnswerResult()).compareTo(other.isSetStuAnswerResult());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetPaperId()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.paperId, other.paperId);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      lastComparison = Boolean.valueOf(isSetUnitIdStr()).compareTo(other.isSetUnitIdStr());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetUnitIdStr()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.unitIdStr, other.unitIdStr);
+      if (isSetStuAnswerResult()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.stuAnswerResult, other.stuAnswerResult);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -2822,18 +2874,14 @@ public class WebStatisticsService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getStuAnswerDetail_args(");
+      StringBuilder sb = new StringBuilder("getStuAnswerResult_args(");
       boolean first = true;
 
-      sb.append("paperId:");
-      sb.append(this.paperId);
-      first = false;
-      if (!first) sb.append(", ");
-      sb.append("unitIdStr:");
-      if (this.unitIdStr == null) {
+      sb.append("stuAnswerResult:");
+      if (this.stuAnswerResult == null) {
         sb.append("null");
       } else {
-        sb.append(this.unitIdStr);
+        sb.append(this.stuAnswerResult);
       }
       first = false;
       sb.append(")");
@@ -2843,6 +2891,9 @@ public class WebStatisticsService {
     public void validate() throws TException {
       // check for required fields
       // check for sub-struct validity
+      if (stuAnswerResult != null) {
+        stuAnswerResult.validate();
+      }
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -2855,23 +2906,21 @@ public class WebStatisticsService {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
-        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-        __isset_bitfield = 0;
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (TException te) {
         throw new java.io.IOException(te);
       }
     }
 
-    private static class getStuAnswerDetail_argsStandardSchemeFactory implements SchemeFactory {
-      public getStuAnswerDetail_argsStandardScheme getScheme() {
-        return new getStuAnswerDetail_argsStandardScheme();
+    private static class getStuAnswerResult_argsStandardSchemeFactory implements SchemeFactory {
+      public getStuAnswerResult_argsStandardScheme getScheme() {
+        return new getStuAnswerResult_argsStandardScheme();
       }
     }
 
-    private static class getStuAnswerDetail_argsStandardScheme extends StandardScheme<getStuAnswerDetail_args> {
+    private static class getStuAnswerResult_argsStandardScheme extends StandardScheme<getStuAnswerResult_args> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, getStuAnswerDetail_args struct) throws TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getStuAnswerResult_args struct) throws TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -2881,18 +2930,11 @@ public class WebStatisticsService {
             break;
           }
           switch (schemeField.id) {
-            case 1: // PAPER_ID
-              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-                struct.paperId = iprot.readI32();
-                struct.setPaperIdIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            case 2: // UNIT_ID_STR
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-                struct.unitIdStr = iprot.readString();
-                struct.setUnitIdStrIsSet(true);
+            case 1: // STU_ANSWER_RESULT
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.stuAnswerResult = new StuAnswerResult();
+                struct.stuAnswerResult.read(iprot);
+                struct.setStuAnswerResultIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
@@ -2908,16 +2950,13 @@ public class WebStatisticsService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, getStuAnswerDetail_args struct) throws TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getStuAnswerResult_args struct) throws TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        oprot.writeFieldBegin(PAPER_ID_FIELD_DESC);
-        oprot.writeI32(struct.paperId);
-        oprot.writeFieldEnd();
-        if (struct.unitIdStr != null) {
-          oprot.writeFieldBegin(UNIT_ID_STR_FIELD_DESC);
-          oprot.writeString(struct.unitIdStr);
+        if (struct.stuAnswerResult != null) {
+          oprot.writeFieldBegin(STU_ANSWER_RESULT_FIELD_DESC);
+          struct.stuAnswerResult.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -2926,62 +2965,53 @@ public class WebStatisticsService {
 
     }
 
-    private static class getStuAnswerDetail_argsTupleSchemeFactory implements SchemeFactory {
-      public getStuAnswerDetail_argsTupleScheme getScheme() {
-        return new getStuAnswerDetail_argsTupleScheme();
+    private static class getStuAnswerResult_argsTupleSchemeFactory implements SchemeFactory {
+      public getStuAnswerResult_argsTupleScheme getScheme() {
+        return new getStuAnswerResult_argsTupleScheme();
       }
     }
 
-    private static class getStuAnswerDetail_argsTupleScheme extends TupleScheme<getStuAnswerDetail_args> {
+    private static class getStuAnswerResult_argsTupleScheme extends TupleScheme<getStuAnswerResult_args> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, getStuAnswerDetail_args struct) throws TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, getStuAnswerResult_args struct) throws TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
-        if (struct.isSetPaperId()) {
+        if (struct.isSetStuAnswerResult()) {
           optionals.set(0);
         }
-        if (struct.isSetUnitIdStr()) {
-          optionals.set(1);
-        }
-        oprot.writeBitSet(optionals, 2);
-        if (struct.isSetPaperId()) {
-          oprot.writeI32(struct.paperId);
-        }
-        if (struct.isSetUnitIdStr()) {
-          oprot.writeString(struct.unitIdStr);
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetStuAnswerResult()) {
+          struct.stuAnswerResult.write(oprot);
         }
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, getStuAnswerDetail_args struct) throws TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, getStuAnswerResult_args struct) throws TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(2);
+        BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.paperId = iprot.readI32();
-          struct.setPaperIdIsSet(true);
-        }
-        if (incoming.get(1)) {
-          struct.unitIdStr = iprot.readString();
-          struct.setUnitIdStrIsSet(true);
+          struct.stuAnswerResult = new StuAnswerResult();
+          struct.stuAnswerResult.read(iprot);
+          struct.setStuAnswerResultIsSet(true);
         }
       }
     }
 
   }
 
-  public static class getStuAnswerDetail_result implements org.apache.thrift.TBase<getStuAnswerDetail_result, getStuAnswerDetail_result._Fields>, java.io.Serializable, Cloneable, Comparable<getStuAnswerDetail_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getStuAnswerDetail_result");
+  public static class getStuAnswerResult_result implements org.apache.thrift.TBase<getStuAnswerResult_result, getStuAnswerResult_result._Fields>, java.io.Serializable, Cloneable, Comparable<getStuAnswerResult_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getStuAnswerResult_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new getStuAnswerDetail_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new getStuAnswerDetail_resultTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new getStuAnswerResult_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getStuAnswerResult_resultTupleSchemeFactory());
     }
 
-    public List<StuAnswerDetail> success; // required
+    public StuAnswerResult success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -3046,17 +3076,16 @@ public class WebStatisticsService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, StuAnswerDetail.class))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, StuAnswerResult.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getStuAnswerDetail_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getStuAnswerResult_result.class, metaDataMap);
     }
 
-    public getStuAnswerDetail_result() {
+    public getStuAnswerResult_result() {
     }
 
-    public getStuAnswerDetail_result(
-      List<StuAnswerDetail> success)
+    public getStuAnswerResult_result(
+      StuAnswerResult success)
     {
       this();
       this.success = success;
@@ -3065,18 +3094,14 @@ public class WebStatisticsService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public getStuAnswerDetail_result(getStuAnswerDetail_result other) {
+    public getStuAnswerResult_result(getStuAnswerResult_result other) {
       if (other.isSetSuccess()) {
-        List<StuAnswerDetail> __this__success = new ArrayList<StuAnswerDetail>(other.success.size());
-        for (StuAnswerDetail other_element : other.success) {
-          __this__success.add(new StuAnswerDetail(other_element));
-        }
-        this.success = __this__success;
+        this.success = new StuAnswerResult(other.success);
       }
     }
 
-    public getStuAnswerDetail_result deepCopy() {
-      return new getStuAnswerDetail_result(this);
+    public getStuAnswerResult_result deepCopy() {
+      return new getStuAnswerResult_result(this);
     }
 
     @Override
@@ -3084,26 +3109,11 @@ public class WebStatisticsService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<StuAnswerDetail> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(StuAnswerDetail elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<StuAnswerDetail>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<StuAnswerDetail> getSuccess() {
+    public StuAnswerResult getSuccess() {
       return this.success;
     }
 
-    public getStuAnswerDetail_result setSuccess(List<StuAnswerDetail> success) {
+    public getStuAnswerResult_result setSuccess(StuAnswerResult success) {
       this.success = success;
       return this;
     }
@@ -3129,7 +3139,7 @@ public class WebStatisticsService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<StuAnswerDetail>)value);
+          setSuccess((StuAnswerResult)value);
         }
         break;
 
@@ -3162,12 +3172,12 @@ public class WebStatisticsService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof getStuAnswerDetail_result)
-        return this.equals((getStuAnswerDetail_result)that);
+      if (that instanceof getStuAnswerResult_result)
+        return this.equals((getStuAnswerResult_result)that);
       return false;
     }
 
-    public boolean equals(getStuAnswerDetail_result that) {
+    public boolean equals(getStuAnswerResult_result that) {
       if (that == null)
         return false;
 
@@ -3196,7 +3206,7 @@ public class WebStatisticsService {
     }
 
     @Override
-    public int compareTo(getStuAnswerDetail_result other) {
+    public int compareTo(getStuAnswerResult_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -3230,7 +3240,7 @@ public class WebStatisticsService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("getStuAnswerDetail_result(");
+      StringBuilder sb = new StringBuilder("getStuAnswerResult_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -3247,6 +3257,9 @@ public class WebStatisticsService {
     public void validate() throws TException {
       // check for required fields
       // check for sub-struct validity
+      if (success != null) {
+        success.validate();
+      }
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -3265,15 +3278,15 @@ public class WebStatisticsService {
       }
     }
 
-    private static class getStuAnswerDetail_resultStandardSchemeFactory implements SchemeFactory {
-      public getStuAnswerDetail_resultStandardScheme getScheme() {
-        return new getStuAnswerDetail_resultStandardScheme();
+    private static class getStuAnswerResult_resultStandardSchemeFactory implements SchemeFactory {
+      public getStuAnswerResult_resultStandardScheme getScheme() {
+        return new getStuAnswerResult_resultStandardScheme();
       }
     }
 
-    private static class getStuAnswerDetail_resultStandardScheme extends StandardScheme<getStuAnswerDetail_result> {
+    private static class getStuAnswerResult_resultStandardScheme extends StandardScheme<getStuAnswerResult_result> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, getStuAnswerDetail_result struct) throws TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getStuAnswerResult_result struct) throws TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -3284,19 +3297,9 @@ public class WebStatisticsService {
           }
           switch (schemeField.id) {
             case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
-                {
-                  org.apache.thrift.protocol.TList _list64 = iprot.readListBegin();
-                  struct.success = new ArrayList<StuAnswerDetail>(_list64.size);
-                  StuAnswerDetail _elem65;
-                  for (int _i66 = 0; _i66 < _list64.size; ++_i66)
-                  {
-                    _elem65 = new StuAnswerDetail();
-                    _elem65.read(iprot);
-                    struct.success.add(_elem65);
-                  }
-                  iprot.readListEnd();
-                }
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new StuAnswerResult();
+                struct.success.read(iprot);
                 struct.setSuccessIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
@@ -3313,20 +3316,13 @@ public class WebStatisticsService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, getStuAnswerDetail_result struct) throws TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getStuAnswerResult_result struct) throws TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-          {
-            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
-            for (StuAnswerDetail _iter67 : struct.success)
-            {
-              _iter67.write(oprot);
-            }
-            oprot.writeListEnd();
-          }
+          struct.success.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -3335,16 +3331,16 @@ public class WebStatisticsService {
 
     }
 
-    private static class getStuAnswerDetail_resultTupleSchemeFactory implements SchemeFactory {
-      public getStuAnswerDetail_resultTupleScheme getScheme() {
-        return new getStuAnswerDetail_resultTupleScheme();
+    private static class getStuAnswerResult_resultTupleSchemeFactory implements SchemeFactory {
+      public getStuAnswerResult_resultTupleScheme getScheme() {
+        return new getStuAnswerResult_resultTupleScheme();
       }
     }
 
-    private static class getStuAnswerDetail_resultTupleScheme extends TupleScheme<getStuAnswerDetail_result> {
+    private static class getStuAnswerResult_resultTupleScheme extends TupleScheme<getStuAnswerResult_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, getStuAnswerDetail_result struct) throws TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, getStuAnswerResult_result struct) throws TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
         if (struct.isSetSuccess()) {
@@ -3352,32 +3348,17 @@ public class WebStatisticsService {
         }
         oprot.writeBitSet(optionals, 1);
         if (struct.isSetSuccess()) {
-          {
-            oprot.writeI32(struct.success.size());
-            for (StuAnswerDetail _iter68 : struct.success)
-            {
-              _iter68.write(oprot);
-            }
-          }
+          struct.success.write(oprot);
         }
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, getStuAnswerDetail_result struct) throws TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, getStuAnswerResult_result struct) throws TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          {
-            org.apache.thrift.protocol.TList _list69 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-            struct.success = new ArrayList<StuAnswerDetail>(_list69.size);
-            StuAnswerDetail _elem70;
-            for (int _i71 = 0; _i71 < _list69.size; ++_i71)
-            {
-              _elem70 = new StuAnswerDetail();
-              _elem70.read(iprot);
-              struct.success.add(_elem70);
-            }
-          }
+          struct.success = new StuAnswerResult();
+          struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }
       }
@@ -4822,6 +4803,738 @@ public class WebStatisticsService {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           struct.success = iprot.readI32();
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class selectWorkPaperReport_args implements org.apache.thrift.TBase<selectWorkPaperReport_args, selectWorkPaperReport_args._Fields>, java.io.Serializable, Cloneable, Comparable<selectWorkPaperReport_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("selectWorkPaperReport_args");
+
+    private static final org.apache.thrift.protocol.TField WORK_PAPER_REPORT_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("workPaperReportList", org.apache.thrift.protocol.TType.STRUCT, (short)1);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new selectWorkPaperReport_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new selectWorkPaperReport_argsTupleSchemeFactory());
+    }
+
+    public WorkPaperReportList workPaperReportList; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      WORK_PAPER_REPORT_LIST((short)1, "workPaperReportList");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // WORK_PAPER_REPORT_LIST
+            return WORK_PAPER_REPORT_LIST;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.WORK_PAPER_REPORT_LIST, new org.apache.thrift.meta_data.FieldMetaData("workPaperReportList", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, WorkPaperReportList.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(selectWorkPaperReport_args.class, metaDataMap);
+    }
+
+    public selectWorkPaperReport_args() {
+    }
+
+    public selectWorkPaperReport_args(
+      WorkPaperReportList workPaperReportList)
+    {
+      this();
+      this.workPaperReportList = workPaperReportList;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public selectWorkPaperReport_args(selectWorkPaperReport_args other) {
+      if (other.isSetWorkPaperReportList()) {
+        this.workPaperReportList = new WorkPaperReportList(other.workPaperReportList);
+      }
+    }
+
+    public selectWorkPaperReport_args deepCopy() {
+      return new selectWorkPaperReport_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.workPaperReportList = null;
+    }
+
+    public WorkPaperReportList getWorkPaperReportList() {
+      return this.workPaperReportList;
+    }
+
+    public selectWorkPaperReport_args setWorkPaperReportList(WorkPaperReportList workPaperReportList) {
+      this.workPaperReportList = workPaperReportList;
+      return this;
+    }
+
+    public void unsetWorkPaperReportList() {
+      this.workPaperReportList = null;
+    }
+
+    /** Returns true if field workPaperReportList is set (has been assigned a value) and false otherwise */
+    public boolean isSetWorkPaperReportList() {
+      return this.workPaperReportList != null;
+    }
+
+    public void setWorkPaperReportListIsSet(boolean value) {
+      if (!value) {
+        this.workPaperReportList = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case WORK_PAPER_REPORT_LIST:
+        if (value == null) {
+          unsetWorkPaperReportList();
+        } else {
+          setWorkPaperReportList((WorkPaperReportList)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case WORK_PAPER_REPORT_LIST:
+        return getWorkPaperReportList();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case WORK_PAPER_REPORT_LIST:
+        return isSetWorkPaperReportList();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof selectWorkPaperReport_args)
+        return this.equals((selectWorkPaperReport_args)that);
+      return false;
+    }
+
+    public boolean equals(selectWorkPaperReport_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_workPaperReportList = true && this.isSetWorkPaperReportList();
+      boolean that_present_workPaperReportList = true && that.isSetWorkPaperReportList();
+      if (this_present_workPaperReportList || that_present_workPaperReportList) {
+        if (!(this_present_workPaperReportList && that_present_workPaperReportList))
+          return false;
+        if (!this.workPaperReportList.equals(that.workPaperReportList))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      List<Object> list = new ArrayList<Object>();
+
+      boolean present_workPaperReportList = true && (isSetWorkPaperReportList());
+      list.add(present_workPaperReportList);
+      if (present_workPaperReportList)
+        list.add(workPaperReportList);
+
+      return list.hashCode();
+    }
+
+    @Override
+    public int compareTo(selectWorkPaperReport_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetWorkPaperReportList()).compareTo(other.isSetWorkPaperReportList());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetWorkPaperReportList()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.workPaperReportList, other.workPaperReportList);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("selectWorkPaperReport_args(");
+      boolean first = true;
+
+      sb.append("workPaperReportList:");
+      if (this.workPaperReportList == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.workPaperReportList);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+      // check for sub-struct validity
+      if (workPaperReportList != null) {
+        workPaperReportList.validate();
+      }
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class selectWorkPaperReport_argsStandardSchemeFactory implements SchemeFactory {
+      public selectWorkPaperReport_argsStandardScheme getScheme() {
+        return new selectWorkPaperReport_argsStandardScheme();
+      }
+    }
+
+    private static class selectWorkPaperReport_argsStandardScheme extends StandardScheme<selectWorkPaperReport_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, selectWorkPaperReport_args struct) throws TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // WORK_PAPER_REPORT_LIST
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.workPaperReportList = new WorkPaperReportList();
+                struct.workPaperReportList.read(iprot);
+                struct.setWorkPaperReportListIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, selectWorkPaperReport_args struct) throws TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.workPaperReportList != null) {
+          oprot.writeFieldBegin(WORK_PAPER_REPORT_LIST_FIELD_DESC);
+          struct.workPaperReportList.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class selectWorkPaperReport_argsTupleSchemeFactory implements SchemeFactory {
+      public selectWorkPaperReport_argsTupleScheme getScheme() {
+        return new selectWorkPaperReport_argsTupleScheme();
+      }
+    }
+
+    private static class selectWorkPaperReport_argsTupleScheme extends TupleScheme<selectWorkPaperReport_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, selectWorkPaperReport_args struct) throws TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetWorkPaperReportList()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetWorkPaperReportList()) {
+          struct.workPaperReportList.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, selectWorkPaperReport_args struct) throws TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.workPaperReportList = new WorkPaperReportList();
+          struct.workPaperReportList.read(iprot);
+          struct.setWorkPaperReportListIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class selectWorkPaperReport_result implements org.apache.thrift.TBase<selectWorkPaperReport_result, selectWorkPaperReport_result._Fields>, java.io.Serializable, Cloneable, Comparable<selectWorkPaperReport_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("selectWorkPaperReport_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new selectWorkPaperReport_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new selectWorkPaperReport_resultTupleSchemeFactory());
+    }
+
+    public WorkPaperReportList success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, WorkPaperReportList.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(selectWorkPaperReport_result.class, metaDataMap);
+    }
+
+    public selectWorkPaperReport_result() {
+    }
+
+    public selectWorkPaperReport_result(
+      WorkPaperReportList success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public selectWorkPaperReport_result(selectWorkPaperReport_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new WorkPaperReportList(other.success);
+      }
+    }
+
+    public selectWorkPaperReport_result deepCopy() {
+      return new selectWorkPaperReport_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public WorkPaperReportList getSuccess() {
+      return this.success;
+    }
+
+    public selectWorkPaperReport_result setSuccess(WorkPaperReportList success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((WorkPaperReportList)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof selectWorkPaperReport_result)
+        return this.equals((selectWorkPaperReport_result)that);
+      return false;
+    }
+
+    public boolean equals(selectWorkPaperReport_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      List<Object> list = new ArrayList<Object>();
+
+      boolean present_success = true && (isSetSuccess());
+      list.add(present_success);
+      if (present_success)
+        list.add(success);
+
+      return list.hashCode();
+    }
+
+    @Override
+    public int compareTo(selectWorkPaperReport_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("selectWorkPaperReport_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+      // check for sub-struct validity
+      if (success != null) {
+        success.validate();
+      }
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class selectWorkPaperReport_resultStandardSchemeFactory implements SchemeFactory {
+      public selectWorkPaperReport_resultStandardScheme getScheme() {
+        return new selectWorkPaperReport_resultStandardScheme();
+      }
+    }
+
+    private static class selectWorkPaperReport_resultStandardScheme extends StandardScheme<selectWorkPaperReport_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, selectWorkPaperReport_result struct) throws TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new WorkPaperReportList();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, selectWorkPaperReport_result struct) throws TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class selectWorkPaperReport_resultTupleSchemeFactory implements SchemeFactory {
+      public selectWorkPaperReport_resultTupleScheme getScheme() {
+        return new selectWorkPaperReport_resultTupleScheme();
+      }
+    }
+
+    private static class selectWorkPaperReport_resultTupleScheme extends TupleScheme<selectWorkPaperReport_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, selectWorkPaperReport_result struct) throws TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, selectWorkPaperReport_result struct) throws TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new WorkPaperReportList();
+          struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }
       }

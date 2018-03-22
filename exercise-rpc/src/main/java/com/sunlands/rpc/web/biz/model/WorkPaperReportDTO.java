@@ -3,7 +3,7 @@ package com.sunlands.rpc.web.biz.model;
 /**
  * 随堂考统计数据
  */
-public class PaperReportDTO {
+public class WorkPaperReportDTO {
     private Integer answerNumber; // 答题人数
     private Float answerTime; // 总答题时间
     private Float answerTimeAve; // 平均答题时间

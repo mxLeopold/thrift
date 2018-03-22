@@ -1,7 +1,23 @@
 namespace java com.sunlands.rpc.web.statistics.service
 
-// 统计答卷数据
-struct PaperReport {
+// 作业统计详情
+struct WorkPaperReportList {
+    1: string field1;
+    2: string field2;
+    3: string field3;
+    4: string field4;
+    5: string field5;
+    6: string paperId;
+    7: string paperName;
+    8: string paperTypeCode;
+    9: list<WorkPaperReport> result;
+    10: string systemNumber;
+    11: string userNumber;
+    12: double userPaperPoint;
+    13: string workGroupId;
+}
+// 作业统计数据
+struct WorkPaperReport {
     1: i32 answerNumber;
     2: double answerTime;
     3: double answerTimeAve;
@@ -21,15 +37,26 @@ struct PaperReport {
     17: i32 userPaperId;
     18: i32 wrong;
 }
+// 学员成绩列表
+struct StuAnswerResult {  // StudentsScoreResultForWorkDTO
+    1: i32 countPerPage;
+    2: i32 pageCount;
+    3: i32 pageIndex;
+    4: list<StuAnswerDetail> resultList;
+    5: i32 totalCount;
+    6: i32 paperId;
+    7: string field1;
+    8: string paperTypeCode;
+    9: string systemNumber;
+}
 // 学员成绩详情
-struct StuAnswerDetail {
-    1: i32 stuId;
-    2: string stuName;
-    3: i32 totalTime; // 答题时间
-    4: i32 correctQuestionCount;
-    5: i32 wrongQuestionCount;
-    6: double accuracyRate;
-    7: i32 recordId;
+struct StuAnswerDetail {   // StudentsScoreInfoForWorkDTO
+    1: i32 userNumber;
+    2: string username;
+    3: i32 answeredTime; // 答题时间
+    4: i32 rightNum;
+    5: i32 wrongNum;
+    6: double correctRate;
 }
 // 答卷详情
 struct PaperDetail {
@@ -83,18 +110,22 @@ struct StuQuestionAnswer {
 
 service WebStatisticsService {
 	// 查询随堂考列表
-	list<PaperReport> getPaperReport(1: string paperId, 2: string unitIdStr);
+	list<WorkPaperReport> getPaperReport(1: string paperId, 2: string unitIdStr);
 
     // 查询随堂考详情
     PaperDetail getPaperDetail(1: string paperId, 2: string unitIdStr);
 
-    // 成绩详情列表
-    list<StuAnswerDetail> getStuAnswerDetail(1: i32 paperId, 2: string unitIdStr);
+    // 学员成绩列表
+    StuAnswerResult getStuAnswerResult(1: StuAnswerResult stuAnswerResult);
 
     // 校验随堂考ID
     i32 checkQuizId(1: string paperCode);
 
     // 校验作业ID
     i32 checkAssignmentId(1: string paperCode);
+
+    // 查询作业统计数据
+    WorkPaperReportList selectWorkPaperReport(1: WorkPaperReportList workPaperReportList);
+
 
 }

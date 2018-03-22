@@ -4,10 +4,13 @@ import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
+import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,11 +20,11 @@ public class PaperReportServiceImpl implements PaperReportService {
     private PaperReportMapper paperReportMapper;
 
     @Override
-    public List<PaperReportDTO> getPaperReport(String paperCode, String unitIdStr) {
+    public WorkPaperReportDTO getPaperReport(String paperCode, String unitIdStr) {
         PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
         Assert.notNull(paperDTO, "试卷不存在");
 //        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
-        PaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
+        WorkPaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
         if (paperReport == null) {
             return null;
         }
@@ -33,18 +36,19 @@ public class PaperReportServiceImpl implements PaperReportService {
         }
         paperReport.setPaperName(paperDTO.getName());
         paperReport.setQuestionNum(paperDTO.getQuestionAmount());
-        return Arrays.asList(paperReport);
+        paperReport.setPaperId(paperDTO.getId().toString());
+        return paperReport;
     }
 
     @Override
-    public Boolean isPaperIdValid(String paperCode) {
-        PaperDTO paperDTO = paperReportMapper.selectPaperCodeByCode(paperCode);  // 配置作业、随堂考时未生成C端试卷，校验B端试卷
-        return  (paperDTO == null) ? false : true;
+    public List<StuAnswerDetailDTO> getStuAnswerDetails(Integer paperId, String unitIdStr, Integer pageIndex, Integer pageSize) {
+        return paperReportMapper.getStuAnswerDetails(paperId, unitIdStr, null, null);
     }
 
     @Override
-    public List<StuAnswerDetailDTO> getStuAnswerDetails(Integer paperId, String unitIdStr) {
-        return paperReportMapper.getStuAnswerDetails(paperId, unitIdStr);
+    public void downloadStuAnswerDetails(Integer paperId, String unitIdStr) {
+        List<StuAnswerDetailDTO> stuAnswerDetails = paperReportMapper.getStuAnswerDetails(paperId, unitIdStr, null, null);
+        // TODO: 2018/3/21 输出学员答题详情
     }
 
     @Override
@@ -57,7 +61,7 @@ public class PaperReportServiceImpl implements PaperReportService {
         paperDetailDTO.setCode(paperDTO.getCode());
         paperDetailDTO.setPaperName(paperDTO.getName());
         // 查询答题人数
-        PaperReportDTO paperReportDTO = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
+        WorkPaperReportDTO paperReportDTO = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
         if (paperReportDTO != null) {
             paperDetailDTO.setAnswerNum(paperReportDTO.getAnswerNumber());
         }
@@ -78,6 +82,14 @@ public class PaperReportServiceImpl implements PaperReportService {
             return 2;
         }
         return 0;
+    }
+
+    @Override
+    public void selectWorkPaperReport(WorkPaperReportListDTO workPaperReportListDTO) {
+        String paperCode = workPaperReportListDTO.getWorkGroupId();
+        String unitIdStr = workPaperReportListDTO.getField1();
+        WorkPaperReportDTO paperReport = getPaperReport(paperCode, unitIdStr);
+        workPaperReportListDTO.setResult(Arrays.asList(paperReport));
     }
 
     /**

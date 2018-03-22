@@ -45,7 +45,7 @@ public interface PaperReportMapper {
         "where a.t_paper_id = #{paperId} and a.delete_flag = 0 ",
         "and a.unit_id in (#{unitIds})"
     })
-    PaperReportDTO selectPaperReport(@Param("paperId") Integer paperId, @Param("unitIds") String unitIds);
+    WorkPaperReportDTO selectPaperReport(@Param("paperId") Integer paperId, @Param("unitIds") String unitIds);
 
     /**
      * 查询学员成绩详情
@@ -54,12 +54,16 @@ public interface PaperReportMapper {
      * @return
      */
     @Select({
+            "<SCRIPT>",
             "SELECT a.stu_id stuId,a.total_time totalTime,a.correct_question_num correctQuestionCount,a.question_num - a.correct_question_num wrongQuestionCount,a.id recordId",
             "from t_tiku_user_record_view a ",
             "where a.delete_flag = 0 and a.t_paper_id = #{paperId} and a.unit_id in (#{unitIds})",
-            "ORDER BY correct_question_num DESC,create_time "
+            "ORDER BY correct_question_num DESC,create_time ",
+            "<if test = 'pageIndex != null and pageSize != null'> limit #{pageIndex},#{pageSize}</if>",
+            "</SCRIPT>"
     })
-    List<StuAnswerDetailDTO> getStuAnswerDetails(@Param("paperId") Integer paperId, @Param("unitIds") String unitIds); // TODO: 2018/3/20 分页？
+    List<StuAnswerDetailDTO> getStuAnswerDetails(@Param("paperId") Integer paperId, @Param("unitIds") String unitIds,
+                                                 @Param("pageIndex") Integer pageIndex, @Param("pageSize") Integer pageSize);
 
     @Select({
             "SELECT rel.question_main_id id " ,
@@ -104,4 +108,27 @@ public interface PaperReportMapper {
             "ORDER BY correct_question_num DESC,create_time LIMIT 20"
     })
     List<StuAnswerDetailDTO> selectRankingList(@Param("paperId") Integer paperId, @Param("unitIdStr") String unitIdStr);
+
+    @Select({
+            "SELECT a.id,a.stu_id stuId,a.`name` name,a.sequence sequence,a.exercise_type exerciseType, ",
+            "a.t_paper_id paperId,a.unit_id unitId,a.question_num questionNum,a.total_time totalTime,a.stu_total_score stuTotalScore ",
+            "from t_tiku_user_record_view a where a.t_paper_id = #{paperId} and a.delete_flag = 0 and a.unit_id in (#{unitIdStr})"
+    })
+    List<TikuUserRecordDTO> selectUserRecord(@Param("paperId") Integer paperId, @Param("unitIdStr") String unitIdStr);
+
+    /**
+     * 查询学员答题详情
+     * @param tableNameIndex
+     * @param recordId
+     * @return
+     */
+    @Select({
+            "SELECT id,stu_id stuId,record_id recordId,sequence,t_paper_id tPaperId,t_knowledge_tree_id knowledgeTreeId, ",
+            "t_knowledge_node_id knowledgeNodeId,question_type questionType,subject_id subjectId,question_main_id questionMainId, ",
+            "question_sub_id questionSubId,stu_answer stuAnswer,answer_time answerTime,question_score questionScore,stu_score stuScore, ",
+            "correct_flag correctFlag,create_time createTime,update_time updateTime,operator,delete_flag deleteFlag  ",
+            "from t_tiku_user_question_${tableNameIndex} ",
+            "where delete_flag = 0 and record_id = #{recordId}"
+    })
+    List<TikuUserQuestionDTO> selectUserQuestion(@Param("tableNameIndex") String tableNameIndex, @Param("recordId") Integer recordId);
 }

@@ -1,9 +1,11 @@
 package com.sunlands.rpc.web.statistics.handler;
 
+import com.sunlands.rpc.common.CommonUtils;
 import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.model.PaperDetailDTO;
-import com.sunlands.rpc.web.biz.model.PaperReportDTO;
 import com.sunlands.rpc.web.biz.model.StuAnswerDetailDTO;
+import com.sunlands.rpc.web.biz.model.WorkPaperReportDTO;
+import com.sunlands.rpc.web.biz.model.WorkPaperReportListDTO;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
 import com.sunlands.rpc.web.statistics.service.*;
 import org.apache.thrift.TException;
@@ -16,8 +18,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Delayed;
 
 /**
  * <p>Title:</p>
@@ -35,20 +40,20 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     private PaperReportService paperReportService;
 
     @Override
-    public List<PaperReport> getPaperReport(String paperId, String unitIdStr) throws TException { // TODO: 2018/3/19 加数据，以满足jsp文件跳转逻辑
+    public List<WorkPaperReport> getPaperReport(String paperId, String unitIdStr) throws TException {
         if (StringUtils.isEmpty(paperId)) {
             throw new TException("paperId不能为空");
         }
         if (StringUtils.isEmpty(unitIdStr)) { // 必须是逗号分隔
             throw new TException("unitIdStr不能为空");
         }
-        List<PaperReportDTO> quizzesPaperReportDTOS = paperReportService.getPaperReport(paperId, unitIdStr);
-        if (CollectionUtils.isEmpty(quizzesPaperReportDTOS)) {
+        WorkPaperReportDTO quizzesPaperReportDTO = paperReportService.getPaperReport(paperId, unitIdStr);
+        if (quizzesPaperReportDTO == null) {
             return null;
         }
-        List<PaperReport> quizzesPaperReports = new ArrayList<PaperReport>();
-        BeanUtils.copyProperties(quizzesPaperReportDTOS, quizzesPaperReports);
-        return quizzesPaperReports;
+        WorkPaperReport report = new WorkPaperReport();
+        CommonUtils.copyPropertiesIgnoreNull(quizzesPaperReportDTO, report);
+        return Arrays.asList(report);
     }
 
     @Override
@@ -63,13 +68,36 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     }
 
     @Override
-    public List<StuAnswerDetail> getStuAnswerDetail(int paperId, String unitIdStr) throws TException {
-        List<StuAnswerDetailDTO> stuAnswerDetailDTOs = paperReportService.getStuAnswerDetails(paperId, unitIdStr); // TODO: 2018/3/19 企业家根据学员id查询学员姓名
+    public StuAnswerResult getStuAnswerResult(StuAnswerResult stuAnswerResult) throws TException {
+//        Integer paperId = stuAnswerResult.getPaperId();
+//        String unitIdStr = stuAnswerResult.getField1();
+        StuAnswerDetail detail = new StuAnswerDetail();
+        detail.setUserNumber(1111);
+        detail.setUsername("1111");
+        detail.setAnsweredTime(80);
+        detail.setRightNum(1);
+        detail.setCorrectRate(111);
+        detail.setRightNum(23);
+        stuAnswerResult.setResultList(Arrays.asList(detail));
+        stuAnswerResult.setCountPerPage(10);
+        stuAnswerResult.setPageCount(1);
+        stuAnswerResult.setTotalCount(1);
+        stuAnswerResult.setPageIndex(1);
+        return stuAnswerResult;
+    }
+
+    private List<StuAnswerDetail> getStuAnswerDetail(int paperId, String unitIdStr) throws TException {
+        List<StuAnswerDetailDTO> stuAnswerDetailDTOs = paperReportService.getStuAnswerDetails(paperId, unitIdStr, null, null);
         if (CollectionUtils.isEmpty(stuAnswerDetailDTOs)) {
             return null;
         }
         List<StuAnswerDetail> stuAnswerDetails = new ArrayList<StuAnswerDetail>();
-        BeanUtils.copyProperties(stuAnswerDetailDTOs, stuAnswerDetails);
+        StuAnswerDetail detail;
+        for (StuAnswerDetailDTO stuAnswerDetailDTO : stuAnswerDetailDTOs) {
+            detail = new StuAnswerDetail();
+            CommonUtils.copyPropertiesIgnoreNull(stuAnswerDetailDTO, detail);
+            stuAnswerDetails.add(detail);
+        }
         return stuAnswerDetails;
     }
 
@@ -88,6 +116,14 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         int checkPaperId = paperReportService.checkPaperId(paperCode, Constant.PAPER_TYPE_ASSIGNMENTS);
         logger.debug("checkAssignmentId(paperCode:{}) -------- end, return {}", paperCode, checkPaperId);
         return checkPaperId;
+    }
+
+    @Override
+    public WorkPaperReportList selectWorkPaperReport(WorkPaperReportList workPaperReportList) throws TException {
+        List<WorkPaperReport> paperReport = getPaperReport(workPaperReportList.getWorkGroupId(), workPaperReportList.getField1());
+        workPaperReportList.setResult(paperReport);
+        workPaperReportList.setPaperId(paperReport.get(0).getPaperId());
+        return workPaperReportList;
     }
 
 }

@@ -1,10 +1,13 @@
 package com.sunlands.rpc.test.web;
 
-import com.sun.tools.corba.se.idl.StringGen;
-import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
+import com.sunlands.rpc.web.statistics.handler.WebStatisticsServiceHandler;
+import com.sunlands.rpc.web.statistics.service.StuAnswerResult;
+import com.sunlands.rpc.web.statistics.service.WebStatisticsService;
+import com.sunlands.rpc.web.statistics.service.WorkPaperReport;
+import com.sunlands.rpc.web.statistics.service.WorkPaperReportList;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.transport.THttpClient;
@@ -49,25 +52,15 @@ public class WebStatisticsServiceTest {
     protected PaperReportService paperReportService;
 
 
-    @LocalServerPort
-    protected int port;
-
-    protected com.sunlands.rpc.web.statistics.service.WebStatisticsService.Client client;
-
-
-    @Before
-    public void setUp() throws Exception {
-        TTransport transport = new THttpClient("http://localhost:" + port + "/web/statistics");
-        TProtocol protocol = protocolFactory.getProtocol(transport);
-        client = new com.sunlands.rpc.web.statistics.service.WebStatisticsService.Client(protocol);
-    }
+    @Autowired
+    protected WebStatisticsServiceHandler webStatisticsServiceHandler;
 
     @Test
     public void testNew() {
-        String paperCode = "2501";
-        String unitIdStr = "167107,1";
-//        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
-//        org.springframework.util.Assert.notNull(paperDTO, "试卷不存在");
+        String paperCode = "2536";
+        String unitIdStr = "1579208,1";
+        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+        org.springframework.util.Assert.notNull(paperDTO, "试卷不存在");
 ////        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
 //        PaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
 //        if (paperReport != null) {
@@ -113,8 +106,60 @@ public class WebStatisticsServiceTest {
 //        PaperDetailDTO paperDetailDTO = paperReportService.getPaperDetail(paperCode, unitIdStr);
 //        System.out.println(paperDetailDTO);
 
-        List<PaperReportDTO> paperReportDTOS = paperReportService.getPaperReport(paperCode, unitIdStr);
-        System.out.println(paperReportDTOS);
+//        List<WorkPaperReportDTO> paperReportDTOS = paperReportService.getPaperReport(paperCode, unitIdStr);
+//        System.out.println(paperReportDTOS);
+
+//        WorkPaperReportListDTO workPaperReportListDTO = new WorkPaperReportListDTO();
+//        workPaperReportListDTO.setField1("167107,1");
+//        workPaperReportListDTO.setWorkGroupId("2501");
+//        paperReportService.selectWorkPaperReport(workPaperReportListDTO);
+        List<WorkPaperReport> paperReport = null;
+        WorkPaperReportList reportList = new WorkPaperReportList();
+        reportList.setWorkGroupId(paperCode);
+        reportList.setField1(unitIdStr);
+        try {
+//            paperReport = webStatisticsServiceHandler.getPaperReport(paperCode, "167107,1");
+            reportList = webStatisticsServiceHandler.selectWorkPaperReport(reportList);
+        } catch (Exception e) {
+
+        }
+//        System.out.println(paperReport);
+        System.out.println(reportList);
+    }
+
+
+    @Test
+    public void test() {
+        String paperCode = "2527";
+        String unitIdStr = "352923";
+        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+        org.springframework.util.Assert.notNull(paperDTO, "试卷不存在");
+
+        List<TikuUserRecordDTO> tikuUserRecordDTOS = paperReportMapper.selectUserRecord(paperDTO.getId(), unitIdStr);
+        if (!CollectionUtils.isEmpty(tikuUserRecordDTOS)) {
+            for (TikuUserRecordDTO recordDTO : tikuUserRecordDTOS) {
+                List<TikuUserQuestionDTO> tikuUserQuestionDTOS = paperReportMapper.selectUserQuestion(getTableNameIndex(recordDTO.getStuId()), recordDTO.getId());
+            }
+        }
+    }
+
+    private String getTableNameIndex(Integer studentId) {
+        org.springframework.util.Assert.notNull(studentId);
+        return String.format("%02d", studentId % 100);
+    }
+
+    @Test
+    public void testStuAnswerResult() {
+        StuAnswerResult stuAnswerResult = new StuAnswerResult();
+        try {
+            stuAnswerResult  = webStatisticsServiceHandler.getStuAnswerResult(stuAnswerResult);
+
+        } catch (Exception e) {
+        }
+
+        System.out.println(stuAnswerResult);
+
 
     }
+
 }
