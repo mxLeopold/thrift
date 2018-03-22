@@ -57,7 +57,7 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
     @Override
     public DailyIntelligentExerciseDTO isDailyIntelligentExerciseDone(int studentId) throws TException {
         // 说明, 返回结果集里的TIKU是董森下游需要用的字段. 本RPC直接返回默认值TIKU
-        final String type = "TIKU";
+        final String type = "tiku";
         // 查询今日智能练习是否完成
         int exerciseDone = userRecordStatisticsService.isExerciseDone(studentId, DateTimeUtil.today(), Constant.TikuUserRecord.ExerciseTypeEnum.INTELLIGENT_EXERCISE.getCode());
         boolean hasIntelligentExercise = true;
