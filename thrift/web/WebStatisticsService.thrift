@@ -44,7 +44,7 @@ struct StuAnswerResult {  // StudentsScoreResultForWorkDTO
     3: i32 pageIndex;
     4: list<StuAnswerDetail> resultList;
     5: i32 totalCount;
-    6: i32 paperId;
+    6: string paperId;
     7: string field1;
     8: string paperTypeCode;
     9: string systemNumber;

@@ -36,7 +36,7 @@ public class PaperReportServiceImpl implements PaperReportService {
         }
         paperReport.setPaperName(paperDTO.getName());
         paperReport.setQuestionNum(paperDTO.getQuestionAmount());
-        paperReport.setPaperId(paperDTO.getId().toString());
+        paperReport.setPaperId(paperCode);
         return paperReport;
     }
 

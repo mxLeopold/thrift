@@ -69,20 +69,31 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
 
     @Override
     public StuAnswerResult getStuAnswerResult(StuAnswerResult stuAnswerResult) throws TException {
+        logger.debug("getStuAnswerResult(stuAnswerResult:{}) -------- begin", stuAnswerResult.toString());
 //        Integer paperId = stuAnswerResult.getPaperId();
 //        String unitIdStr = stuAnswerResult.getField1();
+        // TODO: 2018/3/23 根据paperID(CODE) 查询C端试卷id
+        // TODO: 2018/3/23 查询总条数，当前页学员答题详情列表
         StuAnswerDetail detail = new StuAnswerDetail();
-        detail.setUserNumber(1111);
-        detail.setUsername("1111");
+        detail.setUserNumber(705981);
+//        detail.setUsername("1111");
         detail.setAnsweredTime(80);
         detail.setRightNum(1);
         detail.setCorrectRate(111);
         detail.setRightNum(23);
-        stuAnswerResult.setResultList(Arrays.asList(detail));
-        stuAnswerResult.setCountPerPage(10);
-        stuAnswerResult.setPageCount(1);
-        stuAnswerResult.setTotalCount(1);
-        stuAnswerResult.setPageIndex(1);
+        ArrayList<StuAnswerDetail> stuAnswerDetails = new ArrayList<>();
+        StuAnswerDetail stuAnswerDetail;
+        for (int i = 0 ; i < 35; i++) {
+            stuAnswerDetail = new StuAnswerDetail();
+            BeanUtils.copyProperties(detail, stuAnswerDetail);
+            stuAnswerDetails.add(stuAnswerDetail);
+        }
+        stuAnswerResult.setResultList(stuAnswerDetails);
+        stuAnswerResult.setTotalCount(stuAnswerDetails.size()); // 总数
+        if (stuAnswerResult.getCountPerPage() != 0) {
+            stuAnswerResult.setPageCount(stuAnswerDetails.size() / stuAnswerResult.getCountPerPage() + 1);
+        }
+        logger.debug("getStuAnswerResult(stuAnswerResult) -------- end, return {}", stuAnswerResult.toString());
         return stuAnswerResult;
     }
 
@@ -122,7 +133,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     public WorkPaperReportList selectWorkPaperReport(WorkPaperReportList workPaperReportList) throws TException {
         List<WorkPaperReport> paperReport = getPaperReport(workPaperReportList.getWorkGroupId(), workPaperReportList.getField1());
         workPaperReportList.setResult(paperReport);
-        workPaperReportList.setPaperId(paperReport.get(0).getPaperId());
+        workPaperReportList.setPaperId(workPaperReportList.getWorkGroupId());
         return workPaperReportList;
     }
 
