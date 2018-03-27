@@ -12,6 +12,7 @@ public class StuAnswerDetailDTO {
     private Integer wrongQuestionCount;
     private double accuracyRate;
     private Integer recordId;
+    private Integer questionNum;
 
     public Integer getStuId() {
         return stuId;
@@ -67,6 +68,14 @@ public class StuAnswerDetailDTO {
 
     public void setRecordId(Integer recordId) {
         this.recordId = recordId;
+    }
+
+    public Integer getQuestionNum() {
+        return questionNum;
+    }
+
+    public void setQuestionNum(Integer questionNum) {
+        this.questionNum = questionNum;
     }
 
 }

@@ -5,21 +5,14 @@ import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
 import com.sunlands.rpc.web.statistics.handler.WebStatisticsServiceHandler;
 import com.sunlands.rpc.web.statistics.service.StuAnswerResult;
-import com.sunlands.rpc.web.statistics.service.WebStatisticsService;
 import com.sunlands.rpc.web.statistics.service.WorkPaperReport;
 import com.sunlands.rpc.web.statistics.service.WorkPaperReportList;
-import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
-import org.apache.thrift.transport.THttpClient;
-import org.apache.thrift.transport.TTransport;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -59,7 +52,7 @@ public class WebStatisticsServiceTest {
     public void testNew() {
         String paperCode = "2536";
         String unitIdStr = "1579208,1";
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+        PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
         org.springframework.util.Assert.notNull(paperDTO, "试卷不存在");
 ////        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
 //        PaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
@@ -132,7 +125,7 @@ public class WebStatisticsServiceTest {
     public void test() {
         String paperCode = "2527";
         String unitIdStr = "352923";
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+        PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
         org.springframework.util.Assert.notNull(paperDTO, "试卷不存在");
 
         List<TikuUserRecordDTO> tikuUserRecordDTOS = paperReportMapper.selectUserRecord(paperDTO.getId(), unitIdStr);
@@ -159,7 +152,19 @@ public class WebStatisticsServiceTest {
 
         System.out.println(stuAnswerResult);
 
+    }
 
+    @Test
+    public void testStuAnswerDetails() {
+        Integer paperId = 8130;
+        String unitIdStr = "156718,157810,157810";
+        String str[] = unitIdStr.split(",");
+
+        int totalNum = paperReportMapper.getStuAnswerDetailsCount(paperId % 10,paperId, Arrays.asList(str));
+        if (totalNum != 0) {
+            List<StuAnswerDetailDTO> stuAnswerDetailDTOS = paperReportMapper.getStuAnswerDetails(0,paperId,Arrays.asList(str),0,1);//= paperReportMapper.getStuAnswerDetails(0,8130,"166529,156718,157810,157810",1,1);
+            System.out.println(stuAnswerDetailDTOS);
+        }
     }
 
 }

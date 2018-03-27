@@ -30,7 +30,7 @@ public interface PaperReportMapper {
             "create_time createTime,update_time updateTime,creator,operator,delete_flag deleteFlag",
             " from t_paper where delete_flag = 0 and code = #{paperCode} order by create_time desc limit 1"
     })
-    PaperDTO selectPapeByCode(@Param("paperCode") String paperCode);
+    PaperDTO selectPaperByCode(@Param("paperCode") String paperCode);
 
 
     /**
@@ -48,22 +48,38 @@ public interface PaperReportMapper {
     WorkPaperReportDTO selectPaperReport(@Param("paperId") Integer paperId, @Param("unitIds") String unitIds);
 
     /**
-     * 查询学员成绩详情
+     * 查询学员答题记录
+     * @param index
      * @param paperId
-     * @param unitIds
+     * @param unitIdStr
+     * @param pageIndex
+     * @param pageSize
      * @return
      */
     @Select({
-            "<SCRIPT>",
-            "SELECT a.stu_id stuId,a.total_time totalTime,a.correct_question_num correctQuestionCount,a.question_num - a.correct_question_num wrongQuestionCount,a.id recordId",
-            "from t_tiku_user_record_view a ",
-            "where a.delete_flag = 0 and a.t_paper_id = #{paperId} and a.unit_id in (#{unitIds})",
-            "ORDER BY correct_question_num DESC,create_time ",
-            "<if test = 'pageIndex != null and pageSize != null'> limit #{pageIndex},#{pageSize}</if>",
-            "</SCRIPT>"
+            "<script>",
+            "SELECT id,stu_id stuId,total_time totalTime,correct_question_num correctQuestionCount,question_num - correct_question_num wrongQuestionCount,record_id recordId,question_num questionNum ",
+            "from t_tiku_exam_user_statistics_${index} ",
+            "where t_paper_id = #{paperId} AND unit_id in ",
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIdStr\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",
+            " and delete_flag = 0",
+            "ORDER BY correct_question_num DESC,create_time",
+            "<if test = \"pageIndex != null and pageSize != null\">limit #{pageIndex},#{pageSize}</if>",
+            "</script>"
     })
-    List<StuAnswerDetailDTO> getStuAnswerDetails(@Param("paperId") Integer paperId, @Param("unitIds") String unitIds,
-                                                 @Param("pageIndex") Integer pageIndex, @Param("pageSize") Integer pageSize);
+    List<StuAnswerDetailDTO> getStuAnswerDetails(@Param("index") Integer index, @Param("paperId") Integer paperId, @Param("unitIdStr") List<String> unitIdStr,
+                                       @Param("pageIndex") Integer pageIndex, @Param("pageSize")Integer pageSize);
+
+    @Select({
+            "<script>",
+            "SELECT count(id)",
+            "from t_tiku_exam_user_statistics_${index} ",
+            "where t_paper_id = #{paperId} AND unit_id in ",
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIdStr\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",
+            " and delete_flag = 0",
+            "</script>"
+    })
+    int getStuAnswerDetailsCount(@Param("index") Integer index, @Param("paperId") Integer paperId, @Param("unitIdStr") List<String> unitIdStr);
 
     @Select({
             "SELECT rel.question_main_id id " ,

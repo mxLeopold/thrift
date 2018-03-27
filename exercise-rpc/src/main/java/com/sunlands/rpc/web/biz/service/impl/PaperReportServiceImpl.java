@@ -4,7 +4,6 @@ import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
-import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -21,7 +20,7 @@ public class PaperReportServiceImpl implements PaperReportService {
 
     @Override
     public WorkPaperReportDTO getPaperReport(String paperCode, String unitIdStr) {
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+        PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
         Assert.notNull(paperDTO, "试卷不存在");
 //        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
         WorkPaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
@@ -42,18 +41,17 @@ public class PaperReportServiceImpl implements PaperReportService {
 
     @Override
     public List<StuAnswerDetailDTO> getStuAnswerDetails(Integer paperId, String unitIdStr, Integer pageIndex, Integer pageSize) {
-        return paperReportMapper.getStuAnswerDetails(paperId, unitIdStr, null, null);
-    }
-
-    @Override
-    public void downloadStuAnswerDetails(Integer paperId, String unitIdStr) {
-        List<StuAnswerDetailDTO> stuAnswerDetails = paperReportMapper.getStuAnswerDetails(paperId, unitIdStr, null, null);
-        // TODO: 2018/3/21 输出学员答题详情
+//        int totalCount = paperReportMapper.getStuAnswerDetailsCount(paperId % 10, paperId, unitIdStr);
+//        if (totalCount == 0) {
+//            return null;
+//        }
+        String str[] = unitIdStr.split(",");
+        return paperReportMapper.getStuAnswerDetails(paperId % 10,paperId, Arrays.asList(str), pageIndex, pageSize);
     }
 
     @Override
     public PaperDetailDTO getPaperDetail(String paperId, String unitIdStr) {
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperId);
+        PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperId);
         Assert.notNull(paperDTO, "试卷不存在");
 
         PaperDetailDTO paperDetailDTO = new PaperDetailDTO();
@@ -120,4 +118,41 @@ public class PaperReportServiceImpl implements PaperReportService {
         }
         return questions;
     }
+
+    @Override
+    public StuAnswerResultDTO getStuAnswerResult(StuAnswerResultDTO stuAnswerResultDTO) {
+        String paperCode = stuAnswerResultDTO.getPaperId();
+        String unitIdStr = stuAnswerResultDTO.getField1();
+//        String paperCode = "2504";
+//        String unitIdStr = "166529,156718,157810,157810";
+        if (StringUtils.isEmpty(paperCode)) {
+            throw new RuntimeException("paperId不能为空");
+        }
+        if (StringUtils.isEmpty(unitIdStr)) {
+            throw new RuntimeException("unitIdStr不能为空");
+        }
+        PaperDTO paperDTO= paperReportMapper.selectPaperByCode(paperCode);
+        Integer paperId = paperDTO.getId();
+        List<String> unitIds = Arrays.asList(unitIdStr.split(","));
+        int totalCount = paperReportMapper.getStuAnswerDetailsCount(paperId % 10, paperId, unitIds);
+        stuAnswerResultDTO.setTotalCount(totalCount);
+        if (totalCount != 0) {
+            Integer start = null;
+            if (stuAnswerResultDTO.getPageIndex() != null && stuAnswerResultDTO.getCountPerPage() != null
+                    && !stuAnswerResultDTO.getPageIndex().equals(0) && !stuAnswerResultDTO.getCountPerPage().equals(0)) {
+                start = (stuAnswerResultDTO.getPageIndex() - 1) * stuAnswerResultDTO.getCountPerPage();
+            }
+            List<StuAnswerDetailDTO> stuAnswerDetailDTOS = paperReportMapper.getStuAnswerDetails(paperId % 10, paperId, unitIds, start, stuAnswerResultDTO.getCountPerPage());
+            // TODO: 2018/3/27 计算正确率
+
+
+            stuAnswerResultDTO.setResultList(stuAnswerDetailDTOS);
+            if (!CollectionUtils.isEmpty(stuAnswerDetailDTOS) &&
+                    !stuAnswerResultDTO.getCountPerPage().equals(0)) {
+                stuAnswerResultDTO.setPageCount(stuAnswerDetailDTOS.size() / stuAnswerResultDTO.getCountPerPage() + 1);
+            }
+        }
+        return stuAnswerResultDTO;
+    }
+
 }
