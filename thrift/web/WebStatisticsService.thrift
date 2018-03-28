@@ -60,59 +60,51 @@ struct StuAnswerDetail {   // StudentsScoreInfoForWorkDTO
 }
 // 答卷详情
 struct PaperDetail {
-    1: string paperName;
-    2: i32 answerNum; // 答卷人数
-    3: list<StuAnswerDetail> ranking; // 排行榜
-    4: list<QuestionDetail> questionDetailList;
+    1: i32 paperId;
+    2: string paperName;
+    3: i32 finishCount;  // 答题人数
+    4: list<QuestionDetail> questions; // 题目列表
+    5: list<QuizzesOrWorkUserAnswers> quizzesOrWorkUserAnswersDTOList; // 排行榜
 }
+
+struct QuizzesOrWorkUserAnswers {
+    1: i32 paperId;
+    2: i32 userNumber;
+    3: string userName;
+    4: i32 correctCount;
+}
+
 // 题目详情
 struct QuestionDetail {
-    1: i32 questionMainId;
-    2: i32 sequence;
-    3: string questionType;
-    4: string questionContent;
-    5: string analysis;
-    6: string scoreStr;
-    7: string answer;
-    8: list<Option> optionList; // 选项列表
-    9: list<Blank> blankList; // 填空题-空列表
-    10: list<StuQuestionAnswer> stuAnswers; // 学员答题信息
-    11: list<QuestionDetail> subQuestionList; // 子题
-    12: list<ScorePoint> scorePointList; // 得分点信息
+    1: string questionContent;
+    2: string expertContent;
+    3: list<Option> questionOptions;
+    4: list<OptionAnswer> optionAnswers;
+    5: string questionType;
+    6: list<ScorePoint> scorePoints;
 }
 // 得分点
 struct ScorePoint {
-    1: i32 id;
-    2: i32 questionId;
-    3: string content;
-    4: string score;
+    1: string score;
+    2: string content;
 }
-// 填空题 - 空
-struct Blank {
-    1: i32 id;
-    2: string answer;
-}
-// 选项
+// 选项  -- 根据sequence排序
 struct Option {
-    1: i32 sequence;
-    2: string optionTitle;
-    3: string optionContent;
-    4: i32 correct;
+    1: i32 rightAnswerFlag;// 是否为正确选项
+    2: string sortOrderStr;// 选项
+    3: string optioncolContent; // 选项内容
 }
-// 学员答题分布统计
-struct StuQuestionAnswer {
-    1: i32 questionId;
-    2: i32 stuId;
-    3: string stuAnswer;
-    4: i32 correct; // 是否正确
-    5: i32 stuScore; // 学员得分
+// 选项分布
+struct OptionAnswer {
+    1: string questionResult; // 选项
+    2: i32 answerTotal; // 答题人数
 }
 
 service WebStatisticsService {
 	// 查询随堂考列表
 	list<WorkPaperReport> getPaperReport(1: string paperId, 2: string unitIdStr);
 
-    // 查询随堂考详情
+    // 查询作业、随堂考详情
     PaperDetail getPaperDetail(1: string paperId, 2: string unitIdStr);
 
     // 学员成绩列表
@@ -126,6 +118,7 @@ service WebStatisticsService {
 
     // 查询作业统计数据
     WorkPaperReportList selectWorkPaperReport(1: WorkPaperReportList workPaperReportList);
+
 
 
 }

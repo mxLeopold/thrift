@@ -167,4 +167,28 @@ public class WebStatisticsServiceTest {
         }
     }
 
+    @Test
+    public void testSelectByPaperIdAndUnitId() {
+        List<TikuExamStatisticsDTO> tikuExamStatisticsDTO = paperReportMapper.selectByPaperIdAndUnitId(1, Arrays.asList("1"));
+        System.out.println(tikuExamStatisticsDTO);
+
+        int num = paperReportMapper.selectTotalAnswerNum(1,Arrays.asList("1","2"));
+        System.out.println(num);
+    }
+
+    @Test
+    public void testSelectRankingList() {
+        List<StuAnswerDetailDTO> stuAnswerDetailDTOS = paperReportMapper.selectRankingList(8130, Arrays.asList("166529","156718","157810","157810"));
+        System.out.println(stuAnswerDetailDTOS);
+    }
+
+    @Test
+    public void testSelectStuAnswers() {
+        Integer paperId = 8130;
+
+        List<OptionAnswerDTO> optionAnswerDTOS = paperReportMapper.selectStuAnswers(paperId % 10,
+                paperId, Arrays.asList("166529","156718","157810","157810"), 111);
+        System.out.println(optionAnswerDTOS);
+
+    }
 }

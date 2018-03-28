@@ -1,6 +1,7 @@
 package com.sunlands.rpc.web.biz.dao;
 
 import com.sunlands.rpc.web.biz.model.*;
+import com.sunlands.rpc.web.statistics.service.OptionAnswer;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -47,6 +48,37 @@ public interface PaperReportMapper {
     })
     WorkPaperReportDTO selectPaperReport(@Param("paperId") Integer paperId, @Param("unitIds") String unitIds);
 
+    /**
+     * 查询考试统计数据 
+     * @param paperId
+     * @param unitIdList
+     * @return
+     */
+    @Select({
+            "<script>",
+            "select id,t_paper_id paperId,unit_id unitId,total_answer_num totalAnswerNum,total_answer_time totalAnswerTime,operator,delete_flag deleteFlag,create_time createTime,update_time updateTime  ",
+            "from t_tiku_exam_statistics  ",
+            "where delete_flag = 0 and t_paper_id = #{paperId} and unit_id in  ",
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIdList\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",
+            "</script>"
+    })
+    List<TikuExamStatisticsDTO> selectByPaperIdAndUnitId(@Param("paperId") Integer paperId, @Param("unitIdList") List<String> unitIdList);
+
+    /**
+     * 查询参考人数
+     * @param paperId
+     * @param unitIdList
+     * @return
+     */
+    @Select({
+            "<script>",
+            "select ifnull(sum(total_answer_num),0) ",
+            "from t_tiku_exam_statistics  ",
+            "where delete_flag = 0 and t_paper_id = #{paperId} and unit_id in  ",
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIdList\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",
+            "</script>"
+    })
+    int selectTotalAnswerNum(@Param("paperId") Integer paperId, @Param("unitIdList") List<String> unitIdList);
     /**
      * 查询学员答题记录
      * @param index
@@ -117,13 +149,43 @@ public interface PaperReportMapper {
     })
     List<ScorePointDTO> selectScorePointsByQuestionId(@Param("questionId") Integer questionId);
 
+    /**
+     * 查询选项分布
+     * @param tableNameIndex
+     * @param paperId
+     * @param unitIdList
+     * @param questionMainId
+     * @return
+     */
     @Select({
-            "SELECT id recordId,stu_id stuId,correct_question_num correctQuestionCount ",
-            "from t_tiku_user_record_view ",
-            "where t_paper_id = #{paperId} and unit_id in (#{unitIdStr}) ",
-            "ORDER BY correct_question_num DESC,create_time LIMIT 20"
+            "<script>",
+            "SELECT `option` questionResult,sum(total_answer_num) answerTotal ",
+            "from t_tiku_exam_question_answer_statistics_0  ",
+            "WHERE delete_flag = 0 and t_paper_id = #{paperId} and unit_id in ",
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIdList\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",
+            "and question_main_id = #{questionMainId} ",
+            "GROUP BY `option`",
+            "</script>"
     })
-    List<StuAnswerDetailDTO> selectRankingList(@Param("paperId") Integer paperId, @Param("unitIdStr") String unitIdStr);
+    List<OptionAnswerDTO> selectStuAnswers(@Param("tableNameIndex") Integer tableNameIndex,
+                                           @Param("paperId") Integer paperId, @Param("unitIdList") List<String> unitIdList, @Param("questionMainId") Integer questionMainId);
+
+    /**
+     * 考试内排名根据答对题数排序
+     * @param paperId
+     * @param unitIdList
+     * @return
+     */
+    @Select({
+            "<script>",
+            "SELECT stu_id stuId, correct_question_num correctQuestionCount ",
+            "from t_tiku_exam_user_statistics_0 ",
+            "where delete_flag = 0 and t_paper_id = #{paperId} and unit_id in",
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIdList\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",
+            "ORDER BY correct_question_num DESC,create_time LIMIT 20",
+            "</script>"
+    })
+    List<StuAnswerDetailDTO> selectRankingList(@Param("paperId") Integer paperId, @Param("unitIdList") List<String> unitIdList);
 
     @Select({
             "SELECT a.id,a.stu_id stuId,a.`name` name,a.sequence sequence,a.exercise_type exerciseType, ",

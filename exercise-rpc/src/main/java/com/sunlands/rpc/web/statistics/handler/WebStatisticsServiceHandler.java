@@ -40,7 +40,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         if (StringUtils.isEmpty(paperId)) {
             throw new TException("paperId不能为空");
         }
-        if (StringUtils.isEmpty(unitIdStr)) { // 必须是逗号分隔
+        if (StringUtils.isEmpty(unitIdStr)) {
             throw new TException("unitIdStr不能为空");
         }
         WorkPaperReportDTO quizzesPaperReportDTO = paperReportService.getPaperReport(paperId, unitIdStr);
@@ -54,13 +54,96 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
 
     @Override
     public PaperDetail getPaperDetail(String paperId, String unitIdStr) throws TException {
+        if (StringUtils.isEmpty(paperId)) {
+            throw new TException("paperId不能为空");
+        }
+        if (StringUtils.isEmpty(unitIdStr)) {
+            throw new TException("unitIdStr不能为空");
+        }
         PaperDetailDTO paperDetailDTO = paperReportService.getPaperDetail(paperId, unitIdStr);
         if (paperDetailDTO == null) {
             return null;
         }
         PaperDetail paperDetail = new PaperDetail();
-        BeanUtils.copyProperties(paperDetailDTO, paperDetail);
+        paperDetail.setPaperId(paperDetailDTO.getPaperId());
+        paperDetail.setPaperName(paperDetailDTO.getPaperName());
+        paperDetail.setFinishCount(paperDetailDTO.getAnswerNum());
+        // 排行榜
+        List<StuAnswerDetailDTO> ranking = paperDetailDTO.getRanking();
+        if (!CollectionUtils.isEmpty(ranking)) {
+            List<QuizzesOrWorkUserAnswers> answers = new ArrayList<QuizzesOrWorkUserAnswers>();
+            QuizzesOrWorkUserAnswers answer;
+            for (StuAnswerDetailDTO answerDetailDTO : ranking) {
+                answer = new QuizzesOrWorkUserAnswers();
+                answer.setUserNumber(answerDetailDTO.getStuId());
+                answer.setCorrectCount(answerDetailDTO.getCorrectQuestionCount());
+                answers.add(answer);
+            }
+            paperDetail.setQuizzesOrWorkUserAnswersDTOList(answers);
+        }
+        // 题目详情
+        List<QuestionDetailDTO> questions = paperDetailDTO.getQuestionDetailList();
+        if (!CollectionUtils.isEmpty(questions)) {
+            paperDetail.setQuestions(getQuestionDetailList(questions));
+        }
         return paperDetail;
+    }
+
+    /**
+     * 数据转换 QuestionDetailDTO -- > QuestionDetail
+     * @param questions
+     * @return
+     */
+    private List<QuestionDetail> getQuestionDetailList(List<QuestionDetailDTO> questions) {
+        List<QuestionDetail> questionDetails = new ArrayList<QuestionDetail>();
+        QuestionDetail questionDetail;
+        for (QuestionDetailDTO question : questions) {
+            questionDetail = new QuestionDetail();
+            questionDetail.setQuestionType(question.getQuestionType());
+            questionDetail.setQuestionContent(question.getQuestionContent());
+            questionDetail.setExpertContent(question.getAnalysis());
+            // 选项
+            List<OptionDTO> optionList = question.getOptionList();
+            if (!CollectionUtils.isEmpty(optionList)) {
+                ArrayList<Option> options = new ArrayList<>();
+                Option option;
+                for (OptionDTO optionDTO : optionList) {
+                    option = new Option();
+                    option.setRightAnswerFlag(optionDTO.getCorrect());
+                    option.setOptioncolContent(optionDTO.getOptionContent());
+                    option.setSortOrderStr(optionDTO.getOptionTitle());
+                    options.add(option);
+                }
+                questionDetail.setQuestionOptions(options);
+            }
+            // 选项分布
+            List<OptionAnswerDTO> optionAnswerDTOS = question.getStuAnswers();
+            if (!CollectionUtils.isEmpty(optionAnswerDTOS)) {
+                ArrayList<OptionAnswer> optionAnswers = new ArrayList<>();
+                OptionAnswer optionAnswer;
+                for (OptionAnswerDTO optionAnswerDTO : optionAnswerDTOS) {
+                    optionAnswer = new OptionAnswer();
+                    optionAnswer.setQuestionResult(optionAnswerDTO.getQuestionResult());
+                    optionAnswer.setAnswerTotal(optionAnswerDTO.getAnswerTotal());
+                }
+                questionDetail.setOptionAnswers(optionAnswers);
+            }
+            // 得分点
+            ArrayList<ScorePointDTO> scorePointDTOS = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(scorePointDTOS)) {
+                ArrayList<ScorePoint> scorePoints = new ArrayList<>();
+                ScorePoint scorePoint;
+                for (ScorePointDTO scorePointDTO : scorePointDTOS) {
+                    scorePoint = new ScorePoint();
+                    scorePoint.setContent(scorePointDTO.getContent());
+                    scorePoint.setScore(scorePointDTO.getScore());
+                    scorePoints.add(scorePoint);
+                }
+                questionDetail.setScorePoints(scorePoints);
+            }
+            questionDetails.add(questionDetail);
+        }
+        return questionDetails;
     }
 
     @Override

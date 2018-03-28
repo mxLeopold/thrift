@@ -50,23 +50,41 @@ public class PaperReportServiceImpl implements PaperReportService {
     }
 
     @Override
-    public PaperDetailDTO getPaperDetail(String paperId, String unitIdStr) {
-        PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperId);
-        Assert.notNull(paperDTO, "试卷不存在");
+    public PaperDetailDTO getPaperDetail(String paperCode, String unitIdStr) {
+        PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
+        // 没有生成C端试卷，未答题
+        if (paperDTO == null) {
+            return null;
+        }
+        // 试卷版本id
+        Integer paperId = paperDTO.getId();
+        // 课程单元id列表
+        List<String> unitIds = Arrays.asList(unitIdStr.split(","));
+        // 查询答题人数
+        int num = paperReportMapper.selectTotalAnswerNum(paperId, unitIds);  // 默认答题人数为正确数据
+        if (num == 0) {
+            return null;
+        }
 
         PaperDetailDTO paperDetailDTO = new PaperDetailDTO();
-        paperDetailDTO.setPaperId(paperDTO.getId());
+        paperDetailDTO.setPaperId(paperId);
         paperDetailDTO.setCode(paperDTO.getCode());
         paperDetailDTO.setPaperName(paperDTO.getName());
-        // 查询答题人数
-        WorkPaperReportDTO paperReportDTO = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
-        if (paperReportDTO != null) {
-            paperDetailDTO.setAnswerNum(paperReportDTO.getAnswerNumber());
-        }
+        paperDetailDTO.setAnswerNum(num);
         // 排行榜
-        paperDetailDTO.setRanking(paperReportMapper.selectRankingList(paperDTO.getId(), unitIdStr)); // TODO: 2018/3/20 取ES数据？
+        paperDetailDTO.setRanking(paperReportMapper.selectRankingList(paperDTO.getId(), unitIds));
         // 题目详情
-        paperDetailDTO.setQuestionDetailList(getRelatedQuestionMain(paperDTO.getId()));
+        List<QuestionDetailDTO> questions = getRelatedQuestionMain(paperDTO.getId());
+        // 学员答案 - 选项分布
+        if (!CollectionUtils.isEmpty(questions)) {
+            for (QuestionDetailDTO questionDetailDTO : questions) {
+                if (Constant.CONTENT_TYPE_CHOICE.equals(questionDetailDTO.getContentType())) {
+                    List<OptionAnswerDTO> optionAnswerDTOS = paperReportMapper.selectStuAnswers(paperId % 10, paperId, unitIds, questionDetailDTO.getQuestionMainId());
+                    questionDetailDTO.setStuAnswers(optionAnswerDTOS);
+                }
+            }
+        }
+        paperDetailDTO.setQuestionDetailList(questions);
         return paperDetailDTO;
     }
 
@@ -91,7 +109,7 @@ public class PaperReportServiceImpl implements PaperReportService {
     }
 
     /**
-     * 查询试卷内试题详情
+     * 查询试卷内试题详情 -- 作业、随堂考只统计了选择、文字
      * @param paperId
      * @return
      */
@@ -99,8 +117,8 @@ public class PaperReportServiceImpl implements PaperReportService {
         List<QuestionDetailDTO> questions = paperReportMapper.selectBigQuestionMainByPaperId(paperId);
         if (!CollectionUtils.isEmpty(questions)) {
             for (QuestionDetailDTO questionDetailDTO : questions) {
-                // 选项
                 if (Constant.CONTENT_TYPE_CHOICE.equals(questionDetailDTO.getContentType())) {
+                    // 选项
                     List<OptionDTO> optionDTOS = paperReportMapper.selectOptionsByQuestionId(questionDetailDTO.getQuestionId());
                     questionDetailDTO.setOptionList(optionDTOS);
                 }
@@ -111,9 +129,6 @@ public class PaperReportServiceImpl implements PaperReportService {
                         questionDetailDTO.setScorePointList(scorePointDTOS);
                     }
                 }
-                // 空
-                // 小题
-                // 学员答题分布  todo 存库？
             }
         }
         return questions;
