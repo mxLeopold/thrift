@@ -35,18 +35,20 @@ public interface PaperReportMapper {
 
 
     /**
-     * 查询作业、随堂考学员答题记录
+     * 查询作业、随堂考--考试统计数据：参考人数、总答对题数，总用时
      * @param paperId
      * @param unitIds
      * @return
      */
     @Select({
-        "SELECT count(a.id) answerNumber,sum(a.correct_question_num) correct,sum(a.total_time) answerTime ",
-        "from t_tiku_user_record_view a ",
-        "where a.t_paper_id = #{paperId} and a.delete_flag = 0 ",
-        "and a.unit_id in (#{unitIds})"
+            "<script>",
+            "SELECT SUM(total_answer_num) answerNumber,SUM(total_correct_num) correct,SUM(total_answer_time) answerTime ",
+            "from t_tiku_exam_statistics ",
+            "where delete_flag = 0 and t_paper_id = #{paperId} AND unit_id in",
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",
+            "</script>"
     })
-    WorkPaperReportDTO selectPaperReport(@Param("paperId") Integer paperId, @Param("unitIds") String unitIds);
+    WorkPaperReportDTO selectPaperReport(@Param("paperId") Integer paperId, @Param("unitIds") List<String> unitIds);
 
     /**
      * 查询考试统计数据 

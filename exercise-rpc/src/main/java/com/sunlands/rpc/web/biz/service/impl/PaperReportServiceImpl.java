@@ -20,13 +20,20 @@ public class PaperReportServiceImpl implements PaperReportService {
 
     @Override
     public WorkPaperReportDTO getPaperReport(String paperCode, String unitIdStr) {
+        PaperDTO paper = paperReportMapper.selectPaperCodeByCode(paperCode);
+        Assert.notNull(paper, "试卷不存在");
         PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
-        Assert.notNull(paperDTO, "试卷不存在");
-//        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
-        WorkPaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
-        if (paperReport == null) {
+        // 未答题
+        if (paperDTO == null) {
             return null;
         }
+        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
+        List<String> unitIds = Arrays.asList(unitIdStr.split(","));
+        WorkPaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperId, unitIds);
+        if (paperReport == null) {  // 此班未答题
+            return null;
+        }
+
         Integer answerNum = paperReport.getAnswerNumber();
         if (answerNum != null && !answerNum.equals(0) ) {
             paperReport.setAnswerTimeAve(paperReport.getAnswerTime() / answerNum);
@@ -138,8 +145,6 @@ public class PaperReportServiceImpl implements PaperReportService {
     public StuAnswerResultDTO getStuAnswerResult(StuAnswerResultDTO stuAnswerResultDTO) {
         String paperCode = stuAnswerResultDTO.getPaperId();
         String unitIdStr = stuAnswerResultDTO.getField1();
-//        String paperCode = "2504";
-//        String unitIdStr = "166529,156718,157810,157810";
         if (StringUtils.isEmpty(paperCode)) {
             throw new RuntimeException("paperId不能为空");
         }

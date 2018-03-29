@@ -37,6 +37,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
 
     @Override
     public List<WorkPaperReport> getPaperReport(String paperId, String unitIdStr) throws TException {
+        logger.debug("getPaperReport(paperId:{}, unitIdStr:{}) --------- start", paperId, unitIdStr);
         if (StringUtils.isEmpty(paperId)) {
             throw new TException("paperId不能为空");
         }
@@ -44,16 +45,20 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
             throw new TException("unitIdStr不能为空");
         }
         WorkPaperReportDTO quizzesPaperReportDTO = paperReportService.getPaperReport(paperId, unitIdStr);
-        if (quizzesPaperReportDTO == null) {
-            return null;
+        if (quizzesPaperReportDTO == null) {  // rpc不传空值
+            return new ArrayList<WorkPaperReport>();
         }
         WorkPaperReport report = new WorkPaperReport();
         CommonUtils.copyPropertiesIgnoreNull(quizzesPaperReportDTO, report);
-        return Arrays.asList(report);
+        List<WorkPaperReport> reports = new ArrayList<WorkPaperReport>();
+        reports.add(report);
+        logger.debug("getPaperReport(paperId:{}, unitIdStr:{}) --------- end, return: {}", paperId, unitIdStr, reports);
+        return reports;
     }
 
     @Override
     public PaperDetail getPaperDetail(String paperId, String unitIdStr) throws TException {
+        logger.debug("getPaperDetail(paperId:{}, unitIdStr:{}) --------- start", paperId, unitIdStr);
         if (StringUtils.isEmpty(paperId)) {
             throw new TException("paperId不能为空");
         }
@@ -61,10 +66,12 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
             throw new TException("unitIdStr不能为空");
         }
         PaperDetailDTO paperDetailDTO = paperReportService.getPaperDetail(paperId, unitIdStr);
-        if (paperDetailDTO == null) {
-            return null;
-        }
         PaperDetail paperDetail = new PaperDetail();
+        if (paperDetailDTO == null) {
+            paperDetail.setRes(-1);
+            return paperDetail;
+        }
+        paperDetail.setRes(1);
         paperDetail.setPaperId(paperDetailDTO.getPaperId());
         paperDetail.setPaperName(paperDetailDTO.getPaperName());
         paperDetail.setFinishCount(paperDetailDTO.getAnswerNum());
@@ -86,6 +93,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         if (!CollectionUtils.isEmpty(questions)) {
             paperDetail.setQuestions(getQuestionDetailList(questions));
         }
+        logger.debug("getPaperDetail(paperId:{}, unitIdStr:{}) --------- end, return: {}", paperId, unitIdStr, paperDetail);
         return paperDetail;
     }
 
@@ -168,8 +176,6 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
                 resultList.add(detail);
             }
             stuAnswerResult.setResultList(resultList);
-        } else {
-            stuAnswerResult.setResultList(null);
         }
         logger.debug("getStuAnswerResult(stuAnswerResult) -------- end, return {}", stuAnswerResult.toString());
         return stuAnswerResult;
@@ -190,14 +196,6 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         int checkPaperId = paperReportService.checkPaperId(paperCode, Constant.PAPER_TYPE_ASSIGNMENTS);
         logger.debug("checkAssignmentId(paperCode:{}) -------- end, return {}", paperCode, checkPaperId);
         return checkPaperId;
-    }
-
-    @Override
-    public WorkPaperReportList selectWorkPaperReport(WorkPaperReportList workPaperReportList) throws TException {
-        List<WorkPaperReport> paperReport = getPaperReport(workPaperReportList.getWorkGroupId(), workPaperReportList.getField1());
-        workPaperReportList.setResult(paperReport);
-        workPaperReportList.setPaperId(workPaperReportList.getWorkGroupId());
-        return workPaperReportList;
     }
 
 }

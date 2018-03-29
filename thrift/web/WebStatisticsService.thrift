@@ -1,21 +1,4 @@
 namespace java com.sunlands.rpc.web.statistics.service
-
-// 作业统计详情
-struct WorkPaperReportList {
-    1: string field1;
-    2: string field2;
-    3: string field3;
-    4: string field4;
-    5: string field5;
-    6: string paperId;
-    7: string paperName;
-    8: string paperTypeCode;
-    9: list<WorkPaperReport> result;
-    10: string systemNumber;
-    11: string userNumber;
-    12: double userPaperPoint;
-    13: string workGroupId;
-}
 // 作业统计数据
 struct WorkPaperReport {
     1: i32 answerNumber;
@@ -38,7 +21,7 @@ struct WorkPaperReport {
     18: i32 wrong;
 }
 // 学员成绩列表
-struct StuAnswerResult {  // StudentsScoreResultForWorkDTO
+struct StuAnswerResult {
     1: i32 countPerPage;
     2: i32 pageCount;
     3: i32 pageIndex;
@@ -50,7 +33,7 @@ struct StuAnswerResult {  // StudentsScoreResultForWorkDTO
     9: string systemNumber;
 }
 // 学员成绩详情
-struct StuAnswerDetail {   // StudentsScoreInfoForWorkDTO
+struct StuAnswerDetail {
     1: i32 userNumber;
     2: string username;
     3: i32 answeredTime; // 答题时间
@@ -65,6 +48,7 @@ struct PaperDetail {
     3: i32 finishCount;  // 答题人数
     4: list<QuestionDetail> questions; // 题目列表
     5: list<QuizzesOrWorkUserAnswers> quizzesOrWorkUserAnswersDTOList; // 排行榜
+    6: i32 res; // 当返回对象为空时，res = -1
 }
 
 struct QuizzesOrWorkUserAnswers {
@@ -101,7 +85,7 @@ struct OptionAnswer {
 }
 
 service WebStatisticsService {
-	// 查询随堂考列表
+	// 查询作业、随堂考列表
 	list<WorkPaperReport> getPaperReport(1: string paperId, 2: string unitIdStr);
 
     // 查询作业、随堂考详情
@@ -115,10 +99,5 @@ service WebStatisticsService {
 
     // 校验作业ID
     i32 checkAssignmentId(1: string paperCode);
-
-    // 查询作业统计数据
-    WorkPaperReportList selectWorkPaperReport(1: WorkPaperReportList workPaperReportList);
-
-
 
 }

@@ -6,7 +6,6 @@ import com.sunlands.rpc.web.biz.service.PaperReportService;
 import com.sunlands.rpc.web.statistics.handler.WebStatisticsServiceHandler;
 import com.sunlands.rpc.web.statistics.service.StuAnswerResult;
 import com.sunlands.rpc.web.statistics.service.WorkPaperReport;
-import com.sunlands.rpc.web.statistics.service.WorkPaperReportList;
 import org.apache.thrift.protocol.TProtocolFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -106,18 +105,6 @@ public class WebStatisticsServiceTest {
 //        workPaperReportListDTO.setField1("167107,1");
 //        workPaperReportListDTO.setWorkGroupId("2501");
 //        paperReportService.selectWorkPaperReport(workPaperReportListDTO);
-        List<WorkPaperReport> paperReport = null;
-        WorkPaperReportList reportList = new WorkPaperReportList();
-        reportList.setWorkGroupId(paperCode);
-        reportList.setField1(unitIdStr);
-        try {
-//            paperReport = webStatisticsServiceHandler.getPaperReport(paperCode, "167107,1");
-            reportList = webStatisticsServiceHandler.selectWorkPaperReport(reportList);
-        } catch (Exception e) {
-
-        }
-//        System.out.println(paperReport);
-        System.out.println(reportList);
     }
 
 
@@ -190,5 +177,13 @@ public class WebStatisticsServiceTest {
                 paperId, Arrays.asList("166529","156718","157810","157810"), 111);
         System.out.println(optionAnswerDTOS);
 
+    }
+
+    @Test
+    public void testGetPaperDetail() {
+        String paperCode = "2504";
+        String unitIdStr = "1579208,166529,156718,157810,157810";
+        PaperDetailDTO paperDetail = paperReportService.getPaperDetail(paperCode, unitIdStr);
+        System.out.println(paperDetail);
     }
 }
