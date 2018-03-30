@@ -38,11 +38,9 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     @Override
     public List<WorkPaperReport> getPaperReport(String paperId, String unitIdStr) throws TException {
         logger.debug("getPaperReport(paperId:{}, unitIdStr:{}) --------- start", paperId, unitIdStr);
-        if (StringUtils.isEmpty(paperId)) {
-            throw new TException("paperId不能为空");
-        }
-        if (StringUtils.isEmpty(unitIdStr)) {
-            throw new TException("unitIdStr不能为空");
+        if (StringUtils.isEmpty(unitIdStr) || StringUtils.isEmpty(paperId)) {
+            logger.error("入参不能为空");
+            return new ArrayList<WorkPaperReport>();
         }
         WorkPaperReportDTO quizzesPaperReportDTO = paperReportService.getPaperReport(paperId, unitIdStr);
         if (quizzesPaperReportDTO == null) {  // rpc不传空值

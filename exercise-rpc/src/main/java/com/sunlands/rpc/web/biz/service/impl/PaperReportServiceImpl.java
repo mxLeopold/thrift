@@ -21,7 +21,9 @@ public class PaperReportServiceImpl implements PaperReportService {
     @Override
     public WorkPaperReportDTO getPaperReport(String paperCode, String unitIdStr) {
         PaperDTO paper = paperReportMapper.selectPaperCodeByCode(paperCode);
-        Assert.notNull(paper, "试卷不存在");
+        if (paper == null) {
+            return null;
+        }
         PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
         // 未答题
         if (paperDTO == null) {
