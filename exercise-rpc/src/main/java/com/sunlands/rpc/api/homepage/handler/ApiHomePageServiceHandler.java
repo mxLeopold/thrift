@@ -66,13 +66,9 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
                 hasIntelligentExercise = studentRpcService.hasIntelligentExercise(studentId);
             } catch (Exception e) {
                 log.error("请求StudentRPC.getSubjectIdsByStudentId 发生异常, message: {}", e.getMessage());
-                // APP那边要求董森处理RPC返回的null值, 这边不在返回hasTiku了, 如果题库没有直接返回null
-                return null;
+                return new DailyIntelligentExerciseDTO(0, 0,  type);
             }
         }
-        if (!hasIntelligentExercise) {
-            return null;
-        }
-        return new DailyIntelligentExerciseDTO(exerciseDone, 1, type);
+        return new DailyIntelligentExerciseDTO(exerciseDone, hasIntelligentExercise ? 1 : 0, type);
     }
 }
