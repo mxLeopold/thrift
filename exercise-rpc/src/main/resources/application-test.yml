@@ -53,7 +53,7 @@ spring:
                removeAbandoned: true
                filters: stat
 server:
-      port: 9093          
+      port: 9992
 logging: 
     level: 
         com.sunlands: DEBUG
