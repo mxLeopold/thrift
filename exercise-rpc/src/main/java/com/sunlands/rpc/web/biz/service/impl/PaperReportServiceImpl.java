@@ -39,7 +39,11 @@ public class PaperReportServiceImpl implements PaperReportService {
 
         Integer answerNum = paperReport.getAnswerNumber();
         if (answerNum != null && !answerNum.equals(0) ) {
-            paperReport.setAnswerTimeAve(paperReport.getAnswerTime() / answerNum);
+            Double answerTime = paperReport.getAnswerTime();
+            Double answerTimeAve = answerTime / answerNum;
+            paperReport.setAnswerTimeString(answerTime.toString());
+            paperReport.setAnswerTimeAve(answerTimeAve);
+            paperReport.setAnswerTimeAveString(answerTimeAve.toString());
             paperReport.setCorrectAve(paperReport.getCorrect() / answerNum);
             paperReport.setCorrectPercent((float) paperReport.getCorrect() / (answerNum * paperDTO.getQuestionAmount()));
         }

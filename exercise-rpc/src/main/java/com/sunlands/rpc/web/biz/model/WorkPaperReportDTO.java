@@ -5,8 +5,8 @@ package com.sunlands.rpc.web.biz.model;
  */
 public class WorkPaperReportDTO {
     private Integer answerNumber; // 答题人数
-    private Float answerTime; // 总答题时间
-    private Float answerTimeAve; // 平均答题时间
+    private Double answerTime; // 总答题时间
+    private Double answerTimeAve; // 平均答题时间
     private String answerTimeAveString;
     private String answerTimeString;
     private Integer correct; // 总正确题数
@@ -31,19 +31,19 @@ public class WorkPaperReportDTO {
         this.answerNumber = answerNumber;
     }
 
-    public Float getAnswerTime() {
+    public Double getAnswerTime() {
         return answerTime;
     }
 
-    public void setAnswerTime(Float answerTime) {
+    public void setAnswerTime(Double answerTime) {
         this.answerTime = answerTime;
     }
 
-    public Float getAnswerTimeAve() {
+    public Double getAnswerTimeAve() {
         return answerTimeAve;
     }
 
-    public void setAnswerTimeAve(Float answerTimeAve) {
+    public void setAnswerTimeAve(Double answerTimeAve) {
         this.answerTimeAve = answerTimeAve;
     }
 
