@@ -39,7 +39,8 @@ struct StuAnswerDetail {
     3: i32 answeredTime; // 答题时间
     4: i32 rightNum;
     5: i32 wrongNum;
-    6: double correctRate;
+    6: string correctRate;
+    7: double score; // 分值
 }
 // 答卷详情
 struct PaperDetail {

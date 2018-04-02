@@ -92,7 +92,7 @@ public interface PaperReportMapper {
      */
     @Select({
             "<script>",
-            "SELECT id,stu_id stuId,total_time totalTime,correct_question_num correctQuestionCount,question_num - correct_question_num wrongQuestionCount,record_id recordId,question_num questionNum ",
+            "SELECT id,stu_id stuId,total_time totalTime,correct_question_num correctQuestionCount,question_num - correct_question_num wrongQuestionCount,record_id recordId,question_num questionNum, stu_total_score score",
             "from t_tiku_exam_user_statistics_${index} ",
             "where t_paper_id = #{paperId} AND unit_id in ",
             "<foreach item=\"item\" index=\"index\" collection=\"unitIdStr\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",

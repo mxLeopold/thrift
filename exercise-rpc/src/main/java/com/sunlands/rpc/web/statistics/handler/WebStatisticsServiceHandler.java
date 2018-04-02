@@ -171,6 +171,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
                 detail.setRightNum(detailDTO.getCorrectQuestionCount());
                 detail.setWrongNum(detailDTO.getWrongQuestionCount());
                 detail.setCorrectRate(detailDTO.getAccuracyRate());
+                detail.setScore(detailDTO.getScore());
                 resultList.add(detail);
             }
             stuAnswerResult.setResultList(resultList);

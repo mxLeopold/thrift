@@ -17,6 +17,8 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -185,5 +187,40 @@ public class WebStatisticsServiceTest {
         String unitIdStr = "1579208,166529,156718,157810,157810";
         PaperDetailDTO paperDetail = paperReportService.getPaperDetail(paperCode, unitIdStr);
         System.out.println(paperDetail);
+    }
+
+    @Test
+    public void testReplaceCharacter() {
+        String a = "1404-江苏省-人力资源管理（一）";
+        String b = "";
+        a = a.replaceAll("-(.*?)-", "-北京市-");
+        System.out.println(a);
+    }
+
+    @Test
+    public void testDiv() {
+        // 没效果
+        DecimalFormat df = new DecimalFormat("######0.00");
+        double a = 0.001;
+        double b = 1.327;
+        double c = 1;
+        double d = 4.3216324;
+        df.format(a);
+        df.format(b);
+        df.format(c);
+        df.format(d);
+        System.out.println("a:" +a+",b:"+b+",c:"+c+",d:"+d);
+    }
+
+    @Test
+    public void testDecimal() {
+        double f = 111231.5585;
+        String f1 = gradeRate(f);
+        System.out.println("f="+f+",f1="+f1);
+    }
+
+    private String gradeRate(double d) {
+        BigDecimal b = new BigDecimal(d);
+        return b.setScale(3, BigDecimal.ROUND_HALF_UP).toString();
     }
 }

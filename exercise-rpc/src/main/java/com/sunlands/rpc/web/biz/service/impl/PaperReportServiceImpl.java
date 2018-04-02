@@ -10,6 +10,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -165,9 +166,18 @@ public class PaperReportServiceImpl implements PaperReportService {
                 start = (stuAnswerResultDTO.getPageIndex() - 1) * stuAnswerResultDTO.getCountPerPage();
             }
             List<StuAnswerDetailDTO> stuAnswerDetailDTOS = paperReportMapper.getStuAnswerDetails(paperId % 10, paperId, unitIds, start, stuAnswerResultDTO.getCountPerPage());
-            // TODO: 2018/3/27 计算正确率
 
-
+            // 计算正确率
+            if (!CollectionUtils.isEmpty(stuAnswerDetailDTOS)) {
+                double accuracyRate = 0;
+                for (StuAnswerDetailDTO detailDTO : stuAnswerDetailDTOS) {
+                    if (detailDTO.getCorrectQuestionCount() != null && detailDTO.getQuestionNum() != null
+                            && !detailDTO.getQuestionNum().equals(0)) {
+                        accuracyRate = (double)detailDTO.getCorrectQuestionCount() / detailDTO.getQuestionNum();
+                    }
+                    detailDTO.setAccuracyRate(gradeRate(accuracyRate, 3));
+                }
+            }
             stuAnswerResultDTO.setResultList(stuAnswerDetailDTOS);
             if (!CollectionUtils.isEmpty(stuAnswerDetailDTOS) &&
                     !stuAnswerResultDTO.getCountPerPage().equals(0)) {
@@ -175,6 +185,17 @@ public class PaperReportServiceImpl implements PaperReportService {
             }
         }
         return stuAnswerResultDTO;
+    }
+
+    /**
+     * double --> string
+     * @param d
+     * @param scale
+     * @return
+     */
+    private String gradeRate(double d, int scale) {
+        BigDecimal b = new BigDecimal(d);
+        return b.setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
     }
 
 }

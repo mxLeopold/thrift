@@ -1,5 +1,7 @@
 package com.sunlands.rpc.web.biz.model;
 
+import com.sun.tools.corba.se.idl.StringGen;
+
 /**
  * 学员成绩详情
  * add by chenqiuxia 20180319
@@ -10,9 +12,18 @@ public class StuAnswerDetailDTO {
     private Integer totalTime;
     private Integer correctQuestionCount;
     private Integer wrongQuestionCount;
-    private double accuracyRate;
+    private String accuracyRate;
     private Integer recordId;
     private Integer questionNum;
+    private double score;
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
 
     public Integer getStuId() {
         return stuId;
@@ -54,11 +65,11 @@ public class StuAnswerDetailDTO {
         this.wrongQuestionCount = wrongQuestionCount;
     }
 
-    public double getAccuracyRate() {
+    public String getAccuracyRate() {
         return accuracyRate;
     }
 
-    public void setAccuracyRate(double accuracyRate) {
+    public void setAccuracyRate(String accuracyRate) {
         this.accuracyRate = accuracyRate;
     }
 
