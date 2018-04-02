@@ -11,7 +11,7 @@ public class WorkPaperReportDTO {
     private String answerTimeString;
     private Integer correct; // 总正确题数
     private Integer correctAve; // 平均正确题数
-    private Float correctPercent; // 正确率
+    private Double correctPercent; // 正确率
     private Float evaluatedScore;
     private String paperId; // 试卷id
     private String paperName; // 试卷名称
@@ -79,11 +79,11 @@ public class WorkPaperReportDTO {
         this.correctAve = correctAve;
     }
 
-    public Float getCorrectPercent() {
+    public Double getCorrectPercent() {
         return correctPercent;
     }
 
-    public void setCorrectPercent(Float correctPercent) {
+    public void setCorrectPercent(Double correctPercent) {
         this.correctPercent = correctPercent;
     }
 

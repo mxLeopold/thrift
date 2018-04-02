@@ -217,10 +217,18 @@ public class WebStatisticsServiceTest {
         double f = 111231.5585;
         String f1 = gradeRate(f);
         System.out.println("f="+f+",f1="+f1);
+
+        double f2 = gradeRateToDouble(f, 3);
+        System.out.println("f="+f+",f2="+f2);
     }
 
     private String gradeRate(double d) {
         BigDecimal b = new BigDecimal(d);
         return b.setScale(3, BigDecimal.ROUND_HALF_UP).toString();
+    }
+
+    private double gradeRateToDouble(double d, int scale) {
+        BigDecimal b = new BigDecimal(d);
+        return b.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 }
