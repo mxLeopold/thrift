@@ -1,9 +1,9 @@
 spring: 
       profiles: prod 
       redis:
-           host: 172.16.116.9
+           host: 172.16.100.64
            port: 9736
-           database: 1
+           database: 12
            expires: 1500
            pool:
                max-idle: 100
@@ -34,7 +34,7 @@ spring:
                removeAbandoned: true
                filters: stat
            slave:
-               url: jdbc:mysql://172.16.100.67:3306/exercise
+               url: jdbc:mysql://172.16.100.69:3306/exercise
                username: ENC(GyynV3aEvb+GKdEFQaTFkpxHbrZKswm6)
                password: ENC(NkEFOJNBNe+SeSYqOWrfgf/NqWDJmfZA)
                driver-class-name: com.mysql.jdbc.Driver
