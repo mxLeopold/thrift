@@ -167,7 +167,7 @@ public class WebStatisticsServiceTest {
 
     @Test
     public void testSelectRankingList() {
-        List<StuAnswerDetailDTO> stuAnswerDetailDTOS = paperReportMapper.selectRankingList(8130, Arrays.asList("166529","156718","157810","157810"));
+        List<StuAnswerDetailDTO> stuAnswerDetailDTOS = paperReportMapper.selectRankingList(8130 %10,8130, Arrays.asList("166529","156718","157810","157810"));
         System.out.println(stuAnswerDetailDTOS);
     }
 

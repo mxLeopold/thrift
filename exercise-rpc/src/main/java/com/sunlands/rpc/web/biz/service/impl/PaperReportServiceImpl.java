@@ -86,7 +86,7 @@ public class PaperReportServiceImpl implements PaperReportService {
         paperDetailDTO.setPaperName(paperDTO.getName());
         paperDetailDTO.setAnswerNum(num);
         // 排行榜
-        paperDetailDTO.setRanking(paperReportMapper.selectRankingList(paperDTO.getId(), unitIds));
+        paperDetailDTO.setRanking(paperReportMapper.selectRankingList(paperId % 10, paperId, unitIds));
         // 题目详情
         List<QuestionDetailDTO> questions = getRelatedQuestionMain(paperDTO.getId());
         // 学员答案 - 选项分布

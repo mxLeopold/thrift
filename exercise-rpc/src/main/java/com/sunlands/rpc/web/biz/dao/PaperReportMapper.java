@@ -162,7 +162,7 @@ public interface PaperReportMapper {
     @Select({
             "<script>",
             "SELECT `option` questionResult,sum(total_answer_num) answerTotal ",
-            "from t_tiku_exam_question_answer_statistics_0  ",
+            "from t_tiku_exam_question_answer_statistics_${tableNameIndex}  ",
             "WHERE delete_flag = 0 and t_paper_id = #{paperId} and unit_id in ",
             "<foreach item=\"item\" index=\"index\" collection=\"unitIdList\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",
             "and question_main_id = #{questionMainId} ",
@@ -181,13 +181,13 @@ public interface PaperReportMapper {
     @Select({
             "<script>",
             "SELECT stu_id stuId, correct_question_num correctQuestionCount ",
-            "from t_tiku_exam_user_statistics_0 ",
+            "from t_tiku_exam_user_statistics_${tableNameIndex} ",
             "where delete_flag = 0 and t_paper_id = #{paperId} and unit_id in",
             "<foreach item=\"item\" index=\"index\" collection=\"unitIdList\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",
             "ORDER BY correct_question_num DESC,create_time LIMIT 20",
             "</script>"
     })
-    List<StuAnswerDetailDTO> selectRankingList(@Param("paperId") Integer paperId, @Param("unitIdList") List<String> unitIdList);
+    List<StuAnswerDetailDTO> selectRankingList(@Param("tableNameIndex") Integer tableNameIndex,@Param("paperId") Integer paperId, @Param("unitIdList") List<String> unitIdList);
 
     @Select({
             "SELECT a.id,a.stu_id stuId,a.`name` name,a.sequence sequence,a.exercise_type exerciseType, ",
