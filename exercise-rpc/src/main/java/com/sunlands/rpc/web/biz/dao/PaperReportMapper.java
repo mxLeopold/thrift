@@ -180,7 +180,7 @@ public interface PaperReportMapper {
      */
     @Select({
             "<script>",
-            "SELECT stu_id stuId, correct_question_num correctQuestionCount ",
+            "SELECT stu_id stuId, correct_question_num correctQuestionCount, t_paper_id paperId ",
             "from t_tiku_exam_user_statistics_${tableNameIndex} ",
             "where delete_flag = 0 and t_paper_id = #{paperId} and unit_id in",
             "<foreach item=\"item\" index=\"index\" collection=\"unitIdList\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",

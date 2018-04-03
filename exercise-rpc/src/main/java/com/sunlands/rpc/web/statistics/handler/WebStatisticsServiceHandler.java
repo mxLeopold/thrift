@@ -82,6 +82,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
                 answer = new QuizzesOrWorkUserAnswers();
                 answer.setUserNumber(answerDetailDTO.getStuId());
                 answer.setCorrectCount(answerDetailDTO.getCorrectQuestionCount());
+                answer.setPaperId(answerDetailDTO.getPaperId());
                 answers.add(answer);
             }
             paperDetail.setQuizzesOrWorkUserAnswersDTOList(answers);
@@ -131,6 +132,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
                     optionAnswer = new OptionAnswer();
                     optionAnswer.setQuestionResult(optionAnswerDTO.getQuestionResult());
                     optionAnswer.setAnswerTotal(optionAnswerDTO.getAnswerTotal());
+                    optionAnswers.add(optionAnswer);
                 }
                 questionDetail.setOptionAnswers(optionAnswers);
             }

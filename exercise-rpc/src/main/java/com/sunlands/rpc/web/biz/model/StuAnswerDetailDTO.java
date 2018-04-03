@@ -16,6 +16,15 @@ public class StuAnswerDetailDTO {
     private Integer recordId;
     private Integer questionNum;
     private double score;
+    private Integer paperId;
+
+    public Integer getPaperId() {
+        return paperId;
+    }
+
+    public void setPaperId(Integer paperId) {
+        this.paperId = paperId;
+    }
 
     public double getScore() {
         return score;

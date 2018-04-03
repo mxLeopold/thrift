@@ -231,4 +231,11 @@ public class WebStatisticsServiceTest {
         BigDecimal b = new BigDecimal(d);
         return b.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
+
+    @Test
+    public void testChangeHtml() {
+        String htmlContent = "<img src=\"/F:/ent/ent_parent/ent-op-war/target/ent-op-war-0.0.1-SNAPSHOT/pdfCfg/img//img1.png\" />";
+        htmlContent = htmlContent.replaceAll("(<img.*?)(>|/>)", "$1/>");
+        System.out.println(htmlContent);
+    }
 }
