@@ -186,7 +186,7 @@ public class PaperReportServiceImpl implements PaperReportService {
             stuAnswerResultDTO.setResultList(stuAnswerDetailDTOS);
             if (!CollectionUtils.isEmpty(stuAnswerDetailDTOS) &&
                     !stuAnswerResultDTO.getCountPerPage().equals(0)) {
-                stuAnswerResultDTO.setPageCount(stuAnswerDetailDTOS.size() / stuAnswerResultDTO.getCountPerPage() + 1);
+                stuAnswerResultDTO.setPageCount(totalCount / stuAnswerResultDTO.getCountPerPage() + 1);
             }
         }
         return stuAnswerResultDTO;
