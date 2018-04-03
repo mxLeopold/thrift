@@ -1,5 +1,6 @@
 package com.sunlands.rpc.web.biz.service.impl;
 
+import com.sun.corba.se.impl.oa.toa.TOA;
 import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.*;
@@ -180,13 +181,15 @@ public class PaperReportServiceImpl implements PaperReportService {
                             && !detailDTO.getQuestionNum().equals(0)) {
                         accuracyRate = (double)detailDTO.getCorrectQuestionCount() / detailDTO.getQuestionNum();
                     }
-                    detailDTO.setAccuracyRate(gradeRate(accuracyRate, 3));
+                    detailDTO.setAccuracyRate(gradeRate(accuracyRate, 1));
                 }
             }
             stuAnswerResultDTO.setResultList(stuAnswerDetailDTOS);
             if (!CollectionUtils.isEmpty(stuAnswerDetailDTOS) &&
                     !stuAnswerResultDTO.getCountPerPage().equals(0)) {
-                stuAnswerResultDTO.setPageCount(totalCount / stuAnswerResultDTO.getCountPerPage() + 1);
+                Integer a = totalCount % stuAnswerResultDTO.getCountPerPage() == 0 ? 0 : 1;
+                Integer pageCount = totalCount / stuAnswerResultDTO.getCountPerPage() + a;
+                stuAnswerResultDTO.setPageCount(pageCount);
             }
         }
         return stuAnswerResultDTO;
@@ -199,8 +202,8 @@ public class PaperReportServiceImpl implements PaperReportService {
      * @return
      */
     private String gradeRate(double d, int scale) {
-        BigDecimal b = new BigDecimal(d);
-        return b.setScale(scale, BigDecimal.ROUND_HALF_UP).toString();
+        BigDecimal b = new BigDecimal(d * 100);
+        return b.setScale(scale, BigDecimal.ROUND_HALF_UP).toString() + "%";
     }
 
     /**
