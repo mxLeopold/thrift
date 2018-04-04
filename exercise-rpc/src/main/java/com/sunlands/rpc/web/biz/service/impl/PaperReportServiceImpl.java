@@ -45,7 +45,8 @@ public class PaperReportServiceImpl implements PaperReportService {
             paperReport.setAnswerTimeString(answerTime.toString());
             paperReport.setAnswerTimeAve(answerTimeAve);
             paperReport.setAnswerTimeAveString(answerTimeAve.toString());
-            paperReport.setCorrectAve(paperReport.getCorrect() / answerNum);
+            double correctAve = (double) paperReport.getCorrect() / answerNum;
+            paperReport.setCorrectAve(gradeAve(correctAve));
             double correctRate = gradeRateToDouble(((double) paperReport.getCorrect() / (answerNum * paperDTO.getQuestionAmount())), 3) * 100;
             paperReport.setCorrectPercent(correctRate);
         }
@@ -204,6 +205,11 @@ public class PaperReportServiceImpl implements PaperReportService {
     private String gradeRate(double d, int scale) {
         BigDecimal b = new BigDecimal(d * 100);
         return b.setScale(scale, BigDecimal.ROUND_HALF_UP).toString() + "%";
+    }
+
+    private Integer gradeAve(double d) {
+        BigDecimal b = new BigDecimal(d);
+        return Integer.parseInt(b.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
     }
 
     /**

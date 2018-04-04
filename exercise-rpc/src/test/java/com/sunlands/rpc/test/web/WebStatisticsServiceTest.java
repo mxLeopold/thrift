@@ -214,17 +214,14 @@ public class WebStatisticsServiceTest {
 
     @Test
     public void testDecimal() {
-        double f = 111231.5585;
-        String f1 = gradeRate(f);
-        System.out.println("f="+f+",f1="+f1);
-
-        double f2 = gradeRateToDouble(f, 3);
-        System.out.println("f="+f+",f2="+f2);
+        double a = (double) 946 / 316;
+        double b = gradeRateToDouble(a, 0);
+        System.out.println("a="+a+",b="+Integer.parseInt(gradeRate(a)));
     }
 
     private String gradeRate(double d) {
         BigDecimal b = new BigDecimal(d);
-        return b.setScale(3, BigDecimal.ROUND_HALF_UP).toString();
+        return b.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
     }
 
     private double gradeRateToDouble(double d, int scale) {
