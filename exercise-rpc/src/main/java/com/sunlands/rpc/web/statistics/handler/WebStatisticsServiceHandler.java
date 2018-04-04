@@ -137,7 +137,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
                 questionDetail.setOptionAnswers(optionAnswers);
             }
             // 得分点
-            ArrayList<ScorePointDTO> scorePointDTOS = new ArrayList<>();
+            List<ScorePointDTO> scorePointDTOS = question.getScorePointList();
             if (!CollectionUtils.isEmpty(scorePointDTOS)) {
                 ArrayList<ScorePoint> scorePoints = new ArrayList<>();
                 ScorePoint scorePoint;
