@@ -47,7 +47,7 @@ public class PaperReportServiceImpl implements PaperReportService {
             paperReport.setAnswerTimeAveString(answerTimeAve.toString());
             double correctAve = (double) paperReport.getCorrect() / answerNum;
             paperReport.setCorrectAve(gradeAve(correctAve));
-            double correctRate = gradeRateToDouble(((double) paperReport.getCorrect() / (answerNum * paperDTO.getQuestionAmount())), 3) * 100;
+            double correctRate = gradeRateToDouble(((double) paperReport.getCorrect() / (answerNum * paperDTO.getQuestionAmount())), 4) * 100;
             paperReport.setCorrectPercent(correctRate);
         }
         paperReport.setPaperName(paperDTO.getName());
@@ -182,7 +182,7 @@ public class PaperReportServiceImpl implements PaperReportService {
                             && !detailDTO.getQuestionNum().equals(0)) {
                         accuracyRate = (double)detailDTO.getCorrectQuestionCount() / detailDTO.getQuestionNum();
                     }
-                    detailDTO.setAccuracyRate(gradeRate(accuracyRate, 1));
+                    detailDTO.setAccuracyRate(gradeRate(accuracyRate, 2));
                 }
             }
             stuAnswerResultDTO.setResultList(stuAnswerDetailDTOS);
