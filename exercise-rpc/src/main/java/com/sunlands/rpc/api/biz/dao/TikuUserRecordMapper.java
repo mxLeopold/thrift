@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+
 /**
  * 类描述
  *
@@ -37,4 +39,29 @@ public interface TikuUserRecordMapper {
                                                  @Param("date") String date,
                                                  @Param("exerciseType") String exerciseType
     );
+
+    /**
+     * 统计学员做题数量, 不去重
+     *
+     * @author 吴雨佳
+     * @since 2018/4/8 18:30
+     * @param knowledgeTreeIds
+     * @param studentId
+     * @param indexStr
+     * @return int
+     */
+    @Select({
+            "<script>",
+            "SELECT SUM(question_num) ",
+            "FROM t_tiku_user_record_${indexStr} ",
+            "WHERE stu_id = #{studentId} AND t_knowledge_tree_id IN ",
+            "<foreach item=\"item\" index=\"index\" collection=\"knowledgeTreeIds\"  open=\"(\" separator=\",\" close=\")\"  >",
+            "#{item}",
+            "</foreach>",
+            "AND delete_flag = 0 ",
+            "</script>",
+    })
+    int countDoneQuestionOfKnowledgeIds(@Param("knowledgeTreeIds") Collection<Integer> knowledgeTreeIds,
+                                        @Param("studentId") int studentId,
+                                        @Param("indexStr") String indexStr);
 }

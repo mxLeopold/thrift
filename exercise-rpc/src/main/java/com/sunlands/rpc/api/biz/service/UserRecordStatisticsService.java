@@ -29,4 +29,27 @@ public interface UserRecordStatisticsService {
      * @return  题目数
      */
     int countQuestionCountBySubjectIdsAndStuId(Collection<Integer> subjectIdList, int studentId);
+
+    /**
+     * 根据知识树ID集合查询用户做题数量
+     *
+     * @author 吴雨佳
+     * @since 2018/4/8 18:28
+     * @param knowledgeTreeIds
+     * @param studentId
+     * @return int
+     */
+    int countQuestionCountByKnowledgeIdsAndStuId(Collection<Integer> knowledgeTreeIds, int studentId);
+
+    /**
+     * 查询知识树Id
+     *
+     * @author 吴雨佳
+     * @since 2018/4/8 18:19
+     * @param subjectId
+     * @param projectSecondId
+     * @param provinceId
+     * @return java.lang.Integer
+     */
+    Integer queryKnowledgeTreeIdByCondition(Integer subjectId, Integer provinceId, Integer projectSecondId);
 }
