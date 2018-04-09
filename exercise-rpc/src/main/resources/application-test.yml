@@ -53,9 +53,9 @@ spring:
                removeAbandoned: true
                filters: stat
 server:
-      port: 9093          
+      port: 9992
 logging: 
     level: 
         com.sunlands: DEBUG
 service:
-    student-service-url: http://172.16.100.203:9094/student
+    student-service-url: http://172.16.100.203:9095/student

@@ -1,9 +1,6 @@
 package com.sunlands.rpc.web.biz.service;
 
-import com.sunlands.rpc.web.biz.model.PaperDetailDTO;
-import com.sunlands.rpc.web.biz.model.StuAnswerDetailDTO;
-import com.sunlands.rpc.web.biz.model.WorkPaperReportDTO;
-import com.sunlands.rpc.web.biz.model.WorkPaperReportListDTO;
+import com.sunlands.rpc.web.biz.model.*;
 
 import java.util.List;
 
@@ -24,12 +21,6 @@ public interface PaperReportService {
     List<StuAnswerDetailDTO> getStuAnswerDetails(Integer paperId, String unitIdStr, Integer pageIndex, Integer pageSize);
 
     /**
-     * 下载学员成绩详情
-     * @param paperId
-     * @param unitIdStr
-     */
-    void downloadStuAnswerDetails(Integer paperId, String unitIdStr);
-    /**
      * 作业、随堂考详情
      * @param paperId
      * @param unitIdStr
@@ -49,5 +40,7 @@ public interface PaperReportService {
      * @param workPaperReportListDTO
      */
     void selectWorkPaperReport(WorkPaperReportListDTO workPaperReportListDTO);
+
+    StuAnswerResultDTO getStuAnswerResult(StuAnswerResultDTO stuAnswerResultDTO);
 
 }

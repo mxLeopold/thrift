@@ -1,12 +1,10 @@
 package com.sunlands.entrpc.service.impl;
 
+import com.sunlands.entrpc.model.OrdDetailInfoDTO;
 import com.sunlands.entrpc.model.SubjectDTO;
 import com.sunlands.entrpc.model.TermSubjectDTO;
 import com.sunlands.entrpc.service.StudentRpcService;
-import com.sunlands.entrpc.thriftservice.ApiStudentService;
-import com.sunlands.entrpc.thriftservice.IntelligentExerciseSubject;
-import com.sunlands.entrpc.thriftservice.Subject;
-import com.sunlands.entrpc.thriftservice.termSubject;
+import com.sunlands.entrpc.thriftservice.*;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
@@ -17,7 +15,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类描述
@@ -92,6 +92,41 @@ public class StudentRpcServiceImpl implements StudentRpcService {
             throw new RuntimeException("调用RPC接口 getStuIntelligentExerciseSubject 失败！传入参数:" + "studentId=" + studentId + ";报错信息:" + e.getMessage());
         }
         return false;
+    }
+
+    @Override
+    public OrdDetailInfoDTO getStuValidOrdDetail(Integer stuId, Integer orderDetailId) {
+        if (stuId == null) {
+            throw new RuntimeException("传入参数stuId为空!");
+        }
+        List<String> ordStatus = new ArrayList<>();
+        ordStatus.add("FROM_TIKU");
+        ordStatus.add("PAID");
+        ordStatus.add("FREEZED");
+        ordStatus.add("EXPIRED");
+        OrdDetailInfoDTO res = null;
+        try {
+            log.info("请求RPC接口retrieveStuOrdServiceDetail");
+            ApiStudentService.Client client = getClientInstance();
+            StuOrdServiceDetail rsts = client.retrieveStuOrdServiceDetail(stuId, ordStatus);
+            log.info("共获取到" + rsts.getTeamsSize() + "条结果");
+            for (OrdServiceTeam item : rsts.getTeams()) {
+                if (!Integer.valueOf(item.getOrdDetailId()).equals(orderDetailId)) {
+                    continue;
+                }
+                res = new OrdDetailInfoDTO();
+                res.setOrdDetailId(item.getOrdDetailId());
+                res.setPackageId(item.getPackageId());
+                res.setPackageName(item.getPackageName());
+                res.setProvinceId(item.getProvinceId());
+                res.setStuPackageStatus(item.getOrdStatus());
+                res.setProjectSecondId(item.getSecondProjId());
+            }
+        } catch (Exception e) {
+            log.error("调用RPC接口retrieveStuOrdServiceDetail失败！" + e.getMessage(), e);
+            throw new RuntimeException("调用RPC接口retrieveStuOrdServiceDetail失败！传入参数:" + "stuId=" + stuId + ";报错信息:" + e.getMessage());
+        }
+        return res;
     }
 
     private void formatTermSubjectList(List<TermSubjectDTO> res, List<termSubject> rsts) {

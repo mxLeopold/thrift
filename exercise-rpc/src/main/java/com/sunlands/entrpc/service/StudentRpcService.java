@@ -1,5 +1,6 @@
 package com.sunlands.entrpc.service;
 
+import com.sunlands.entrpc.model.OrdDetailInfoDTO;
 import com.sunlands.entrpc.model.TermSubjectDTO;
 
 import java.util.List;
@@ -30,4 +31,13 @@ public interface StudentRpcService {
      * @throws Exception
      */
     boolean hasIntelligentExercise(Integer studentId) throws Exception;
+
+    /**
+     * 查询学员订单详情
+     *
+     * @param stuId
+     * @param orderDetailId
+     * @return
+     */
+    OrdDetailInfoDTO getStuValidOrdDetail(Integer stuId, Integer orderDetailId);
 }

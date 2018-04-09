@@ -1,5 +1,6 @@
 package com.sunlands.rpc.api.biz.service.impl;
 
+import com.sunlands.rpc.api.biz.dao.TikuCommonMapper;
 import com.sunlands.rpc.api.biz.dao.TikuUserQuestionMapper;
 import com.sunlands.rpc.api.biz.dao.TikuUserRecordMapper;
 import com.sunlands.rpc.api.biz.service.UserRecordStatisticsService;
@@ -34,6 +35,9 @@ public class UserRecordStatisticsServiceImpl implements UserRecordStatisticsServ
     @Autowired
     private TikuUserQuestionMapper tikuUserQuestionMapper;
 
+    @Autowired
+    private TikuCommonMapper tikuCommonMapper;
+
     @Override
     @ReadConnection
     public int isExerciseDone(int studentId, String date, String exerciseType) {
@@ -57,6 +61,30 @@ public class UserRecordStatisticsServiceImpl implements UserRecordStatisticsServ
         int count = tikuUserQuestionMapper.countQuestionCountBySubjectIdsAndStuId(tableName, ids, studentId);
         log.info("<--- countQuestionCountBySubjectIdsAndStuId result {}", count);
         return count;
+    }
+
+    @Override
+    public Integer countQuestionCountByKnowledgeIdsAndStuId(Collection<Integer> knowledgeTreeIds, int studentId) {
+        return tikuUserRecordMapper.countDoneQuestionOfKnowledgeIds(knowledgeTreeIds, studentId, String.format("%02d", studentId % 100));
+    }
+
+    @Override
+    public Integer queryKnowledgeTreeIdByCondition(Integer subjectId, Integer provinceId, Integer projectSecondId) {
+        if (subjectId == null) {
+            throw new RuntimeException("传入subjectId为空！");
+        }
+        Integer knowledgeTreeId = null;
+        if (provinceId != null) {
+            knowledgeTreeId = tikuCommonMapper.getKnowledgeTreeIdWithProvinceAndProjectSecond(subjectId, provinceId, projectSecondId);
+            //无知识树时取覆盖省份最多的知识树
+            if (knowledgeTreeId == null) {
+                knowledgeTreeId = tikuCommonMapper.getKnowledgeTreeIdWithoutProvince(subjectId);
+            }
+        } else {
+            //无省份时取覆盖省份最多的知识树
+            knowledgeTreeId = tikuCommonMapper.getKnowledgeTreeIdWithoutProvince(subjectId);
+        }
+        return knowledgeTreeId;
     }
 
     /**

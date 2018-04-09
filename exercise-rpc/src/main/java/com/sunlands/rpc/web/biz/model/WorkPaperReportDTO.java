@@ -5,13 +5,13 @@ package com.sunlands.rpc.web.biz.model;
  */
 public class WorkPaperReportDTO {
     private Integer answerNumber; // 答题人数
-    private Float answerTime; // 总答题时间
-    private Float answerTimeAve; // 平均答题时间
+    private Double answerTime; // 总答题时间
+    private Double answerTimeAve; // 平均答题时间
     private String answerTimeAveString;
     private String answerTimeString;
     private Integer correct; // 总正确题数
     private Integer correctAve; // 平均正确题数
-    private Float correctPercent; // 正确率
+    private Double correctPercent; // 正确率
     private Float evaluatedScore;
     private String paperId; // 试卷id
     private String paperName; // 试卷名称
@@ -31,19 +31,19 @@ public class WorkPaperReportDTO {
         this.answerNumber = answerNumber;
     }
 
-    public Float getAnswerTime() {
+    public Double getAnswerTime() {
         return answerTime;
     }
 
-    public void setAnswerTime(Float answerTime) {
+    public void setAnswerTime(Double answerTime) {
         this.answerTime = answerTime;
     }
 
-    public Float getAnswerTimeAve() {
+    public Double getAnswerTimeAve() {
         return answerTimeAve;
     }
 
-    public void setAnswerTimeAve(Float answerTimeAve) {
+    public void setAnswerTimeAve(Double answerTimeAve) {
         this.answerTimeAve = answerTimeAve;
     }
 
@@ -79,11 +79,11 @@ public class WorkPaperReportDTO {
         this.correctAve = correctAve;
     }
 
-    public Float getCorrectPercent() {
+    public Double getCorrectPercent() {
         return correctPercent;
     }
 
-    public void setCorrectPercent(Float correctPercent) {
+    public void setCorrectPercent(Double correctPercent) {
         this.correctPercent = correctPercent;
     }
 

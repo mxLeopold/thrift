@@ -5,26 +5,20 @@ import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
 import com.sunlands.rpc.web.statistics.handler.WebStatisticsServiceHandler;
 import com.sunlands.rpc.web.statistics.service.StuAnswerResult;
-import com.sunlands.rpc.web.statistics.service.WebStatisticsService;
 import com.sunlands.rpc.web.statistics.service.WorkPaperReport;
-import com.sunlands.rpc.web.statistics.service.WorkPaperReportList;
-import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
-import org.apache.thrift.transport.THttpClient;
-import org.apache.thrift.transport.TTransport;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -59,7 +53,7 @@ public class WebStatisticsServiceTest {
     public void testNew() {
         String paperCode = "2536";
         String unitIdStr = "1579208,1";
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+        PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
         org.springframework.util.Assert.notNull(paperDTO, "试卷不存在");
 ////        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
 //        PaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
@@ -113,18 +107,6 @@ public class WebStatisticsServiceTest {
 //        workPaperReportListDTO.setField1("167107,1");
 //        workPaperReportListDTO.setWorkGroupId("2501");
 //        paperReportService.selectWorkPaperReport(workPaperReportListDTO);
-        List<WorkPaperReport> paperReport = null;
-        WorkPaperReportList reportList = new WorkPaperReportList();
-        reportList.setWorkGroupId(paperCode);
-        reportList.setField1(unitIdStr);
-        try {
-//            paperReport = webStatisticsServiceHandler.getPaperReport(paperCode, "167107,1");
-            reportList = webStatisticsServiceHandler.selectWorkPaperReport(reportList);
-        } catch (Exception e) {
-
-        }
-//        System.out.println(paperReport);
-        System.out.println(reportList);
     }
 
 
@@ -132,7 +114,7 @@ public class WebStatisticsServiceTest {
     public void test() {
         String paperCode = "2527";
         String unitIdStr = "352923";
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
+        PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
         org.springframework.util.Assert.notNull(paperDTO, "试卷不存在");
 
         List<TikuUserRecordDTO> tikuUserRecordDTOS = paperReportMapper.selectUserRecord(paperDTO.getId(), unitIdStr);
@@ -159,7 +141,98 @@ public class WebStatisticsServiceTest {
 
         System.out.println(stuAnswerResult);
 
+    }
+
+    @Test
+    public void testStuAnswerDetails() {
+        Integer paperId = 8130;
+        String unitIdStr = "156718,157810,157810";
+        String str[] = unitIdStr.split(",");
+
+        int totalNum = paperReportMapper.getStuAnswerDetailsCount(paperId % 10,paperId, Arrays.asList(str));
+        if (totalNum != 0) {
+            List<StuAnswerDetailDTO> stuAnswerDetailDTOS = paperReportMapper.getStuAnswerDetails(0,paperId,Arrays.asList(str),0,1);//= paperReportMapper.getStuAnswerDetails(0,8130,"166529,156718,157810,157810",1,1);
+            System.out.println(stuAnswerDetailDTOS);
+        }
+    }
+
+    @Test
+    public void testSelectByPaperIdAndUnitId() {
+        List<TikuExamStatisticsDTO> tikuExamStatisticsDTO = paperReportMapper.selectByPaperIdAndUnitId(1, Arrays.asList("1"));
+        System.out.println(tikuExamStatisticsDTO);
+
+        int num = paperReportMapper.selectTotalAnswerNum(1,Arrays.asList("1","2"));
+        System.out.println(num);
+    }
+
+    @Test
+    public void testSelectRankingList() {
+        List<StuAnswerDetailDTO> stuAnswerDetailDTOS = paperReportMapper.selectRankingList(8130 %10,8130, Arrays.asList("166529","156718","157810","157810"));
+        System.out.println(stuAnswerDetailDTOS);
+    }
+
+    @Test
+    public void testSelectStuAnswers() {
+        Integer paperId = 8130;
+
+        List<OptionAnswerDTO> optionAnswerDTOS = paperReportMapper.selectStuAnswers(paperId % 10,
+                paperId, Arrays.asList("166529","156718","157810","157810"), 111);
+        System.out.println(optionAnswerDTOS);
 
     }
 
+    @Test
+    public void testGetPaperDetail() {
+        String paperCode = "2504";
+        String unitIdStr = "1579208,166529,156718,157810,157810";
+        PaperDetailDTO paperDetail = paperReportService.getPaperDetail(paperCode, unitIdStr);
+        System.out.println(paperDetail);
+    }
+
+    @Test
+    public void testReplaceCharacter() {
+        String a = "1404-江苏省-人力资源管理（一）";
+        String b = "";
+        a = a.replaceAll("-(.*?)-", "-北京市-");
+        System.out.println(a);
+    }
+
+    @Test
+    public void testDiv() {
+        // 没效果
+        DecimalFormat df = new DecimalFormat("######0.00");
+        double a = 0.001;
+        double b = 1.327;
+        double c = 1;
+        double d = 4.3216324;
+        df.format(a);
+        df.format(b);
+        df.format(c);
+        df.format(d);
+        System.out.println("a:" +a+",b:"+b+",c:"+c+",d:"+d);
+    }
+
+    @Test
+    public void testDecimal() {
+        double a = (double) 946 / 316;
+        double b = gradeRateToDouble(a, 0);
+        System.out.println("a="+a+",b="+Integer.parseInt(gradeRate(a)));
+    }
+
+    private String gradeRate(double d) {
+        BigDecimal b = new BigDecimal(d);
+        return b.setScale(0, BigDecimal.ROUND_HALF_UP).toString();
+    }
+
+    private double gradeRateToDouble(double d, int scale) {
+        BigDecimal b = new BigDecimal(d);
+        return b.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    @Test
+    public void testChangeHtml() {
+        String htmlContent = "<img src=\"/F:/ent/ent_parent/ent-op-war/target/ent-op-war-0.0.1-SNAPSHOT/pdfCfg/img//img1.png\" />";
+        htmlContent = htmlContent.replaceAll("(<img.*?)(>|/>)", "$1/>");
+        System.out.println(htmlContent);
+    }
 }

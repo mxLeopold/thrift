@@ -1,21 +1,4 @@
 namespace java com.sunlands.rpc.web.statistics.service
-
-// 作业统计详情
-struct WorkPaperReportList {
-    1: string field1;
-    2: string field2;
-    3: string field3;
-    4: string field4;
-    5: string field5;
-    6: string paperId;
-    7: string paperName;
-    8: string paperTypeCode;
-    9: list<WorkPaperReport> result;
-    10: string systemNumber;
-    11: string userNumber;
-    12: double userPaperPoint;
-    13: string workGroupId;
-}
 // 作业统计数据
 struct WorkPaperReport {
     1: i32 answerNumber;
@@ -38,7 +21,7 @@ struct WorkPaperReport {
     18: i32 wrong;
 }
 // 学员成绩列表
-struct StuAnswerResult {  // StudentsScoreResultForWorkDTO
+struct StuAnswerResult {
     1: i32 countPerPage;
     2: i32 pageCount;
     3: i32 pageIndex;
@@ -50,69 +33,63 @@ struct StuAnswerResult {  // StudentsScoreResultForWorkDTO
     9: string systemNumber;
 }
 // 学员成绩详情
-struct StuAnswerDetail {   // StudentsScoreInfoForWorkDTO
+struct StuAnswerDetail {
     1: i32 userNumber;
     2: string username;
     3: i32 answeredTime; // 答题时间
     4: i32 rightNum;
     5: i32 wrongNum;
-    6: double correctRate;
+    6: string correctRate;
+    7: double score; // 分值
 }
 // 答卷详情
 struct PaperDetail {
-    1: string paperName;
-    2: i32 answerNum; // 答卷人数
-    3: list<StuAnswerDetail> ranking; // 排行榜
-    4: list<QuestionDetail> questionDetailList;
+    1: i32 paperId;
+    2: string paperName;
+    3: i32 finishCount;  // 答题人数
+    4: list<QuestionDetail> questions; // 题目列表
+    5: list<QuizzesOrWorkUserAnswers> quizzesOrWorkUserAnswersDTOList; // 排行榜
+    6: i32 res; // 当返回对象为空时，res = -1
 }
+
+struct QuizzesOrWorkUserAnswers {
+    1: i32 paperId;
+    2: i32 userNumber;
+    3: string userName;
+    4: i32 correctCount;
+}
+
 // 题目详情
 struct QuestionDetail {
-    1: i32 questionMainId;
-    2: i32 sequence;
-    3: string questionType;
-    4: string questionContent;
-    5: string analysis;
-    6: string scoreStr;
-    7: string answer;
-    8: list<Option> optionList; // 选项列表
-    9: list<Blank> blankList; // 填空题-空列表
-    10: list<StuQuestionAnswer> stuAnswers; // 学员答题信息
-    11: list<QuestionDetail> subQuestionList; // 子题
-    12: list<ScorePoint> scorePointList; // 得分点信息
+    1: string questionContent;
+    2: string expertContent;
+    3: list<Option> questionOptions;
+    4: list<OptionAnswer> optionAnswers;
+    5: string questionType;
+    6: list<ScorePoint> scorePoints;
 }
 // 得分点
 struct ScorePoint {
-    1: i32 id;
-    2: i32 questionId;
-    3: string content;
-    4: string score;
+    1: string score;
+    2: string content;
 }
-// 填空题 - 空
-struct Blank {
-    1: i32 id;
-    2: string answer;
-}
-// 选项
+// 选项  -- 根据sequence排序
 struct Option {
-    1: i32 sequence;
-    2: string optionTitle;
-    3: string optionContent;
-    4: i32 correct;
+    1: i32 rightAnswerFlag;// 是否为正确选项
+    2: string sortOrderStr;// 选项
+    3: string optioncolContent; // 选项内容
 }
-// 学员答题分布统计
-struct StuQuestionAnswer {
-    1: i32 questionId;
-    2: i32 stuId;
-    3: string stuAnswer;
-    4: i32 correct; // 是否正确
-    5: i32 stuScore; // 学员得分
+// 选项分布
+struct OptionAnswer {
+    1: string questionResult; // 选项
+    2: i32 answerTotal; // 答题人数
 }
 
 service WebStatisticsService {
-	// 查询随堂考列表
+	// 查询作业、随堂考列表
 	list<WorkPaperReport> getPaperReport(1: string paperId, 2: string unitIdStr);
 
-    // 查询随堂考详情
+    // 查询作业、随堂考详情
     PaperDetail getPaperDetail(1: string paperId, 2: string unitIdStr);
 
     // 学员成绩列表
@@ -123,9 +100,5 @@ service WebStatisticsService {
 
     // 校验作业ID
     i32 checkAssignmentId(1: string paperCode);
-
-    // 查询作业统计数据
-    WorkPaperReportList selectWorkPaperReport(1: WorkPaperReportList workPaperReportList);
-
 
 }

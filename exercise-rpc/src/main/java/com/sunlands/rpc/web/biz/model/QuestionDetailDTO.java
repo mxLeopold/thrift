@@ -1,7 +1,5 @@
 package com.sunlands.rpc.web.biz.model;
 
-import com.sunlands.rpc.web.statistics.service.StuQuestionAnswer;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -21,9 +19,15 @@ public class QuestionDetailDTO {
     private Integer questionId;
     private List<OptionDTO> optionList;
     private List<ScorePointDTO> scorePointList;
-    private List<BlankDTO> blankList;
-    private List<StuQuestionAnswer> stuAnswers;
-    private List<QuestionDetailDTO> subQuestionList;
+    private List<OptionAnswerDTO> stuAnswers;
+
+    public List<OptionAnswerDTO> getStuAnswers() {
+        return stuAnswers;
+    }
+
+    public void setStuAnswers(List<OptionAnswerDTO> stuAnswers) {
+        this.stuAnswers = stuAnswers;
+    }
 
     public List<ScorePointDTO> getScorePointList() {
         return scorePointList;
@@ -111,30 +115,6 @@ public class QuestionDetailDTO {
 
     public void setOptionList(List<OptionDTO> optionList) {
         this.optionList = optionList;
-    }
-
-    public List<BlankDTO> getBlankList() {
-        return blankList;
-    }
-
-    public void setBlankList(List<BlankDTO> blankList) {
-        this.blankList = blankList;
-    }
-
-    public List<StuQuestionAnswer> getStuAnswers() {
-        return stuAnswers;
-    }
-
-    public void setStuAnswers(List<StuQuestionAnswer> stuAnswers) {
-        this.stuAnswers = stuAnswers;
-    }
-
-    public List<QuestionDetailDTO> getSubQuestionList() {
-        return subQuestionList;
-    }
-
-    public void setSubQuestionList(List<QuestionDetailDTO> subQuestionList) {
-        this.subQuestionList = subQuestionList;
     }
 
     public String getContentType() {
