@@ -80,7 +80,8 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
                 }
             }
         }
-        return userRecordStatisticsService.countQuestionCountByKnowledgeIdsAndStuId(knowledgeTreeIdSet, studentId);
+        Integer count = userRecordStatisticsService.countQuestionCountByKnowledgeIdsAndStuId(knowledgeTreeIdSet, studentId);
+        return null == count ? 0 : count;
     }
 
     @Override

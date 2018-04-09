@@ -86,7 +86,7 @@ public class ApiHomePageServiceTest {
 //        }
 //        DateTime end = DateTime.now();
 //        printTimeSpend(before, end, size);
-        int count = client.getSubmitQuestionCount(3306771, 705981);
+        int count = client.getSubmitQuestionCount(3064934, 1693997);
         System.out.println(count);
     }
 

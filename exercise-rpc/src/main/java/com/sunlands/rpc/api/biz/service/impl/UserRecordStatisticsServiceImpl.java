@@ -64,7 +64,7 @@ public class UserRecordStatisticsServiceImpl implements UserRecordStatisticsServ
     }
 
     @Override
-    public int countQuestionCountByKnowledgeIdsAndStuId(Collection<Integer> knowledgeTreeIds, int studentId) {
+    public Integer countQuestionCountByKnowledgeIdsAndStuId(Collection<Integer> knowledgeTreeIds, int studentId) {
         return tikuUserRecordMapper.countDoneQuestionOfKnowledgeIds(knowledgeTreeIds, studentId, String.format("%02d", studentId % 100));
     }
 

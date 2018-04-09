@@ -61,7 +61,7 @@ public interface TikuUserRecordMapper {
             "AND delete_flag = 0 ",
             "</script>",
     })
-    int countDoneQuestionOfKnowledgeIds(@Param("knowledgeTreeIds") Collection<Integer> knowledgeTreeIds,
+    Integer countDoneQuestionOfKnowledgeIds(@Param("knowledgeTreeIds") Collection<Integer> knowledgeTreeIds,
                                         @Param("studentId") int studentId,
                                         @Param("indexStr") String indexStr);
 }

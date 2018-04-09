@@ -39,7 +39,7 @@ public interface UserRecordStatisticsService {
      * @param studentId
      * @return int
      */
-    int countQuestionCountByKnowledgeIdsAndStuId(Collection<Integer> knowledgeTreeIds, int studentId);
+    Integer countQuestionCountByKnowledgeIdsAndStuId(Collection<Integer> knowledgeTreeIds, int studentId);
 
     /**
      * 查询知识树Id
