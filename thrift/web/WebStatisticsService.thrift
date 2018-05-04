@@ -1,4 +1,15 @@
 namespace java com.sunlands.rpc.web.statistics.service
+//刷题详情
+struct QuestionAnswerDetail{
+    1: i32 sequence;
+    2: string questionContent;
+    3: i32 totalAnswerNum;
+    4: i32 correctFlag;
+    5: i32 questionId;
+    6: i32 correctNum;
+    7: i32 wrongNum;
+    8: string correctPercent;
+}
 // 作业统计数据
 struct WorkPaperReport {
     1: i32 answerNumber;
@@ -101,4 +112,9 @@ service WebStatisticsService {
     // 校验作业ID
     i32 checkAssignmentId(1: string paperCode);
 
+    // 刷题详情
+    list<QuestionAnswerDetail> getQuestionAnswerDetails(1: string paperCode, 2: i32 roundId);
+
+    //刷题详情总条目
+    i32 getQuestionAnswerTotal(1: string paperCode, 2: i32 roundId);
 }

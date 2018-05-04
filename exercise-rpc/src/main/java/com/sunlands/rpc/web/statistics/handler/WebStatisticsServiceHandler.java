@@ -199,4 +199,46 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         return checkPaperId;
     }
 
+    /**
+     * 刷题详情信息
+     * @param paperCode
+     * @param roundId
+     * @return
+     * @throws TException
+     */
+    @Override
+    public List<QuestionAnswerDetail> getQuestionAnswerDetails(String paperCode, int roundId) throws TException {
+        logger.debug("getQuestionAnswerDetails(paperCode:{}，roundId:{}) -------- start", paperCode,roundId);
+        List<QuestionAnswerDetail> questionAnswerDetails = new ArrayList<>();
+        List<QuestionAnswerDetailDTO> questionAnswerDetailDTOS = paperReportService.getQuestionAnswerDetails(paperCode,roundId);
+       for (QuestionAnswerDetailDTO questionAnswerDetailDTO : questionAnswerDetailDTOS){
+           QuestionAnswerDetail questionAnswerDetail = new QuestionAnswerDetail();
+           questionAnswerDetail.setCorrectFlag(questionAnswerDetailDTO.getCorrectFlag());
+           questionAnswerDetail.setCorrectNum(questionAnswerDetailDTO.getCorrectNum());
+           questionAnswerDetail.setCorrectPercent(questionAnswerDetailDTO.getCorrectPercent());
+           questionAnswerDetail.setQuestionContent(questionAnswerDetailDTO.getQuestionContent());
+           questionAnswerDetail.setQuestionId(questionAnswerDetailDTO.getQuestionId());
+           questionAnswerDetail.setSequence(questionAnswerDetailDTO.getSequence());
+           questionAnswerDetail.setTotalAnswerNum(questionAnswerDetailDTO.getTotalAnswerNum());
+           questionAnswerDetail.setWrongNum(questionAnswerDetailDTO.getWrongNum());
+           questionAnswerDetails.add(questionAnswerDetail);
+       }
+        logger.debug("getQuestionAnswerDetails(paperCode:{}，roundId:{}) -------- end", paperCode,roundId);
+        return questionAnswerDetails;
+    }
+
+    /**
+     * 轮次统计数据
+     * @param paperCode
+     * @param roundId
+     * @return
+     * @throws TException
+     */
+    @Override
+    public int getQuestionAnswerTotal(String paperCode, int roundId) throws TException {
+        logger.debug("getQuestionAnswerTotal(paperCode:{}，roundId:{}) -------- start", paperCode,roundId);
+        int total = paperReportService.getQuestionAnswerTotal(paperCode,roundId);
+        logger.debug("getQuestionAnswerTotal(paperCode:{}，roundId:{}) -------- end", paperCode,roundId);
+        return total;
+    }
 }

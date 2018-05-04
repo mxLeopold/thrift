@@ -1,22 +1,20 @@
 package com.sunlands.rpc.web.biz.service.impl;
 
-import com.sun.corba.se.impl.oa.toa.TOA;
 import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class PaperReportServiceImpl implements PaperReportService {
+
     @Autowired
     private PaperReportMapper paperReportMapper;
 
@@ -221,6 +219,77 @@ public class PaperReportServiceImpl implements PaperReportService {
     private double gradeRateToDouble(double d, int scale) {
         BigDecimal b = new BigDecimal(d);
         return b.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    @Override
+    public List<QuestionAnswerDetailDTO> getQuestionAnswerDetails(String paperCode,Integer roundId) {
+        if (paperCode == null || "".equals(paperCode)){
+            throw new RuntimeException("试卷编码不能为空");
+        }
+        if (roundId == null || "".equals(roundId)){
+            throw new RuntimeException("轮次ID不能为空");
+        }
+        List<QuestionAnswerDetailDTO> questionAnswerDetails = paperReportMapper.queryQuestionAnswerDetails(paperCode,roundId);
+        Map<Integer,QuestionAnswerDetailDTO> questionAnswerDetailMap = new HashMap<>();
+        Map<Integer,QuestionAnswerDetailDTO> valueSortMap = new TreeMap<>(new QuestionSequenceComparator().new ValueComparator(questionAnswerDetailMap));
+        //遍历每个题的答题情况，计算每个题的正确率
+        for (QuestionAnswerDetailDTO questionAnswerDetail : questionAnswerDetails){
+            //以questionId为单元计算，若该题已被记录信息，则更新正确率等参数
+            if (questionAnswerDetailMap.containsKey(questionAnswerDetail.getQuestionId())){
+                QuestionAnswerDetailDTO mapQuestionAnswerDetail = questionAnswerDetailMap.get(questionAnswerDetail.getQuestionId());
+                if (questionAnswerDetail.getCorrectFlag()==1){
+                    mapQuestionAnswerDetail.setCorrectNum(questionAnswerDetail.getTotalAnswerNum());
+                    mapQuestionAnswerDetail.setTotalAnswerNum(mapQuestionAnswerDetail.getTotalAnswerNum()+questionAnswerDetail.getTotalAnswerNum());
+                    mapQuestionAnswerDetail.setCorrectPercent(floatToPercent((float) mapQuestionAnswerDetail.getCorrectNum()/mapQuestionAnswerDetail.getTotalAnswerNum()));
+                }else{
+                    questionAnswerDetail.setWrongNum(questionAnswerDetail.getTotalAnswerNum());
+                    mapQuestionAnswerDetail.setTotalAnswerNum(mapQuestionAnswerDetail.getTotalAnswerNum()+questionAnswerDetail.getTotalAnswerNum());
+                    mapQuestionAnswerDetail.setCorrectPercent(floatToPercent((float) mapQuestionAnswerDetail.getCorrectNum()/mapQuestionAnswerDetail.getTotalAnswerNum()));
+                }
+            } else{//若该题未被记录信息，则在map中新增该题的正确率等参数
+                if (questionAnswerDetail.getCorrectFlag()==1){
+                    questionAnswerDetail.setCorrectNum(questionAnswerDetail.getTotalAnswerNum());
+                    questionAnswerDetail.setWrongNum(0);
+                    questionAnswerDetail.setTotalAnswerNum(questionAnswerDetail.getTotalAnswerNum());
+                    questionAnswerDetail.setCorrectPercent(floatToPercent(1));
+                }else{
+                    questionAnswerDetail.setCorrectNum(0);
+                    questionAnswerDetail.setWrongNum(questionAnswerDetail.getTotalAnswerNum());
+                    questionAnswerDetail.setTotalAnswerNum(questionAnswerDetail.getTotalAnswerNum());
+                    questionAnswerDetail.setCorrectPercent(floatToPercent(0));
+                }
+                questionAnswerDetailMap.put(questionAnswerDetail.getQuestionId(),questionAnswerDetail);
+            }
+        }
+        //排序
+        valueSortMap.putAll(questionAnswerDetailMap);
+        //返回更新完数据后的刷题详情LIST
+        return new ArrayList<>(valueSortMap.values());
+    }
+
+    public class QuestionSequenceComparator {
+        class ValueComparator implements Comparator<Integer> {
+            Map<Integer, QuestionAnswerDetailDTO> base;
+
+            //Comparator外部比较器
+            public ValueComparator(Map<Integer, QuestionAnswerDetailDTO> base) {
+                this.base = base;
+            }
+
+            //根据Map的值进行比较
+            public int compare(Integer a, Integer b) {
+                return base.get(a).getSequence().compareTo(base.get(b).getSequence());
+            }
+        }
+    }
+
+    @Override
+    public Integer getQuestionAnswerTotal(String paperCode, Integer roundId) {
+        return paperReportMapper.queryQuestionAnswerTotal(paperCode,roundId);
+    }
+
+    private String floatToPercent(float num){
+        return String.format("%.2f%%", num * 100) ;
     }
 
 }

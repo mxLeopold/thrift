@@ -43,4 +43,9 @@ public interface PaperReportService {
 
     StuAnswerResultDTO getStuAnswerResult(StuAnswerResultDTO stuAnswerResultDTO);
 
+    //刷题详情
+    List<QuestionAnswerDetailDTO> getQuestionAnswerDetails(String paperCode,Integer roundId);
+    //刷题详情总数目
+    Integer getQuestionAnswerTotal(String paperCode,Integer roundId);
+
 }

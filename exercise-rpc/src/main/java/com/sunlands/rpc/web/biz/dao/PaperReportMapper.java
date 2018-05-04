@@ -1,14 +1,15 @@
 package com.sunlands.rpc.web.biz.dao;
 
 import com.sunlands.rpc.web.biz.model.*;
-import com.sunlands.rpc.web.statistics.service.OptionAnswer;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
+@Repository
 public interface PaperReportMapper {
     /**
      * 查询B端试卷
@@ -211,4 +212,36 @@ public interface PaperReportMapper {
             "where delete_flag = 0 and record_id = #{recordId}"
     })
     List<TikuUserQuestionDTO> selectUserQuestion(@Param("tableNameIndex") String tableNameIndex, @Param("recordId") Integer recordId);
+
+    @Select({
+            "SELECT g.sequence sequence,f.content questionContent,d.correct_flag correctFlag,SUM(d.total_answer_num) totalAnswerNum,e.id questionId " ,
+            "FROM t_tiku_exam_statistics a " ,
+            "INNER JOIN t_paper b On a.t_paper_id=b.id AND b.delete_flag=0 " ,
+            "INNER JOIN t_paper_code c ON b.`code`=c.`code` AND c.code = #{paperCode} AND c.delete_flag=0 " ,
+            "INNER JOIN t_tiku_exam_question_answer_statistics_0 d ON d.round_id=a.round_id AND d.t_paper_id=b.id AND d.delete_flag=0 " ,
+            "INNER JOIN t_question_main e ON e.id = d.question_main_id AND e.delete_flag=0 " ,
+            "INNER JOIN t_question_content_choice f ON f.id = e.question_id AND f.delete_flag=0 " ,
+            "INNER JOIN t_paper_question_code_rel g ON g.paper_code = c.`code` AND g.question_code=e.`code` AND g.delete_flag=0 " ,
+            "WHERE a.delete_flag=0 AND a.exercise_type='GROUP_EXERCISE' AND a.round_id = #{roundId} " ,
+            "GROUP BY c.`code`,a.round_id,g.sequence,f.content,d.correct_flag,e.id "
+    })
+    List<QuestionAnswerDetailDTO> queryQuestionAnswerDetails(@Param("paperCode") String paperCode,
+                                                          @Param("roundId") Integer roundId);
+
+
+    @Select({
+            "SELECT COUNT(0) FROM (" ,
+            "SELECT COUNT(0) " ,
+            "FROM t_tiku_exam_statistics a " ,
+            "INNER JOIN t_paper b On a.t_paper_id=b.id AND b.delete_flag=0 " ,
+            "INNER JOIN t_paper_code c ON b.`code`=c.`code` AND c.code = #{paperCode} AND c.delete_flag=0 " ,
+            "INNER JOIN t_tiku_exam_question_answer_statistics_0 d ON d.round_id=a.round_id AND d.t_paper_id=b.id AND d.delete_flag=0 " ,
+            "INNER JOIN t_question_main e ON e.id = d.question_main_id AND e.delete_flag=0 " ,
+            "INNER JOIN t_question_content_choice f ON f.id = e.question_id AND f.delete_flag=0 " ,
+            "INNER JOIN t_paper_question_code_rel g ON g.paper_code = c.`code` AND g.question_code=e.`code` AND g.delete_flag=0 " ,
+            "WHERE a.delete_flag=0 AND a.exercise_type='GROUP_EXERCISE' AND a.round_id = #{roundId} " ,
+            "GROUP BY c.`code`,a.round_id,g.sequence,f.content,e.id " ,
+            ") t"
+    })
+    Integer queryQuestionAnswerTotal(@Param("paperCode") String paperCode,@Param("roundId") Integer roundId);
 }
