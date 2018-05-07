@@ -235,4 +235,12 @@ public class WebStatisticsServiceTest {
         htmlContent = htmlContent.replaceAll("(<img.*?)(>|/>)", "$1/>");
         System.out.println(htmlContent);
     }
+
+    @Test
+    public void testGetRoundStatistics() {
+        List<RoundStatisticsDTO> roundStatistics = paperReportMapper.getRoundStatistics(Arrays.asList(1, 2, 3));
+        if (roundStatistics != null && roundStatistics.size() >0) {
+            System.out.println(roundStatistics);
+        }
+    }
 }

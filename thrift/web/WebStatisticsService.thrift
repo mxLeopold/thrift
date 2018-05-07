@@ -95,6 +95,12 @@ struct OptionAnswer {
     1: string questionResult; // 选项
     2: i32 answerTotal; // 答题人数
 }
+// 轮次统计数据
+struct RoundStatistics {
+    1: i32 roundId;
+    2: i32 totalAnswerNum; // 答题人数
+    3: i32 totalQuestionAnswerNum; // 总刷题数
+}
 
 service WebStatisticsService {
 	// 查询作业、随堂考列表
@@ -117,4 +123,8 @@ service WebStatisticsService {
 
     //刷题详情总条目
     i32 getQuestionAnswerTotal(1: string paperCode, 2: i32 roundId);
+
+    // 查询轮次统计数据
+    list<RoundStatistics> getRoundStatistics(1: list<i32> roundIds);
+
 }

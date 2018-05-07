@@ -59,4 +59,4 @@ logging:
         com.sunlands: DEBUG
 
 service:
-    student-service-url: http://172.16.116.136:9888/student
+    student-service-url: http://172.16.116.136:9097/student

@@ -241,4 +241,19 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         logger.debug("getQuestionAnswerTotal(paperCode:{}，roundId:{}) -------- end", paperCode,roundId);
         return total;
     }
+
+    @Override
+    public List<RoundStatistics> getRoundStatistics(List<Integer> roundIds) throws TException {
+        logger.debug("getRoundStatistics(roundIds:{}) -------- start", roundIds);
+        if (roundIds == null || roundIds.size() == 0) {
+            logger.debug("getRoundStatistics(roundIds:{}) -------- end, return \"null\"", roundIds);
+            return null;
+        }
+        List<RoundStatisticsDTO> roundStatistics = paperReportService.getRoundStatistics(roundIds);
+        ArrayList<RoundStatistics> roundStatistics1 = new ArrayList<>();
+        BeanUtils.copyProperties(roundStatistics, roundStatistics1);
+        logger.debug("getRoundStatistics(roundIds:{}) -------- end, return {}", roundIds, roundStatistics1);
+        return roundStatistics1;
+    }
+
 }

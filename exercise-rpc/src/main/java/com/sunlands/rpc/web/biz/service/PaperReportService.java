@@ -48,4 +48,6 @@ public interface PaperReportService {
     //刷题详情总数目
     Integer getQuestionAnswerTotal(String paperCode,Integer roundId);
 
+    List<RoundStatisticsDTO> getRoundStatistics(List<Integer> roundIds);
+
 }

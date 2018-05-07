@@ -288,6 +288,11 @@ public class PaperReportServiceImpl implements PaperReportService {
         return paperReportMapper.queryQuestionAnswerTotal(paperCode,roundId);
     }
 
+    @Override
+    public List<RoundStatisticsDTO> getRoundStatistics(List<Integer> roundIds) {
+        return paperReportMapper.getRoundStatistics(roundIds);
+    }
+
     private String floatToPercent(float num){
         return String.format("%.2f%%", num * 100) ;
     }

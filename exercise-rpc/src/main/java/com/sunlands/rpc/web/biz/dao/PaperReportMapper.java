@@ -244,4 +244,21 @@ public interface PaperReportMapper {
             ") t"
     })
     Integer queryQuestionAnswerTotal(@Param("paperCode") String paperCode,@Param("roundId") Integer roundId);
+
+    /**
+     * 批量查询轮次统计数据
+     * @param roundIds
+     * @return
+     */
+    @Select({
+            "<script>",
+            "SELECT round_id roundId, sum(total_answer_num) totalAnswerNum, SUM(total_question_answer_num) totalQuestionAnswerNum ",
+            "FROM t_tiku_exam_statistics ",
+            "WHERE delete_flag = 0 AND round_id IN ",
+            "<foreach item=\"item\" index=\"index\" collection=\"roundIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>",
+            "GROUP BY round_id",
+            "</script>"
+    })
+    List<RoundStatisticsDTO> getRoundStatistics(@Param("roundIds") List<Integer> roundIds);
+
 }
