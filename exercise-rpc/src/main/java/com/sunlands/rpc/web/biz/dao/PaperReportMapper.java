@@ -216,7 +216,7 @@ public interface PaperReportMapper {
     @Select({
             "SELECT g.sequence sequence,f.content questionContent,d.correct_flag correctFlag,SUM(d.total_answer_num) totalAnswerNum,e.id questionId " ,
             "FROM t_tiku_exam_statistics a " ,
-            "INNER JOIN t_paper b On a.t_paper_id=b.id AND b.delete_flag=0 " ,
+            "INNER JOIN t_paper b ON a.t_paper_id=b.id AND b.delete_flag=0 " ,
             "INNER JOIN t_paper_code c ON b.`code`=c.`code` AND c.code = #{paperCode} AND c.delete_flag=0 " ,
             "INNER JOIN t_tiku_exam_question_answer_statistics_0 d ON d.round_id=a.round_id AND d.t_paper_id=b.id AND d.delete_flag=0 " ,
             "INNER JOIN t_question_main e ON e.id = d.question_main_id AND e.question_type IN ('SINGLE_CHOICE','JUDGE_CHOICE','MULTI_CHOICE') AND e.delete_flag=0 " ,
