@@ -229,7 +229,11 @@ public class PaperReportServiceImpl implements PaperReportService {
         if (roundId == null || "".equals(roundId)){
             throw new RuntimeException("轮次ID不能为空");
         }
-        List<QuestionAnswerDetailDTO> questionAnswerDetails = paperReportMapper.queryQuestionAnswerDetails(paperCode,roundId);
+        PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
+        if (paperDTO == null || paperDTO.getId() ==null || "".equals(paperDTO.getId())){
+            throw new RuntimeException("试卷不存在");
+        }
+        List<QuestionAnswerDetailDTO> questionAnswerDetails = paperReportMapper.queryQuestionAnswerDetails(paperCode,roundId,paperDTO.getId()%10);
         Map<Integer,QuestionAnswerDetailDTO> questionAnswerDetailMap = new HashMap<>();
         Map<Integer,QuestionAnswerDetailDTO> valueSortMap = new TreeMap<>(new QuestionSequenceComparator().new ValueComparator(questionAnswerDetailMap));
         //遍历每个题的答题情况，计算每个题的正确率
