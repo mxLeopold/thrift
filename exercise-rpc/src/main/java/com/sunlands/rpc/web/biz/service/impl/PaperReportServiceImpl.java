@@ -223,6 +223,7 @@ public class PaperReportServiceImpl implements PaperReportService {
 
     @Override
     public List<QuestionAnswerDetailDTO> getQuestionAnswerDetails(String paperCode,Integer roundId) {
+        List<QuestionAnswerDetailDTO> questionAnswerDetails = new ArrayList<>();
         if (paperCode == null || "".equals(paperCode)){
             throw new RuntimeException("试卷编码不能为空");
         }
@@ -230,10 +231,10 @@ public class PaperReportServiceImpl implements PaperReportService {
             throw new RuntimeException("轮次ID不能为空");
         }
         PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
-        if (paperDTO == null || paperDTO.getId() ==null || "".equals(paperDTO.getId())){
-            throw new RuntimeException("试卷不存在");
+        //若改试卷存在t_paper表中，就代表已经存在刷题详情
+        if (!(paperDTO == null || paperDTO.getId() ==null || "".equals(paperDTO.getId()))){
+            questionAnswerDetails = paperReportMapper.queryQuestionAnswerDetails(paperCode,roundId,paperDTO.getId()%10);
         }
-        List<QuestionAnswerDetailDTO> questionAnswerDetails = paperReportMapper.queryQuestionAnswerDetails(paperCode,roundId,paperDTO.getId()%10);
         Map<Integer,QuestionAnswerDetailDTO> questionAnswerDetailMap = new HashMap<>();
         Map<Integer,QuestionAnswerDetailDTO> valueSortMap = new TreeMap<>(new QuestionSequenceComparator().new ValueComparator(questionAnswerDetailMap));
         //遍历每个题的答题情况，计算每个题的正确率
