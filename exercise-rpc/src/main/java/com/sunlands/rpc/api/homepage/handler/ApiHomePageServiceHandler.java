@@ -62,7 +62,7 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
             throw new RuntimeException("请求StudentRPC.getAllTermSubjectByDetailId发生异常, message: " + e.getMessage());
         }
         // 科目ID集合(可能有科目跨学期的情况)-查询科目上课时长使用
-        Set<Integer> subjectIdSet = new HashSet<>(32);
+//        Set<Integer> subjectIdSet = new HashSet<>(32);
         // 科目对应的知识树ID集合-查询科目下题目数量和做题数量使用
         Set<Integer> knowledgeTreeIdSet = new HashSet<>(32);
 
@@ -72,13 +72,18 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
                 continue;
             }
             for (SubjectDTO termSubject : termSubjects) {
-                subjectIdSet.add(termSubject.getSubjectId());
+//                subjectIdSet.add(termSubject.getSubjectId());
+                // 查询知识树ID
                 Integer knowledgeTreeId = userRecordStatisticsService.queryKnowledgeTreeIdByCondition(termSubject.getSubjectId(),
                         provinceId, projectSecondId);
                 if (knowledgeTreeId != null) {
                     knowledgeTreeIdSet.add(knowledgeTreeId);
                 }
             }
+        }
+        if (knowledgeTreeIdSet.isEmpty()) {
+            // fail fast 避免SQL报错
+            return 0;
         }
         Integer count = userRecordStatisticsService.countQuestionCountByKnowledgeIdsAndStuId(knowledgeTreeIdSet, studentId);
         return null == count ? 0 : count;
