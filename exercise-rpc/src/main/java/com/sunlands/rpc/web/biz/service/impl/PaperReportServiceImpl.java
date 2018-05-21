@@ -239,6 +239,8 @@ public class PaperReportServiceImpl implements PaperReportService {
         Map<Integer,QuestionAnswerDetailDTO> valueSortMap = new TreeMap<>(new QuestionSequenceComparator().new ValueComparator(questionAnswerDetailMap));
         //遍历每个题的答题情况，计算每个题的正确率
         for (QuestionAnswerDetailDTO questionAnswerDetail : questionAnswerDetails){
+            //过滤掉questionContent中的html标签
+            questionAnswerDetail.setQuestionContent(trimHtmlTag(questionAnswerDetail.getQuestionContent()));
             //以questionId为单元计算，若该题已被记录信息，则更新正确率等参数
             if (questionAnswerDetailMap.containsKey(questionAnswerDetail.getQuestionId())){
                 QuestionAnswerDetailDTO mapQuestionAnswerDetail = questionAnswerDetailMap.get(questionAnswerDetail.getQuestionId());
@@ -270,6 +272,16 @@ public class PaperReportServiceImpl implements PaperReportService {
         valueSortMap.putAll(questionAnswerDetailMap);
         //返回更新完数据后的刷题详情LIST
         return new ArrayList<>(valueSortMap.values());
+    }
+
+    /**
+     * 代码描述 : 去除字符串中的html标签
+     * @author subo
+     * modified by : [变更日期YYYY-MM-DD][更改人姓名][变更描述]
+     * date :  2018/4/8
+     */
+    private String trimHtmlTag(String str) {
+        return str.replaceAll("<[^>]+>", "").replaceAll("&nbsp;", "");
     }
 
     public class QuestionSequenceComparator {
