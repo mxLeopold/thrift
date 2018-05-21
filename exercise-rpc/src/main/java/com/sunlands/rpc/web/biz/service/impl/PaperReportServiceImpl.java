@@ -247,7 +247,7 @@ public class PaperReportServiceImpl implements PaperReportService {
                     mapQuestionAnswerDetail.setTotalAnswerNum(mapQuestionAnswerDetail.getTotalAnswerNum()+questionAnswerDetail.getTotalAnswerNum());
                     mapQuestionAnswerDetail.setCorrectPercent(floatToPercent((float) mapQuestionAnswerDetail.getCorrectNum()/mapQuestionAnswerDetail.getTotalAnswerNum()));
                 }else{
-                    questionAnswerDetail.setWrongNum(questionAnswerDetail.getTotalAnswerNum());
+                    mapQuestionAnswerDetail.setWrongNum(questionAnswerDetail.getTotalAnswerNum());
                     mapQuestionAnswerDetail.setTotalAnswerNum(mapQuestionAnswerDetail.getTotalAnswerNum()+questionAnswerDetail.getTotalAnswerNum());
                     mapQuestionAnswerDetail.setCorrectPercent(floatToPercent((float) mapQuestionAnswerDetail.getCorrectNum()/mapQuestionAnswerDetail.getTotalAnswerNum()));
                 }
