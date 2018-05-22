@@ -1,5 +1,6 @@
 package com.sunlands.rpc.web.coursetemplate.handler;
 
+import com.sunlands.rpc.common.CourseTemplateConstants;
 import com.sunlands.rpc.web.biz.dao.KnowledgeTreeDao;
 import com.sunlands.rpc.web.biz.model.KnowledgeTreeDTO;
 import com.sunlands.rpc.web.coursetemplate.service.*;
@@ -20,9 +21,7 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
     private KnowledgeTreeDao knowledgeTreeDao;
     @Override
     public List<KnowledgeTree> getCourseTemplateKnowledgeTreeListBySubjectAndType(int subjectId, String type) throws TException {
-        if (type == null || type.isEmpty()) {
-            throw new TException("type错误");
-        }
+        checkType(type);
         List<KnowledgeTree> knowledgeTreeList = knowledgeTreeDao.queryKnowledgeTreeBySubjectAndType(subjectId, type);
 
         for (KnowledgeTree knowledgeTree : knowledgeTreeList) {
@@ -31,6 +30,12 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
             knowledgeTree.setProvinces(provinces);
         }
         return knowledgeTreeList;
+    }
+
+    private void checkType(String type) throws TException {
+        if (type == null || type.isEmpty() || (!type.equals(CourseTemplateConstants.MD_NORMAL) && !type.equals(CourseTemplateConstants.MD_CONSTRUE))) {
+            throw new TException("type参数错误");
+        }
     }
 
     private String getProvinceString(List<Integer> provinces) {
@@ -47,7 +52,9 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
 
     @Override
     public List<CourseTemplate> getCourseTemplateListByCondition(int subjectId, String type, int knowledgeTreeId) throws TException {
-        return null;
+        checkType(type);
+        List<CourseTemplate> courseTemplateList = knowledgeTreeDao.queryCourseTemplateBySubjectAndType(subjectId, type, knowledgeTreeId);
+        return courseTemplateList;
     }
 
     @Override
