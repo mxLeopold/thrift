@@ -2,7 +2,9 @@ package com.sunlands.rpc.test.web;
 
 import com.sunlands.rpc.web.coursetemplate.handler.WebCourseTemplateServiceHandler;
 import com.sunlands.rpc.web.coursetemplate.service.CourseTemplate;
+import com.sunlands.rpc.web.coursetemplate.service.CourseTemplateDetail;
 import com.sunlands.rpc.web.coursetemplate.service.KnowledgeTree;
+import com.sunlands.rpc.web.coursetemplate.service.ReqMockExam;
 import org.apache.thrift.TException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
@@ -20,9 +24,12 @@ public class WebCourseTemplateServiceTest {
     @Autowired
     WebCourseTemplateServiceHandler webCourseTemplateServiceHandler;
     @Test
-    public void getCourseTemplateKnowledgeTreeListBySubjectAndType() throws TException {
-        List<KnowledgeTree> list = webCourseTemplateServiceHandler.getCourseTemplateKnowledgeTreeListBySubjectAndType(1, "MD_NORMAL");
-        System.out.println(list);
+    public void getCourseTemplateKnowledgeTreeListBySubjectAndType(){
+        try {
+            List<KnowledgeTree> list = webCourseTemplateServiceHandler.getCourseTemplateKnowledgeTreeListBySubjectAndType(1, "MD_NORMAL");
+        } catch (TException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -33,6 +40,72 @@ public class WebCourseTemplateServiceTest {
         } catch (TException e) {
             e.printStackTrace();
         }
-        System.out.println(list);
+    }
+
+    @Test
+    public void getCourseTemplateDetailById() {
+        CourseTemplateDetail courseTemplateDetail = webCourseTemplateServiceHandler.getCourseTemplateDetailById(1);
+    }
+
+    @Test
+    public void createMockExam() throws TException{
+        ReqMockExam reqMockExam = new ReqMockExam();
+        reqMockExam.setCollegeId(1);
+        reqMockExam.setSubjectId(1);
+        reqMockExam.setName("guomengli");
+        reqMockExam.setOperateType("CREATE");
+        reqMockExam.setOperator("guomengli");
+        reqMockExam.setRoundId(1);
+
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        reqMockExam.setStartTime(df.format(date));
+
+        String time = "2018-05-22 22:45:36.484";
+        reqMockExam.setEndTime(time);
+        int result = webCourseTemplateServiceHandler.operateMockExam(reqMockExam);
+        System.out.println(result);
+    }
+
+    @Test
+    public void editMockExam() throws TException{
+        ReqMockExam reqMockExam = new ReqMockExam();
+        reqMockExam.setExerciseExamId(4297);
+        reqMockExam.setCollegeId(1);
+        reqMockExam.setSubjectId(1);
+        reqMockExam.setName("guomengli2");
+        reqMockExam.setOperateType("EDIT");
+        reqMockExam.setOperator("guomengli2");
+        reqMockExam.setRoundId(1);
+
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        reqMockExam.setStartTime(df.format(date));
+
+        String time = "2018-05-22 22:45:36.484";
+        reqMockExam.setEndTime(time);
+        int result = webCourseTemplateServiceHandler.operateMockExam(reqMockExam);
+        System.out.println(result);
+    }
+
+    @Test
+    public void deleteMockExam() throws TException{
+        ReqMockExam reqMockExam = new ReqMockExam();
+        reqMockExam.setExerciseExamId(4302);
+        reqMockExam.setCollegeId(1);
+        reqMockExam.setSubjectId(1);
+        reqMockExam.setName("guomengli2");
+        reqMockExam.setOperateType("DELETE");
+        reqMockExam.setOperator("guomengli2");
+        reqMockExam.setRoundId(1);
+
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        reqMockExam.setStartTime(df.format(date));
+
+        String time = "2018-05-22 22:45:36.484";
+        reqMockExam.setEndTime(time);
+        int result = webCourseTemplateServiceHandler.operateMockExam(reqMockExam);
+        System.out.println(result);
     }
 }
