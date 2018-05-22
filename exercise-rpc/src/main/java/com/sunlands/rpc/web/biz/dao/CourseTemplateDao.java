@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * 课程模板数据库操作
+ */
 @Repository
 public interface CourseTemplateDao {
 
