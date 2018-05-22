@@ -61,8 +61,11 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
     @Override
     public CourseTemplateDetail getCourseTemplateDetailById(int courseTemplateId) {
         CourseTemplateDetail courseTemplateDetail = courseTemplateDao.queryCourseTemplateById(courseTemplateId);
-        List<CourseTemplateUnit> courseTemplateUnitList = courseTemplateDao.queryCourseTemplateUnitByCourseTemplateId(courseTemplateId);
+        if (courseTemplateDetail == null) {
+            return null;
+        }
 
+        List<CourseTemplateUnit> courseTemplateUnitList = courseTemplateDao.queryCourseTemplateUnitByCourseTemplateId(courseTemplateId);
         for (CourseTemplateUnit unit : courseTemplateUnitList) {
             int templateUnitId = unit.getTemplateUnitId();
             List<Integer> knowledgeNodeList = courseTemplateDao.queryKnowledgeNodeIdByTemplateUnitId(templateUnitId);
@@ -98,8 +101,8 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
         Timestamp startTime = new Timestamp(startDate.getTime());
         Timestamp endTime = new Timestamp(endDate.getTime());
         String operatorType = reqMockExam.getOperateType();
-        int flag = -1;
 
+        int flag = -1;
         if (CourseTemplateConstants.CREATE.equals(operatorType)) {
             flag = courseTemplateDao.insertMockExam(reqMockExam, startTime, endTime);
         }else if (CourseTemplateConstants.EDIT.equals(operatorType)){
@@ -110,10 +113,10 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
                 throw  new TException("该模考正在被编辑");
             }
         }
-
         if (flag == -1) {
             throw  new TException("reqMockExam.OperateType参数错误");
         }
+
         return reqMockExam.exerciseExamId;
     }
 }
