@@ -105,7 +105,10 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
         }else if (CourseTemplateConstants.EDIT.equals(operatorType)){
             flag = courseTemplateDao.updateMockExam(reqMockExam, startTime, endTime);
         }else if (CourseTemplateConstants.DELETE.equals(operatorType)){
-            flag = courseTemplateDao.deleteMockExam(reqMockExam);
+            flag = courseTemplateDao.deleteMockExam(reqMockExam, startTime, endTime);
+            if (flag == 0) {
+                throw  new TException("该模考正在被编辑");
+            }
         }
 
         if (flag == -1) {

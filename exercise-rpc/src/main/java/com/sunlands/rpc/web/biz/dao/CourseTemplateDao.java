@@ -131,7 +131,7 @@ public interface CourseTemplateDao {
      */
     @Update({
             "update ent_exam set college_id = #{exam.collegeId}, subject_id = #{exam.subjectId}, name = #{exam.name}, start_time = #{startTime}, " +
-            "end_time = #{endTime}, paper_code = #{exam.paperCode}, round_id = #{exam.roundId}, operator = #{exam.operator} where id = #{exam.exerciseExamId}"
+            "end_time = #{endTime}, paper_code = #{exam.paperCode}, round_id = #{exam.roundId}, operator = #{exam.operator} where id = #{exam.exerciseExamId} and delete_flag = 0"
     })
     @Options(useGeneratedKeys = true, keyProperty = "exam.exerciseExamId")
     int updateMockExam(@Param("exam") ReqMockExam exam, @Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime);
@@ -142,8 +142,9 @@ public interface CourseTemplateDao {
      * @return
      */
     @Update({
-            "update ent_exam set delete_flag = 1 where id = #{exam.exerciseExamId}"
+            "update ent_exam set delete_flag = 1 where id = #{exam.exerciseExamId} and name = #{exam.name} " +
+            "and start_time = #{startTime} and end_time = #{endTime} and delete_flag = 0"
     })
     @Options(useGeneratedKeys = true, keyProperty = "exam.exerciseExamId")
-    int deleteMockExam(@Param("exam") ReqMockExam exam);
+    int deleteMockExam(@Param("exam") ReqMockExam exam, @Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime);
 }
