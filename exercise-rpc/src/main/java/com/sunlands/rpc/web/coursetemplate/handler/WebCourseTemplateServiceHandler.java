@@ -37,11 +37,11 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
         if (provinces == null) {
             return null;
         }
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
         for (Integer id : provinces) {
-            buffer.append(id + " ");
+            builder.append(id + " ");
         }
-        String result = buffer.toString();
+        String result = builder.toString();
         return result.substring(0, result.length());
     }
 
