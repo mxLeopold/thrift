@@ -1,11 +1,13 @@
 package com.sunlands.rpc.test.web;
 
 import com.sunlands.rpc.web.coursetemplate.handler.WebCourseTemplateServiceHandler;
-import com.sunlands.rpc.web.coursetemplate.service.CourseTemplate;
-import com.sunlands.rpc.web.coursetemplate.service.CourseTemplateDetail;
-import com.sunlands.rpc.web.coursetemplate.service.KnowledgeTree;
-import com.sunlands.rpc.web.coursetemplate.service.ReqMockExam;
+import com.sunlands.rpc.web.coursetemplate.service.*;
 import org.apache.thrift.TException;
+import org.apache.thrift.protocol.TBinaryProtocol;
+import org.apache.thrift.protocol.TProtocol;
+import org.apache.thrift.transport.THttpClient;
+import org.apache.thrift.transport.TTransport;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,5 +109,22 @@ public class WebCourseTemplateServiceTest {
         reqMockExam.setEndTime(time);
         int result = webCourseTemplateServiceHandler.operateMockExam(reqMockExam);
         System.out.println(result);
+    }
+
+    @Test
+    public void rpcClient(){
+        System.out.println("客户端启动。。。。。");
+
+        String serverURL = "http://10.72.1.145:9094/web/courseTemplate";
+        CourseTemplateDetail detail = null;
+        try {
+            TTransport transport = new THttpClient(serverURL);
+            TProtocol protocol = new TBinaryProtocol.Factory().getProtocol(transport);
+            WebCourseTemplateService.Client client = new WebCourseTemplateService.Client(protocol);
+            detail = client.getCourseTemplateDetailById(1);
+            Assert.assertEquals("111", detail.getCourseTemplateName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
