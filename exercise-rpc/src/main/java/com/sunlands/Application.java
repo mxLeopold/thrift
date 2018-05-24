@@ -34,11 +34,11 @@ public class Application {
                                                            WebCourseTemplateServiceHandler handler){
         ServletRegistrationBean courseTemplate = new ServletRegistrationBean(
                 new TServlet(new WebCourseTemplateService.Processor<>(handler), protocolFactory),
-                "web/courseTemplate/*");
+                "/web/courseTemplate/*");
         courseTemplate.setName("courseTemplate");
         return courseTemplate;
     }
-    
+
     @Bean
     public ServletRegistrationBean statisticsServletRegistrationBean(TProtocolFactory protocolFactory,
                                                            WebStatisticsServiceHandler handler) {
