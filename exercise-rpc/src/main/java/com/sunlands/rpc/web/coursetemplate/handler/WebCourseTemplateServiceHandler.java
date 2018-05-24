@@ -61,6 +61,8 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
     public CourseTemplateDetail getCourseTemplateDetailById(int courseTemplateId) {
         CourseTemplateDetail courseTemplateDetail = courseTemplateDao.queryCourseTemplateById(courseTemplateId);
         if (courseTemplateDetail == null) {
+            courseTemplateDetail = new CourseTemplateDetail();
+            courseTemplateDetail.setCourseTemplateId(-1);
             return courseTemplateDetail;
         }
 
