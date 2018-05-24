@@ -24,7 +24,6 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
     public List<KnowledgeTree> getCourseTemplateKnowledgeTreeListBySubjectAndType(int subjectId, String type) throws TException {
         checkType(type);
         List<KnowledgeTree> knowledgeTreeList = courseTemplateDao.queryKnowledgeTreeBySubjectAndType(subjectId, type);
-
         for (KnowledgeTree knowledgeTree : knowledgeTreeList) {
             List<Integer> provinceList = courseTemplateDao.queryProvinceByKnowledgeTreeId(knowledgeTree.getKnowledgeTreeId());
             String provinces = getProvinceString(provinceList);
@@ -62,7 +61,7 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
     public CourseTemplateDetail getCourseTemplateDetailById(int courseTemplateId) {
         CourseTemplateDetail courseTemplateDetail = courseTemplateDao.queryCourseTemplateById(courseTemplateId);
         if (courseTemplateDetail == null) {
-            return null;
+            return courseTemplateDetail;
         }
 
         List<CourseTemplateUnit> courseTemplateUnitList = courseTemplateDao.queryCourseTemplateUnitByCourseTemplateId(courseTemplateId);
