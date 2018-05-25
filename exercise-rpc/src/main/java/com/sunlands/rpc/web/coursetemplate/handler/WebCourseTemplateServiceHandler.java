@@ -102,19 +102,16 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
         Timestamp startTime = new Timestamp(startDate.getTime());
         Timestamp endTime = new Timestamp(endDate.getTime());
         String operatorType = reqMockExam.getOperateType();
-
-        int flag = -1;
+        
         if (CourseTemplateConstants.CREATE.equals(operatorType)) {
-            flag = courseTemplateDao.insertMockExam(reqMockExam, startTime, endTime);
+            courseTemplateDao.insertMockExam(reqMockExam, startTime, endTime);
         }else if (CourseTemplateConstants.EDIT.equals(operatorType)){
-            flag = courseTemplateDao.updateMockExam(reqMockExam, startTime, endTime);
+            courseTemplateDao.updateMockExam(reqMockExam, startTime, endTime);
         }else if (CourseTemplateConstants.DELETE.equals(operatorType)){
-            flag = courseTemplateDao.deleteMockExam(reqMockExam, startTime, endTime);
-            if (flag == 0) {
+            if (courseTemplateDao.deleteMockExam(reqMockExam, startTime, endTime) == 0) {
                 throw  new TException("该模考正在被编辑");
             }
-        }
-        if (flag == -1) {
+        }else {
             throw  new TException("reqMockExam.OperateType参数错误");
         }
 
