@@ -20,10 +20,11 @@ public interface CourseTemplateDao {
      * @return
      */
     @Select({
-            "select a.t_knowledge_tree_id as knowledgeTreeId, a.subject_id as subjectId, group_concat(c.province_name) as provinces from t_course_template a \n" +
-            "left join t_knowledge_tree_province_proj2nd_rel b on a.t_knowledge_tree_id = b.knowledge_tree_id \n" +
-            "left join sch_local_province c on b.province_id = c.id\n" +
-            "where subject_id = #{subjectId} and type_code = #{type} and a.delete_flag = 0 and status_code = 'VALID' and current_version = 1 and b.delete_flag = 0 and c.delete_flag = 0"
+            "select a.t_knowledge_tree_id as knowledgeTreeId, a.subject_id as subjectId, group_concat(d.province_name) as provinces from t_course_template a " +
+            "inner join t_knowledge_tree b on a.t_knowledge_tree_id = b.id and b.delete_flag = 0 " +
+            "inner join t_knowledge_tree_province_proj2nd_rel c on a.t_knowledge_tree_id = c.knowledge_tree_id and c.delete_flag = 0 " +
+            "inner join sch_local_province d on c.province_id = d.id and d.delete_flag = 0 " +
+            "where a.subject_id = #{subjectId} and a.type_code = #{type} and a.delete_flag = 0 and a.status_code = 'VALID' and a.current_version = 1 group by knowledgeTreeId"
     })
     List<KnowledgeTree> queryKnowledgeTreeBySubjectAndType(@Param("subjectId") int subjectId, @Param("type") String type);
 
@@ -37,7 +38,7 @@ public interface CourseTemplateDao {
     @Select({"<script>" +
              "select id courseTemplateId, code courseTemplateCode, subject_id subjectId, t_knowledge_tree_id knowledgeTreeId, " +
              "version, name courseTemplateName, total_unit_count totalUnitCount, mock_exam_paper_code mockExamPaperCode from t_course_template " +
-            "where delete_flag = 0 and subject_id = #{subjectId} and status_code = 'VALID' and current_version = 1 and type_code = #{type}" +
+            "where delete_flag = 0 and subject_id = #{subjectId} and status_code = 'VALID' and current_version = 1 and type_code = #{type} " +
              "<if test = \"knowledgeTreeId != 0\"> and t_knowledge_tree_id = #{knowledgeTreeId}</if>" +
              "</script>"
     })
