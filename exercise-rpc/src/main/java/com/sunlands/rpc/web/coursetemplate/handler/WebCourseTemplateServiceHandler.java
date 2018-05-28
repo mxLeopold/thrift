@@ -48,22 +48,6 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
             courseTemplateDetail.setCourseTemplateId(-1);
             return courseTemplateDetail;
         }
-
-        List<CourseTemplateUnit> courseTemplateUnitList = courseTemplateDao.queryCourseTemplateUnitByCourseTemplateId(courseTemplateId);
-        for (CourseTemplateUnit unit : courseTemplateUnitList) {
-            int templateUnitId = unit.getTemplateUnitId();
-            List<Integer> knowledgeNodeList = courseTemplateDao.queryKnowledgeNodeIdByTemplateUnitId(templateUnitId);
-            List<String> quizCodeList = courseTemplateDao.queryPaperByTemplateUnitId(templateUnitId, CourseTemplateConstants.QUIZ);
-            List<String> assignmentsCodeList = courseTemplateDao.queryPaperByTemplateUnitId(templateUnitId, CourseTemplateConstants.ASSIGNMENTS);
-            List<CourseTemplateUnitFile> courseTemplateUnitFileList = courseTemplateDao.queryCourseTemplateUnitFileByTemplateUnitId(templateUnitId);
-
-            unit.setKnowledgeNodeIdList(knowledgeNodeList);
-            unit.setQuizPaperCodeList(quizCodeList);
-            unit.setAssignmentPaperCodeList(assignmentsCodeList);
-            unit.setFileList(courseTemplateUnitFileList);
-        }
-        courseTemplateDetail.setTemplateUnitList(courseTemplateUnitList);
-
         return courseTemplateDetail;
     }
 

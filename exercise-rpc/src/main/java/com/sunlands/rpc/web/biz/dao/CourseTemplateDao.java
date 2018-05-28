@@ -2,6 +2,7 @@ package com.sunlands.rpc.web.biz.dao;
 
 import com.sunlands.rpc.web.coursetemplate.service.*;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
@@ -50,10 +51,14 @@ public interface CourseTemplateDao {
      * @return
      */
     @Select({
-            "select id courseTemplateId, code courseTemplateCode, subject_id subjectId, t_knowledge_tree_id knowledgeTreeId, version, " +
+            "select id, code courseTemplateCode, subject_id subjectId, t_knowledge_tree_id knowledgeTreeId, version, " +
             "name courseTemplateName, total_unit_count totalUnitCount, mock_exam_paper_code mockExamPaperCode from t_course_template " +
             "where id = #{courseTemplateId} and delete_flag = 0 and status_code = 'VALID' and current_version = 1"
     })
+    @Results({
+            @Result(column = "id", property = "courseTemplateId", jdbcType = JdbcType.INTEGER),
+            @Result(column = "id", property = "templateUnitList", javaType = List.class, many = @Many(select = "queryCourseTemplateUnitByCourseTemplateId"))
+            })
     CourseTemplateDetail queryCourseTemplateById(@Param("courseTemplateId") int courseTemplateId);
 
     /**
@@ -62,8 +67,16 @@ public interface CourseTemplateDao {
      * @return
      */
     @Select({
-            "select id templateUnitId, template_id courseTemplateId from t_course_template_unit " +
+            "select id, template_id from t_course_template_unit " +
             "where template_id = #{courseTemplateId} and delete_flag = 0"
+    })
+    @Results({
+            @Result(column = "id", property = "templateUnitId", jdbcType = JdbcType.INTEGER),
+            @Result(column = "template_id", property = "courseTemplateId", jdbcType = JdbcType.INTEGER),
+            @Result(column = "id", property = "knowledgeNodeIdList", javaType = List.class, many = @Many(select = "queryKnowledgeNodeIdByTemplateUnitId")),
+            @Result(column = "id", property = "quizPaperCodeList", javaType = List.class, many = @Many(select = "queryQuizPaperByTemplateUnitId")),
+            @Result(column = "id", property = "assignmentPaperCodeList", javaType = List.class, many = @Many(select = "queryAssignmentPaperByTemplateUnitId")),
+            @Result(column = "id", property = "fileList", javaType = List.class, many = @Many(select = "queryCourseTemplateUnitFileByTemplateUnitId"))
     })
     List<CourseTemplateUnit>  queryCourseTemplateUnitByCourseTemplateId(@Param("courseTemplateId") int courseTemplateId);
 
@@ -79,16 +92,26 @@ public interface CourseTemplateDao {
     List<Integer> queryKnowledgeNodeIdByTemplateUnitId(@Param("templateUnitId")int templateUnitId);
 
     /**
-     * 根据课程模板单元id查询随堂考/作业列表
+     * 根据课程模板单元id查询随堂考列表
      * @param templateUnitId
-     * @param paperType
      * @return
      */
     @Select({
             "select paper_code from t_course_template_unit_paper_rel " +
-            "where template_unit_id = #{templateUnitId} and paper_type = #{paperType} and delete_flag = 0"
+            "where template_unit_id = #{templateUnitId} and paper_type = 'ASSIGNMENTS' and delete_flag = 0"
     })
-    List<String> queryPaperByTemplateUnitId(@Param("templateUnitId")int templateUnitId, @Param("paperType") String paperType);
+    List<String> queryAssignmentPaperByTemplateUnitId(@Param("templateUnitId")int templateUnitId);
+
+    /**
+     * 根据课程模板单元id查询作业列表
+     * @param templateUnitId
+     * @return
+     */
+    @Select({
+            "select paper_code from t_course_template_unit_paper_rel " +
+                    "where template_unit_id = #{templateUnitId} and paper_type = 'QUIZ' and delete_flag = 0"
+    })
+    List<String> queryQuizPaperByTemplateUnitId(@Param("templateUnitId")int templateUnitId);
 
     /**
      * 根据课程模板单元id查询课件文件列表
