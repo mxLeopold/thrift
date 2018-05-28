@@ -73,7 +73,7 @@ public interface CourseTemplateDao {
     @Results({
             @Result(column = "id", property = "templateUnitId", jdbcType = JdbcType.INTEGER),
             @Result(column = "template_id", property = "courseTemplateId", jdbcType = JdbcType.INTEGER),
-            @Result(column = "id", property = "knowledgeNodeIdList", javaType = List.class, many = @Many(select = "queryKnowledgeNodeIdByTemplateUnitId")),
+            @Result(column = "id", property = "knowledgeNodeList", javaType = List.class, many = @Many(select = "queryKnowledgeNodeIdByTemplateUnitId")),
             @Result(column = "id", property = "quizPaperCodeList", javaType = List.class, many = @Many(select = "queryQuizPaperByTemplateUnitId")),
             @Result(column = "id", property = "assignmentPaperCodeList", javaType = List.class, many = @Many(select = "queryAssignmentPaperByTemplateUnitId")),
             @Result(column = "id", property = "fileList", javaType = List.class, many = @Many(select = "queryCourseTemplateUnitFileByTemplateUnitId"))
@@ -86,10 +86,11 @@ public interface CourseTemplateDao {
      * @return
      */
     @Select({
-            "select knowledge_node_id from t_course_template_unit_knowledge_node_rel " +
-            "where template_unit_id = #{templateUnitId} and delete_flag = 0"
+            "select a.knowledge_node_id knowledgeNodeId, b.serial_number serialNumber, b.name knowledgeNodeName " +
+            "from t_course_template_unit_knowledge_node_rel a inner join t_knowledge_node b on a.knowledge_node_id = b.id and b.delete_flag = 0 " +
+            "where a.template_unit_id = #{templateUnitId} and a.delete_flag = 0"
     })
-    List<Integer> queryKnowledgeNodeIdByTemplateUnitId(@Param("templateUnitId")int templateUnitId);
+    List<KnowledgeNode> queryKnowledgeNodeIdByTemplateUnitId(@Param("templateUnitId")int templateUnitId);
 
     /**
      * 根据课程模板单元id查询随堂考列表
