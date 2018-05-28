@@ -7,6 +7,13 @@ struct KnowledgeTree {
     3: string provinces; // 省份
 }
 
+//知识点
+struct KnowledgeNode {
+    1: i32 knowledgeNodeId; //知识点id
+    2: string serialNumber; //知识点序号
+    3: string knowledgeNodeName; //知识点名称
+}
+
 // 课程模板教学单元文件
 struct CourseTemplateUnitFile {
     1: i32 templateUnitId; //课程模板教学单元id
@@ -20,7 +27,7 @@ struct CourseTemplateUnitFile {
 struct CourseTemplateUnit {
     1: i32 courseTemplateId; //课程模板id
     2: i32 templateUnitId; // 课程模板教学单元id
-    3: list<i32> knowledgeNodeIdList; // 关联知识点id列表
+    3: list<KnowledgeNode> knowledgeNodeList; // 关联知识点列表
     4: list<string> quizPaperCodeList; //随堂考试卷列表
     5: list<string> assignmentPaperCodeList; //作业试卷列表
     6: list<CourseTemplateUnitFile> fileList; //教学单元文件列表
