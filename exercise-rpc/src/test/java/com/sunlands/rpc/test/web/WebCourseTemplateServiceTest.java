@@ -29,6 +29,7 @@ public class WebCourseTemplateServiceTest {
     public void getCourseTemplateKnowledgeTreeListBySubjectAndType(){
         try {
             List<KnowledgeTree> list = webCourseTemplateServiceHandler.getCourseTemplateKnowledgeTreeListBySubjectAndType(1, "MD_NORMAL");
+            //System.out.println(list);
         } catch (TException e) {
             e.printStackTrace();
         }
