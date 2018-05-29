@@ -41,10 +41,11 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
   private static final org.apache.thrift.protocol.TField COURSE_TEMPLATE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("courseTemplateId", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField TEMPLATE_UNIT_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("templateUnitId", org.apache.thrift.protocol.TType.I32, (short)2);
   private static final org.apache.thrift.protocol.TField TEMPLATE_UNIT_NAME_FIELD_DESC = new org.apache.thrift.protocol.TField("templateUnitName", org.apache.thrift.protocol.TType.STRING, (short)3);
-  private static final org.apache.thrift.protocol.TField KNOWLEDGE_NODE_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("knowledgeNodeList", org.apache.thrift.protocol.TType.LIST, (short)4);
-  private static final org.apache.thrift.protocol.TField QUIZ_PAPER_CODE_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("quizPaperCodeList", org.apache.thrift.protocol.TType.LIST, (short)5);
-  private static final org.apache.thrift.protocol.TField ASSIGNMENT_PAPER_CODE_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("assignmentPaperCodeList", org.apache.thrift.protocol.TType.LIST, (short)6);
-  private static final org.apache.thrift.protocol.TField FILE_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("fileList", org.apache.thrift.protocol.TType.LIST, (short)7);
+  private static final org.apache.thrift.protocol.TField SEQUENCE_FIELD_DESC = new org.apache.thrift.protocol.TField("sequence", org.apache.thrift.protocol.TType.I32, (short)4);
+  private static final org.apache.thrift.protocol.TField KNOWLEDGE_NODE_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("knowledgeNodeList", org.apache.thrift.protocol.TType.LIST, (short)5);
+  private static final org.apache.thrift.protocol.TField QUIZ_PAPER_CODE_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("quizPaperCodeList", org.apache.thrift.protocol.TType.LIST, (short)6);
+  private static final org.apache.thrift.protocol.TField ASSIGNMENT_PAPER_CODE_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("assignmentPaperCodeList", org.apache.thrift.protocol.TType.LIST, (short)7);
+  private static final org.apache.thrift.protocol.TField FILE_LIST_FIELD_DESC = new org.apache.thrift.protocol.TField("fileList", org.apache.thrift.protocol.TType.LIST, (short)8);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -55,6 +56,7 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
   public int courseTemplateId; // required
   public int templateUnitId; // required
   public String templateUnitName; // required
+  public int sequence; // required
   public List<KnowledgeNode> knowledgeNodeList; // required
   public List<String> quizPaperCodeList; // required
   public List<String> assignmentPaperCodeList; // required
@@ -65,10 +67,11 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
     COURSE_TEMPLATE_ID((short)1, "courseTemplateId"),
     TEMPLATE_UNIT_ID((short)2, "templateUnitId"),
     TEMPLATE_UNIT_NAME((short)3, "templateUnitName"),
-    KNOWLEDGE_NODE_LIST((short)4, "knowledgeNodeList"),
-    QUIZ_PAPER_CODE_LIST((short)5, "quizPaperCodeList"),
-    ASSIGNMENT_PAPER_CODE_LIST((short)6, "assignmentPaperCodeList"),
-    FILE_LIST((short)7, "fileList");
+    SEQUENCE((short)4, "sequence"),
+    KNOWLEDGE_NODE_LIST((short)5, "knowledgeNodeList"),
+    QUIZ_PAPER_CODE_LIST((short)6, "quizPaperCodeList"),
+    ASSIGNMENT_PAPER_CODE_LIST((short)7, "assignmentPaperCodeList"),
+    FILE_LIST((short)8, "fileList");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -89,13 +92,15 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
           return TEMPLATE_UNIT_ID;
         case 3: // TEMPLATE_UNIT_NAME
           return TEMPLATE_UNIT_NAME;
-        case 4: // KNOWLEDGE_NODE_LIST
+        case 4: // SEQUENCE
+          return SEQUENCE;
+        case 5: // KNOWLEDGE_NODE_LIST
           return KNOWLEDGE_NODE_LIST;
-        case 5: // QUIZ_PAPER_CODE_LIST
+        case 6: // QUIZ_PAPER_CODE_LIST
           return QUIZ_PAPER_CODE_LIST;
-        case 6: // ASSIGNMENT_PAPER_CODE_LIST
+        case 7: // ASSIGNMENT_PAPER_CODE_LIST
           return ASSIGNMENT_PAPER_CODE_LIST;
-        case 7: // FILE_LIST
+        case 8: // FILE_LIST
           return FILE_LIST;
         default:
           return null;
@@ -139,6 +144,7 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
   // isset id assignments
   private static final int __COURSETEMPLATEID_ISSET_ID = 0;
   private static final int __TEMPLATEUNITID_ISSET_ID = 1;
+  private static final int __SEQUENCE_ISSET_ID = 2;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -149,6 +155,8 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.TEMPLATE_UNIT_NAME, new org.apache.thrift.meta_data.FieldMetaData("templateUnitName", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+    tmpMap.put(_Fields.SEQUENCE, new org.apache.thrift.meta_data.FieldMetaData("sequence", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.KNOWLEDGE_NODE_LIST, new org.apache.thrift.meta_data.FieldMetaData("knowledgeNodeList", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, KnowledgeNode.class))));
@@ -172,6 +180,7 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
     int courseTemplateId,
     int templateUnitId,
     String templateUnitName,
+    int sequence,
     List<KnowledgeNode> knowledgeNodeList,
     List<String> quizPaperCodeList,
     List<String> assignmentPaperCodeList,
@@ -183,6 +192,8 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
     this.templateUnitId = templateUnitId;
     setTemplateUnitIdIsSet(true);
     this.templateUnitName = templateUnitName;
+    this.sequence = sequence;
+    setSequenceIsSet(true);
     this.knowledgeNodeList = knowledgeNodeList;
     this.quizPaperCodeList = quizPaperCodeList;
     this.assignmentPaperCodeList = assignmentPaperCodeList;
@@ -199,6 +210,7 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
     if (other.isSetTemplateUnitName()) {
       this.templateUnitName = other.templateUnitName;
     }
+    this.sequence = other.sequence;
     if (other.isSetKnowledgeNodeList()) {
       List<KnowledgeNode> __this__knowledgeNodeList = new ArrayList<KnowledgeNode>(other.knowledgeNodeList.size());
       for (KnowledgeNode other_element : other.knowledgeNodeList) {
@@ -234,6 +246,8 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
     setTemplateUnitIdIsSet(false);
     this.templateUnitId = 0;
     this.templateUnitName = null;
+    setSequenceIsSet(false);
+    this.sequence = 0;
     this.knowledgeNodeList = null;
     this.quizPaperCodeList = null;
     this.assignmentPaperCodeList = null;
@@ -308,6 +322,29 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
     if (!value) {
       this.templateUnitName = null;
     }
+  }
+
+  public int getSequence() {
+    return this.sequence;
+  }
+
+  public CourseTemplateUnit setSequence(int sequence) {
+    this.sequence = sequence;
+    setSequenceIsSet(true);
+    return this;
+  }
+
+  public void unsetSequence() {
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __SEQUENCE_ISSET_ID);
+  }
+
+  /** Returns true if field sequence is set (has been assigned a value) and false otherwise */
+  public boolean isSetSequence() {
+    return EncodingUtils.testBit(__isset_bitfield, __SEQUENCE_ISSET_ID);
+  }
+
+  public void setSequenceIsSet(boolean value) {
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SEQUENCE_ISSET_ID, value);
   }
 
   public int getKnowledgeNodeListSize() {
@@ -492,6 +529,14 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
       }
       break;
 
+    case SEQUENCE:
+      if (value == null) {
+        unsetSequence();
+      } else {
+        setSequence((Integer)value);
+      }
+      break;
+
     case KNOWLEDGE_NODE_LIST:
       if (value == null) {
         unsetKnowledgeNodeList();
@@ -538,6 +583,9 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
     case TEMPLATE_UNIT_NAME:
       return getTemplateUnitName();
 
+    case SEQUENCE:
+      return getSequence();
+
     case KNOWLEDGE_NODE_LIST:
       return getKnowledgeNodeList();
 
@@ -567,6 +615,8 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
       return isSetTemplateUnitId();
     case TEMPLATE_UNIT_NAME:
       return isSetTemplateUnitName();
+    case SEQUENCE:
+      return isSetSequence();
     case KNOWLEDGE_NODE_LIST:
       return isSetKnowledgeNodeList();
     case QUIZ_PAPER_CODE_LIST:
@@ -616,6 +666,15 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
       if (!(this_present_templateUnitName && that_present_templateUnitName))
         return false;
       if (!this.templateUnitName.equals(that.templateUnitName))
+        return false;
+    }
+
+    boolean this_present_sequence = true;
+    boolean that_present_sequence = true;
+    if (this_present_sequence || that_present_sequence) {
+      if (!(this_present_sequence && that_present_sequence))
+        return false;
+      if (this.sequence != that.sequence)
         return false;
     }
 
@@ -677,6 +736,11 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
     if (present_templateUnitName)
       list.add(templateUnitName);
 
+    boolean present_sequence = true;
+    list.add(present_sequence);
+    if (present_sequence)
+      list.add(sequence);
+
     boolean present_knowledgeNodeList = true && (isSetKnowledgeNodeList());
     list.add(present_knowledgeNodeList);
     if (present_knowledgeNodeList)
@@ -734,6 +798,16 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
     }
     if (isSetTemplateUnitName()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.templateUnitName, other.templateUnitName);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetSequence()).compareTo(other.isSetSequence());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetSequence()) {
+      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.sequence, other.sequence);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -812,6 +886,10 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
     } else {
       sb.append(this.templateUnitName);
     }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("sequence:");
+    sb.append(this.sequence);
     first = false;
     if (!first) sb.append(", ");
     sb.append("knowledgeNodeList:");
@@ -914,7 +992,15 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 4: // KNOWLEDGE_NODE_LIST
+          case 4: // SEQUENCE
+            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+              struct.sequence = iprot.readI32();
+              struct.setSequenceIsSet(true);
+            } else { 
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+            }
+            break;
+          case 5: // KNOWLEDGE_NODE_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list0 = iprot.readListBegin();
@@ -933,7 +1019,7 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 5: // QUIZ_PAPER_CODE_LIST
+          case 6: // QUIZ_PAPER_CODE_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list3 = iprot.readListBegin();
@@ -951,7 +1037,7 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 6: // ASSIGNMENT_PAPER_CODE_LIST
+          case 7: // ASSIGNMENT_PAPER_CODE_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list6 = iprot.readListBegin();
@@ -969,7 +1055,7 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 7: // FILE_LIST
+          case 8: // FILE_LIST
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list9 = iprot.readListBegin();
@@ -1014,6 +1100,9 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
         oprot.writeString(struct.templateUnitName);
         oprot.writeFieldEnd();
       }
+      oprot.writeFieldBegin(SEQUENCE_FIELD_DESC);
+      oprot.writeI32(struct.sequence);
+      oprot.writeFieldEnd();
       if (struct.knowledgeNodeList != null) {
         oprot.writeFieldBegin(KNOWLEDGE_NODE_LIST_FIELD_DESC);
         {
@@ -1089,19 +1178,22 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
       if (struct.isSetTemplateUnitName()) {
         optionals.set(2);
       }
-      if (struct.isSetKnowledgeNodeList()) {
+      if (struct.isSetSequence()) {
         optionals.set(3);
       }
-      if (struct.isSetQuizPaperCodeList()) {
+      if (struct.isSetKnowledgeNodeList()) {
         optionals.set(4);
       }
-      if (struct.isSetAssignmentPaperCodeList()) {
+      if (struct.isSetQuizPaperCodeList()) {
         optionals.set(5);
       }
-      if (struct.isSetFileList()) {
+      if (struct.isSetAssignmentPaperCodeList()) {
         optionals.set(6);
       }
-      oprot.writeBitSet(optionals, 7);
+      if (struct.isSetFileList()) {
+        optionals.set(7);
+      }
+      oprot.writeBitSet(optionals, 8);
       if (struct.isSetCourseTemplateId()) {
         oprot.writeI32(struct.courseTemplateId);
       }
@@ -1110,6 +1202,9 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
       }
       if (struct.isSetTemplateUnitName()) {
         oprot.writeString(struct.templateUnitName);
+      }
+      if (struct.isSetSequence()) {
+        oprot.writeI32(struct.sequence);
       }
       if (struct.isSetKnowledgeNodeList()) {
         {
@@ -1152,7 +1247,7 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, CourseTemplateUnit struct) throws TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(7);
+      BitSet incoming = iprot.readBitSet(8);
       if (incoming.get(0)) {
         struct.courseTemplateId = iprot.readI32();
         struct.setCourseTemplateIdIsSet(true);
@@ -1166,6 +1261,10 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
         struct.setTemplateUnitNameIsSet(true);
       }
       if (incoming.get(3)) {
+        struct.sequence = iprot.readI32();
+        struct.setSequenceIsSet(true);
+      }
+      if (incoming.get(4)) {
         {
           org.apache.thrift.protocol.TList _list20 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
           struct.knowledgeNodeList = new ArrayList<KnowledgeNode>(_list20.size);
@@ -1179,7 +1278,7 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
         }
         struct.setKnowledgeNodeListIsSet(true);
       }
-      if (incoming.get(4)) {
+      if (incoming.get(5)) {
         {
           org.apache.thrift.protocol.TList _list23 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
           struct.quizPaperCodeList = new ArrayList<String>(_list23.size);
@@ -1192,7 +1291,7 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
         }
         struct.setQuizPaperCodeListIsSet(true);
       }
-      if (incoming.get(5)) {
+      if (incoming.get(6)) {
         {
           org.apache.thrift.protocol.TList _list26 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
           struct.assignmentPaperCodeList = new ArrayList<String>(_list26.size);
@@ -1205,7 +1304,7 @@ public class CourseTemplateUnit implements org.apache.thrift.TBase<CourseTemplat
         }
         struct.setAssignmentPaperCodeListIsSet(true);
       }
-      if (incoming.get(6)) {
+      if (incoming.get(7)) {
         {
           org.apache.thrift.protocol.TList _list29 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
           struct.fileList = new ArrayList<CourseTemplateUnitFile>(_list29.size);

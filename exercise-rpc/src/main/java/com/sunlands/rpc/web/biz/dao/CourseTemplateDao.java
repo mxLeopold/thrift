@@ -67,13 +67,14 @@ public interface CourseTemplateDao {
      * @return
      */
     @Select({
-            "select id, template_id, unit_name from t_course_template_unit " +
-            "where template_id = #{courseTemplateId} and delete_flag = 0"
+            "select id, template_id, unit_name, sequence from t_course_template_unit " +
+            "where template_id = #{courseTemplateId} and delete_flag = 0 order by sequence"
     })
     @Results({
             @Result(column = "id", property = "templateUnitId", jdbcType = JdbcType.INTEGER),
             @Result(column = "template_id", property = "courseTemplateId", jdbcType = JdbcType.INTEGER),
             @Result(column = "unit_name", property = "templateUnitName", jdbcType = JdbcType.VARCHAR),
+            @Result(column = "sequence", property = "sequence", jdbcType = JdbcType.INTEGER),
             @Result(column = "id", property = "knowledgeNodeList", javaType = List.class, many = @Many(select = "queryKnowledgeNodeByTemplateUnitId")),
             @Result(column = "id", property = "quizPaperCodeList", javaType = List.class, many = @Many(select = "queryQuizPaperByTemplateUnitId")),
             @Result(column = "id", property = "assignmentPaperCodeList", javaType = List.class, many = @Many(select = "queryAssignmentPaperByTemplateUnitId")),
