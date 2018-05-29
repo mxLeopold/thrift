@@ -27,10 +27,11 @@ struct CourseTemplateUnitFile {
 struct CourseTemplateUnit {
     1: i32 courseTemplateId; //课程模板id
     2: i32 templateUnitId; // 课程模板教学单元id
-    3: list<KnowledgeNode> knowledgeNodeList; // 关联知识点列表
-    4: list<string> quizPaperCodeList; //随堂考试卷列表
-    5: list<string> assignmentPaperCodeList; //作业试卷列表
-    6: list<CourseTemplateUnitFile> fileList; //教学单元文件列表
+    3: string templateUnitName; //课程模板教学单元名称
+    4: list<KnowledgeNode> knowledgeNodeList; // 关联知识点列表
+    5: list<string> quizPaperCodeList; //随堂考试卷列表
+    6: list<string> assignmentPaperCodeList; //作业试卷列表
+    7: list<CourseTemplateUnitFile> fileList; //教学单元文件列表
 }
 
 // 课程模板
