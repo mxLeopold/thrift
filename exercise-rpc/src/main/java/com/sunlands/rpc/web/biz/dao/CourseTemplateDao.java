@@ -151,8 +151,8 @@ public interface CourseTemplateDao {
      * @return
      */
     @Update({
-            "update ent_exam set college_id = #{exam.collegeId}, subject_id = #{exam.subjectId}, name = #{exam.name}, start_time = #{startTime}, " +
-            "end_time = #{endTime}, paper_code = #{exam.paperCode}, round_id = #{exam.roundId}, operator = #{exam.operator} where id = #{exam.exerciseExamId} and delete_flag = 0"
+            "update ent_exam set name = #{exam.name}, start_time = #{startTime}, end_time = #{endTime}, " +
+            "operator = #{exam.operator} where id = #{exam.exerciseExamId} and delete_flag = 0"
     })
     @Options(useGeneratedKeys = true, keyProperty = "exam.exerciseExamId")
     int updateMockExam(@Param("exam") ReqMockExam exam, @Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime);
