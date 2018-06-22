@@ -2,6 +2,7 @@ package com.sunlands.rpc.web.coursetemplate.handler;
 
 import com.sunlands.rpc.common.CourseTemplateConstants;
 import com.sunlands.rpc.web.biz.dao.CourseTemplateDao;
+import com.sunlands.rpc.web.biz.service.PaperService;
 import com.sunlands.rpc.web.coursetemplate.service.*;
 import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import java.util.List;
 public class WebCourseTemplateServiceHandler implements WebCourseTemplateService.Iface{
     @Autowired
     private CourseTemplateDao courseTemplateDao;
+    @Autowired
+    private PaperService paperService;
     @Override
     public List<KnowledgeTree> getCourseTemplateKnowledgeTreeListBySubjectAndType(int subjectId, String type) throws TException {
         checkType(type);
@@ -71,6 +74,8 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
         String operatorType = reqMockExam.getOperateType();
 
         if (CourseTemplateConstants.CREATE.equals(operatorType)) {
+            Integer paperId = paperService.getCurrentPaperId(reqMockExam.getPaperCode());
+            reqMockExam.setPaperId(paperId);
             courseTemplateDao.insertMockExam(reqMockExam, startTime, endTime);
         }else if (CourseTemplateConstants.EDIT.equals(operatorType)){
             courseTemplateDao.updateMockExam(reqMockExam, startTime, endTime);

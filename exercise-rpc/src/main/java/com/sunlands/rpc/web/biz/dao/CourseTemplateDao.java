@@ -136,9 +136,9 @@ public interface CourseTemplateDao {
      * @return
      */
     @Insert({
-            "INSERT INTO ent_exam (college_id, subject_id, name, start_time, end_time, paper_code, round_id, operator, exam_type) " +
+            "INSERT INTO ent_exam (college_id, subject_id, name, start_time, end_time, paper_code, round_id, operator, exam_type, paper_id) " +
             "VALUES(#{exam.collegeId}, #{exam.subjectId}, #{exam.name}, #{startTime}, #{endTime}, #{exam.paperCode}, " +
-            "#{exam.roundId}, #{exam.operator}, 'MOCK_EXAM')"
+            "#{exam.roundId}, #{exam.operator}, 'MOCK_EXAM', #{exam.paperId})"
     })
     @Options(useGeneratedKeys = true, keyProperty = "exam.exerciseExamId")
     int insertMockExam(@Param("exam") ReqMockExam exam, @Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime);

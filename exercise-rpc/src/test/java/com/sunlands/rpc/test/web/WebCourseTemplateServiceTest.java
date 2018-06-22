@@ -58,6 +58,7 @@ public class WebCourseTemplateServiceTest {
         reqMockExam.setName("guomengli");
         reqMockExam.setOperateType("CREATE");
         reqMockExam.setOperator("guomengli");
+        reqMockExam.setPaperCode("3");
         reqMockExam.setRoundId(1);
 
         Date date = new Date();
