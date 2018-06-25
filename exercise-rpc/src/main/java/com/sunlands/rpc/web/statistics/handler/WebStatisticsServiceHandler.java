@@ -252,8 +252,9 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         List<RoundStatisticsDTO> roundStatistics = paperReportService.getRoundStatistics(roundIds);
         List<RoundStatistics> roundStatistics1 = new ArrayList<>();
         if (roundStatistics != null && roundStatistics.size() > 0) {
-            RoundStatistics roundStatistic = new RoundStatistics();
+            RoundStatistics roundStatistic;
             for (RoundStatisticsDTO roundStatisticsDTO : roundStatistics) {
+                roundStatistic = new RoundStatistics();
                 BeanUtils.copyProperties(roundStatisticsDTO, roundStatistic);
                 roundStatistics1.add(roundStatistic);
             }
