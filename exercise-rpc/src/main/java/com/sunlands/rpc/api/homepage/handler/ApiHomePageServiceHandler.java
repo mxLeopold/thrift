@@ -1,5 +1,6 @@
 package com.sunlands.rpc.api.homepage.handler;
 
+import com.sunlands.entrpc.model.OrdDetailInfoDTO;
 import com.sunlands.entrpc.model.SubjectDTO;
 import com.sunlands.entrpc.model.TermSubjectDTO;
 import com.sunlands.entrpc.service.StudentRpcService;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.HashSet;
 import java.util.List;
@@ -38,20 +40,53 @@ public class ApiHomePageServiceHandler implements ApiHomePageService.Iface {
 
     @Override
     public int getSubmitQuestionCount(int ordDetailId, int studentId) throws TException {
-        List<TermSubjectDTO> termList = null;
+        OrdDetailInfoDTO detailInfo = null;
         try {
-            termList = studentRpcService.getAllTermSubjectByDetailId(ordDetailId);
+            detailInfo = studentRpcService.getStuValidOrdDetail(studentId, ordDetailId);
         } catch (Exception e) {
-            log.error("请求StudentRPC.getAllTermSubjectByDetailId发生异常, message: {}", e.getMessage());
-            return 0;
+            log.error("请求StudentRPC.getStuValidOrdDetail 发生异常, message: {}", e.getMessage());
+            throw new RuntimeException("请求StudentRPC.getStuValidOrdDetail 发生异常, message: " + e.getMessage());
         }
-        Set<Integer> subjectIdList = new HashSet<>();
-        for (TermSubjectDTO term : termList) {
-            for (SubjectDTO subjectDTO : term.getTermSubjects()) {
-                subjectIdList.add(subjectDTO.getSubjectId());
+        Integer provinceId = 0;
+        Integer projectSecondId = 0;
+        if (detailInfo != null) {
+            provinceId = detailInfo.getProvinceId();
+            projectSecondId = detailInfo.getProjectSecondId();
+        }
+        // 获取用户对应子订单的全部科目
+        List<TermSubjectDTO> termSubjectList = null;
+        try {
+            termSubjectList = studentRpcService.getAllTermSubjectByDetailId(ordDetailId);
+        } catch (Exception e) {
+            log.error("请求StudentRPC.getAllTermSubjectByDetailId 发生异常, message: {}", e.getMessage());
+            throw new RuntimeException("请求StudentRPC.getAllTermSubjectByDetailId发生异常, message: " + e.getMessage());
+        }
+        // 科目ID集合(可能有科目跨学期的情况)-查询科目上课时长使用
+//        Set<Integer> subjectIdSet = new HashSet<>(32);
+        // 科目对应的知识树ID集合-查询科目下题目数量和做题数量使用
+        Set<Integer> knowledgeTreeIdSet = new HashSet<>(32);
+
+        for (TermSubjectDTO termSubjectDTO : termSubjectList) {
+            List<SubjectDTO> termSubjects = termSubjectDTO.getTermSubjects();
+            if (CollectionUtils.isEmpty(termSubjects)) {
+                continue;
+            }
+            for (SubjectDTO termSubject : termSubjects) {
+//                subjectIdSet.add(termSubject.getSubjectId());
+                // 查询知识树ID
+                Integer knowledgeTreeId = userRecordStatisticsService.queryKnowledgeTreeIdByCondition(termSubject.getSubjectId(),
+                        provinceId, projectSecondId);
+                if (knowledgeTreeId != null) {
+                    knowledgeTreeIdSet.add(knowledgeTreeId);
+                }
             }
         }
-        return userRecordStatisticsService.countQuestionCountBySubjectIdsAndStuId(subjectIdList, studentId);
+        if (knowledgeTreeIdSet.isEmpty()) {
+            // fail fast 避免SQL报错
+            return 0;
+        }
+        Integer count = userRecordStatisticsService.countQuestionCountByKnowledgeIdsAndStuId(knowledgeTreeIdSet, studentId);
+        return null == count ? 0 : count;
     }
 
     @Override

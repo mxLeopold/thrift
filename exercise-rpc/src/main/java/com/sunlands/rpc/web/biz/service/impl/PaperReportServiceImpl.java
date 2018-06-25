@@ -4,35 +4,49 @@ import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
-import org.apache.thrift.TException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.Arrays;
-import java.util.List;
+import java.math.BigDecimal;
+import java.util.*;
 
 @Service
 public class PaperReportServiceImpl implements PaperReportService {
+
     @Autowired
     private PaperReportMapper paperReportMapper;
 
     @Override
     public WorkPaperReportDTO getPaperReport(String paperCode, String unitIdStr) {
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperCode);
-        Assert.notNull(paperDTO, "试卷不存在");
-//        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
-        WorkPaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
-        if (paperReport == null) {
+        PaperDTO paper = paperReportMapper.selectPaperCodeByCode(paperCode);
+        if (paper == null) {
             return null;
         }
+        PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
+        // 未答题
+        if (paperDTO == null) {
+            return null;
+        }
+        Integer paperId = paperDTO.getId();  // 学员参考试卷版本id
+        List<String> unitIds = Arrays.asList(unitIdStr.split(","));
+        WorkPaperReportDTO paperReport = paperReportMapper.selectPaperReport(paperId, unitIds);
+        if (paperReport == null) {  // 此班未答题
+            return null;
+        }
+
         Integer answerNum = paperReport.getAnswerNumber();
         if (answerNum != null && !answerNum.equals(0) ) {
-            paperReport.setAnswerTimeAve(paperReport.getAnswerTime() / answerNum);
-            paperReport.setCorrectAve(paperReport.getCorrect() / answerNum);
-            paperReport.setCorrectPercent((float) paperReport.getCorrect() / (answerNum * paperDTO.getQuestionAmount()));
+            Double answerTime = paperReport.getAnswerTime();
+            Double answerTimeAve = answerTime / answerNum;
+            paperReport.setAnswerTimeString(answerTime.toString());
+            paperReport.setAnswerTimeAve(answerTimeAve);
+            paperReport.setAnswerTimeAveString(answerTimeAve.toString());
+            double correctAve = (double) paperReport.getCorrect() / answerNum;
+            paperReport.setCorrectAve(gradeAve(correctAve));
+            double correctRate = gradeRateToDouble(((double) paperReport.getCorrect() / (answerNum * paperDTO.getQuestionAmount())), 4) * 100;
+            paperReport.setCorrectPercent(correctRate);
         }
         paperReport.setPaperName(paperDTO.getName());
         paperReport.setQuestionNum(paperDTO.getQuestionAmount());
@@ -42,33 +56,50 @@ public class PaperReportServiceImpl implements PaperReportService {
 
     @Override
     public List<StuAnswerDetailDTO> getStuAnswerDetails(Integer paperId, String unitIdStr, Integer pageIndex, Integer pageSize) {
-        return paperReportMapper.getStuAnswerDetails(paperId, unitIdStr, null, null);
+//        int totalCount = paperReportMapper.getStuAnswerDetailsCount(paperId % 10, paperId, unitIdStr);
+//        if (totalCount == 0) {
+//            return null;
+//        }
+        String str[] = unitIdStr.split(",");
+        return paperReportMapper.getStuAnswerDetails(paperId % 10,paperId, Arrays.asList(str), pageIndex, pageSize);
     }
 
     @Override
-    public void downloadStuAnswerDetails(Integer paperId, String unitIdStr) {
-        List<StuAnswerDetailDTO> stuAnswerDetails = paperReportMapper.getStuAnswerDetails(paperId, unitIdStr, null, null);
-        // TODO: 2018/3/21 输出学员答题详情
-    }
-
-    @Override
-    public PaperDetailDTO getPaperDetail(String paperId, String unitIdStr) {
-        PaperDTO paperDTO = paperReportMapper.selectPapeByCode(paperId);
-        Assert.notNull(paperDTO, "试卷不存在");
+    public PaperDetailDTO getPaperDetail(String paperCode, String unitIdStr) {
+        PaperDTO paperDTO = paperReportMapper.selectPaperByCode(paperCode);
+        // 没有生成C端试卷，未答题
+        if (paperDTO == null) {
+            return null;
+        }
+        // 试卷版本id
+        Integer paperId = paperDTO.getId();
+        // 课程单元id列表
+        List<String> unitIds = Arrays.asList(unitIdStr.split(","));
+        // 查询答题人数
+        int num = paperReportMapper.selectTotalAnswerNum(paperId, unitIds);  // 默认答题人数为正确数据
+        if (num == 0) {
+            return null;
+        }
 
         PaperDetailDTO paperDetailDTO = new PaperDetailDTO();
-        paperDetailDTO.setPaperId(paperDTO.getId());
+        paperDetailDTO.setPaperId(paperId);
         paperDetailDTO.setCode(paperDTO.getCode());
         paperDetailDTO.setPaperName(paperDTO.getName());
-        // 查询答题人数
-        WorkPaperReportDTO paperReportDTO = paperReportMapper.selectPaperReport(paperDTO.getId(), unitIdStr);
-        if (paperReportDTO != null) {
-            paperDetailDTO.setAnswerNum(paperReportDTO.getAnswerNumber());
-        }
+        paperDetailDTO.setAnswerNum(num);
         // 排行榜
-        paperDetailDTO.setRanking(paperReportMapper.selectRankingList(paperDTO.getId(), unitIdStr)); // TODO: 2018/3/20 取ES数据？
+        paperDetailDTO.setRanking(paperReportMapper.selectRankingList(paperId % 10, paperId, unitIds));
         // 题目详情
-        paperDetailDTO.setQuestionDetailList(getRelatedQuestionMain(paperDTO.getId()));
+        List<QuestionDetailDTO> questions = getRelatedQuestionMain(paperDTO.getId());
+        // 学员答案 - 选项分布
+        if (!CollectionUtils.isEmpty(questions)) {
+            for (QuestionDetailDTO questionDetailDTO : questions) {
+                if (Constant.CONTENT_TYPE_CHOICE.equals(questionDetailDTO.getContentType())) {
+                    List<OptionAnswerDTO> optionAnswerDTOS = paperReportMapper.selectStuAnswers(paperId % 10, paperId, unitIds, questionDetailDTO.getQuestionMainId());
+                    questionDetailDTO.setStuAnswers(optionAnswerDTOS);
+                }
+            }
+        }
+        paperDetailDTO.setQuestionDetailList(questions);
         return paperDetailDTO;
     }
 
@@ -93,7 +124,7 @@ public class PaperReportServiceImpl implements PaperReportService {
     }
 
     /**
-     * 查询试卷内试题详情
+     * 查询试卷内试题详情 -- 作业、随堂考只统计了选择、文字
      * @param paperId
      * @return
      */
@@ -101,8 +132,8 @@ public class PaperReportServiceImpl implements PaperReportService {
         List<QuestionDetailDTO> questions = paperReportMapper.selectBigQuestionMainByPaperId(paperId);
         if (!CollectionUtils.isEmpty(questions)) {
             for (QuestionDetailDTO questionDetailDTO : questions) {
-                // 选项
                 if (Constant.CONTENT_TYPE_CHOICE.equals(questionDetailDTO.getContentType())) {
+                    // 选项
                     List<OptionDTO> optionDTOS = paperReportMapper.selectOptionsByQuestionId(questionDetailDTO.getQuestionId());
                     questionDetailDTO.setOptionList(optionDTOS);
                 }
@@ -113,11 +144,157 @@ public class PaperReportServiceImpl implements PaperReportService {
                         questionDetailDTO.setScorePointList(scorePointDTOS);
                     }
                 }
-                // 空
-                // 小题
-                // 学员答题分布  todo 存库？
             }
         }
         return questions;
     }
+
+    @Override
+    public StuAnswerResultDTO getStuAnswerResult(StuAnswerResultDTO stuAnswerResultDTO) {
+        String paperCode = stuAnswerResultDTO.getPaperId();
+        String unitIdStr = stuAnswerResultDTO.getField1();
+        if (StringUtils.isEmpty(paperCode)) {
+            throw new RuntimeException("paperId不能为空");
+        }
+        if (StringUtils.isEmpty(unitIdStr)) {
+            throw new RuntimeException("unitIdStr不能为空");
+        }
+        PaperDTO paperDTO= paperReportMapper.selectPaperByCode(paperCode);
+        Integer paperId = paperDTO.getId();
+        List<String> unitIds = Arrays.asList(unitIdStr.split(","));
+        int totalCount = paperReportMapper.getStuAnswerDetailsCount(paperId % 10, paperId, unitIds);
+        stuAnswerResultDTO.setTotalCount(totalCount);
+        if (totalCount != 0) {
+            Integer start = null;
+            if (stuAnswerResultDTO.getPageIndex() != null && stuAnswerResultDTO.getCountPerPage() != null
+                    && !stuAnswerResultDTO.getPageIndex().equals(0) && !stuAnswerResultDTO.getCountPerPage().equals(0)) {
+                start = (stuAnswerResultDTO.getPageIndex() - 1) * stuAnswerResultDTO.getCountPerPage();
+            }
+            List<StuAnswerDetailDTO> stuAnswerDetailDTOS = paperReportMapper.getStuAnswerDetails(paperId % 10, paperId, unitIds, start, stuAnswerResultDTO.getCountPerPage());
+
+            // 计算正确率
+            if (!CollectionUtils.isEmpty(stuAnswerDetailDTOS)) {
+                double accuracyRate = 0;
+                for (StuAnswerDetailDTO detailDTO : stuAnswerDetailDTOS) {
+                    if (detailDTO.getCorrectQuestionCount() != null && detailDTO.getQuestionNum() != null
+                            && !detailDTO.getQuestionNum().equals(0)) {
+                        accuracyRate = (double)detailDTO.getCorrectQuestionCount() / detailDTO.getQuestionNum();
+                    }
+                    detailDTO.setAccuracyRate(gradeRate(accuracyRate, 2));
+                }
+            }
+            stuAnswerResultDTO.setResultList(stuAnswerDetailDTOS);
+            if (!CollectionUtils.isEmpty(stuAnswerDetailDTOS) &&
+                    !stuAnswerResultDTO.getCountPerPage().equals(0)) {
+                Integer a = totalCount % stuAnswerResultDTO.getCountPerPage() == 0 ? 0 : 1;
+                Integer pageCount = totalCount / stuAnswerResultDTO.getCountPerPage() + a;
+                stuAnswerResultDTO.setPageCount(pageCount);
+            }
+        }
+        return stuAnswerResultDTO;
+    }
+
+    /**
+     * double --> string
+     * @param d
+     * @param scale
+     * @return
+     */
+    private String gradeRate(double d, int scale) {
+        BigDecimal b = new BigDecimal(d * 100);
+        return b.setScale(scale, BigDecimal.ROUND_HALF_UP).toString() + "%";
+    }
+
+    private Integer gradeAve(double d) {
+        BigDecimal b = new BigDecimal(d);
+        return Integer.parseInt(b.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+    }
+
+    /**
+     *
+     * @param d
+     * @param scale
+     * @return
+     */
+    private double gradeRateToDouble(double d, int scale) {
+        BigDecimal b = new BigDecimal(d);
+        return b.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
+    }
+
+    @Override
+    public List<QuestionAnswerDetailDTO> getQuestionAnswerDetails(String paperCode,Integer roundId) {
+        if (paperCode == null || "".equals(paperCode)){
+            throw new RuntimeException("试卷编码不能为空");
+        }
+        if (roundId == null || "".equals(roundId)){
+            throw new RuntimeException("轮次ID不能为空");
+        }
+        List<QuestionAnswerDetailDTO> questionAnswerDetails = paperReportMapper.queryQuestionAnswerDetails(paperCode,roundId);
+        Map<Integer,QuestionAnswerDetailDTO> questionAnswerDetailMap = new HashMap<>();
+        Map<Integer,QuestionAnswerDetailDTO> valueSortMap = new TreeMap<>(new QuestionSequenceComparator().new ValueComparator(questionAnswerDetailMap));
+        //遍历每个题的答题情况，计算每个题的正确率
+        for (QuestionAnswerDetailDTO questionAnswerDetail : questionAnswerDetails){
+            //以questionId为单元计算，若该题已被记录信息，则更新正确率等参数
+            if (questionAnswerDetailMap.containsKey(questionAnswerDetail.getQuestionId())){
+                QuestionAnswerDetailDTO mapQuestionAnswerDetail = questionAnswerDetailMap.get(questionAnswerDetail.getQuestionId());
+                if (questionAnswerDetail.getCorrectFlag()==1){
+                    mapQuestionAnswerDetail.setCorrectNum(questionAnswerDetail.getTotalAnswerNum());
+                    mapQuestionAnswerDetail.setTotalAnswerNum(mapQuestionAnswerDetail.getTotalAnswerNum()+questionAnswerDetail.getTotalAnswerNum());
+                    mapQuestionAnswerDetail.setCorrectPercent(floatToPercent((float) mapQuestionAnswerDetail.getCorrectNum()/mapQuestionAnswerDetail.getTotalAnswerNum()));
+                }else{
+                    questionAnswerDetail.setWrongNum(questionAnswerDetail.getTotalAnswerNum());
+                    mapQuestionAnswerDetail.setTotalAnswerNum(mapQuestionAnswerDetail.getTotalAnswerNum()+questionAnswerDetail.getTotalAnswerNum());
+                    mapQuestionAnswerDetail.setCorrectPercent(floatToPercent((float) mapQuestionAnswerDetail.getCorrectNum()/mapQuestionAnswerDetail.getTotalAnswerNum()));
+                }
+            } else{//若该题未被记录信息，则在map中新增该题的正确率等参数
+                if (questionAnswerDetail.getCorrectFlag()==1){
+                    questionAnswerDetail.setCorrectNum(questionAnswerDetail.getTotalAnswerNum());
+                    questionAnswerDetail.setWrongNum(0);
+                    questionAnswerDetail.setTotalAnswerNum(questionAnswerDetail.getTotalAnswerNum());
+                    questionAnswerDetail.setCorrectPercent(floatToPercent(1));
+                }else{
+                    questionAnswerDetail.setCorrectNum(0);
+                    questionAnswerDetail.setWrongNum(questionAnswerDetail.getTotalAnswerNum());
+                    questionAnswerDetail.setTotalAnswerNum(questionAnswerDetail.getTotalAnswerNum());
+                    questionAnswerDetail.setCorrectPercent(floatToPercent(0));
+                }
+                questionAnswerDetailMap.put(questionAnswerDetail.getQuestionId(),questionAnswerDetail);
+            }
+        }
+        //排序
+        valueSortMap.putAll(questionAnswerDetailMap);
+        //返回更新完数据后的刷题详情LIST
+        return new ArrayList<>(valueSortMap.values());
+    }
+
+    public class QuestionSequenceComparator {
+        class ValueComparator implements Comparator<Integer> {
+            Map<Integer, QuestionAnswerDetailDTO> base;
+
+            //Comparator外部比较器
+            public ValueComparator(Map<Integer, QuestionAnswerDetailDTO> base) {
+                this.base = base;
+            }
+
+            //根据Map的值进行比较
+            public int compare(Integer a, Integer b) {
+                return base.get(a).getSequence().compareTo(base.get(b).getSequence());
+            }
+        }
+    }
+
+    @Override
+    public Integer getQuestionAnswerTotal(String paperCode, Integer roundId) {
+        return paperReportMapper.queryQuestionAnswerTotal(paperCode,roundId);
+    }
+
+    @Override
+    public List<RoundStatisticsDTO> getRoundStatistics(List<Integer> roundIds) {
+        return paperReportMapper.getRoundStatistics(roundIds);
+    }
+
+    private String floatToPercent(float num){
+        return String.format("%.2f%%", num * 100) ;
+    }
+
 }

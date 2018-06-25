@@ -15,7 +15,7 @@ spring:
       datasource:
            type: com.alibaba.druid.pool.DruidDataSource
            master:
-               url: jdbc:mysql://172.16.117.226:3306/exercise
+               url: jdbc:mysql://172.16.117.226:3306/exercise?autoReconnect=true
                username: ent_all
                password: ent
                driver-class-name: com.mysql.jdbc.Driver
@@ -34,7 +34,7 @@ spring:
                removeAbandoned: true
                filters: stat
            slave:
-               url: jdbc:mysql://172.16.116.136:3307/exercise
+               url: jdbc:mysql://172.16.116.136:3307/exercise?autoReconnect=true
                username: ent_all
                password: ent
                driver-class-name: com.mysql.jdbc.Driver
@@ -59,4 +59,4 @@ logging:
         com.sunlands: DEBUG
 
 service:
-    student-service-url: http://172.16.116.136:9888/student
+    student-service-url: http://172.16.116.136:9097/student

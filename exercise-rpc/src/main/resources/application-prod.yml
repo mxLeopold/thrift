@@ -15,7 +15,7 @@ spring:
       datasource:
            type: com.alibaba.druid.pool.DruidDataSource
            master:
-               url: jdbc:mysql://172.16.100.66:3306/exercise
+               url: jdbc:mysql://172.16.100.66:3306/exercise?autoReconnect=true
                username: ENC(jVAgVoy+HZrJfQKIfKbM6qpqKgrL6mpM)
                password: ENC(2WuNd4YrKKzt6O24TnZT1NyTiTPHp9cO)
                driver-class-name: com.mysql.jdbc.Driver
@@ -34,7 +34,7 @@ spring:
                removeAbandoned: true
                filters: stat
            slave:
-               url: jdbc:mysql://172.16.100.69:3306/exercise
+               url: jdbc:mysql://172.16.100.69:3306/exercise?autoReconnect=true
                username: ENC(GyynV3aEvb+GKdEFQaTFkpxHbrZKswm6)
                password: ENC(NkEFOJNBNe+SeSYqOWrfgf/NqWDJmfZA)
                driver-class-name: com.mysql.jdbc.Driver
