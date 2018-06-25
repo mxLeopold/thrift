@@ -75,8 +75,7 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
 
         if (CourseTemplateConstants.CREATE.equals(operatorType)) {
             Integer paperId = paperService.getCurrentPaperId(reqMockExam.getPaperCode());
-            reqMockExam.setPaperId(paperId);
-            courseTemplateDao.insertMockExam(reqMockExam, startTime, endTime);
+            courseTemplateDao.insertMockExam(reqMockExam, startTime, endTime, paperId);
         }else if (CourseTemplateConstants.EDIT.equals(operatorType)){
             courseTemplateDao.updateMockExam(reqMockExam, startTime, endTime);
         }else if (CourseTemplateConstants.DELETE.equals(operatorType)){

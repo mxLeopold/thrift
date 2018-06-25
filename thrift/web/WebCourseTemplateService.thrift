@@ -71,8 +71,7 @@ struct ReqMockExam {
     7: string startTime; // 模考开始时间
     8: string endTime; // 模考结束时间
     9: string paperCode; // 模考试卷code
-    10: i32 paperId
-    11: string operator; // 操作人
+    10: string operator; // 操作人
 }
 
 service WebCourseTemplateService {
