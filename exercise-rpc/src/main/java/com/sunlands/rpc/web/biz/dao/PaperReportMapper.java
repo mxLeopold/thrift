@@ -218,7 +218,7 @@ public interface PaperReportMapper {
             "FROM t_tiku_exam_statistics a " ,
             "INNER JOIN t_paper b ON a.t_paper_id=b.id AND b.delete_flag=0 " ,
             "INNER JOIN t_paper_code c ON b.`code`=c.`code` AND c.code = #{paperCode} AND c.delete_flag=0 " ,
-            "INNER JOIN t_tiku_exam_question_answer_statistics_0 d ON d.round_id=a.round_id AND d.t_paper_id=b.id AND d.delete_flag=0 " ,
+            "INNER JOIN t_tiku_exam_question_answer_statistics_${tableNameIndex} d ON d.round_id=a.round_id AND d.t_paper_id=b.id AND d.delete_flag=0 " ,
             "INNER JOIN t_question_main e ON e.id = d.question_main_id AND e.question_type IN ('SINGLE_CHOICE','JUDGE_CHOICE','MULTI_CHOICE') AND e.delete_flag=0 " ,
             "INNER JOIN t_question_content_choice f ON f.id = e.question_id AND f.delete_flag=0 " ,
             "INNER JOIN t_paper_question_code_rel g ON g.paper_code = c.`code` AND g.question_code=e.`code` AND g.delete_flag=0 " ,
@@ -226,7 +226,8 @@ public interface PaperReportMapper {
             "GROUP BY c.`code`,a.round_id,g.sequence,f.content,d.correct_flag,e.id "
     })
     List<QuestionAnswerDetailDTO> queryQuestionAnswerDetails(@Param("paperCode") String paperCode,
-                                                          @Param("roundId") Integer roundId);
+                                                          @Param("roundId") Integer roundId,
+                                                             @Param("tableNameIndex") Integer tableNameIndex);
 
 
     @Select({
