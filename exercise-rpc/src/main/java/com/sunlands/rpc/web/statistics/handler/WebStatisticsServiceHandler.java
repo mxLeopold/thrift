@@ -107,8 +107,8 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         for (QuestionDetailDTO question : questions) {
             questionDetail = new QuestionDetail();
             questionDetail.setQuestionType(question.getQuestionType());
-            questionDetail.setQuestionContent(question.getQuestionContent());
-            questionDetail.setExpertContent(question.getAnalysis());
+            questionDetail.setQuestionContent(resetContent(question.getQuestionContent()));
+            questionDetail.setExpertContent(resetContent(question.getAnalysis()));
             // 选项
             List<OptionDTO> optionList = question.getOptionList();
             if (!CollectionUtils.isEmpty(optionList)) {
@@ -117,8 +117,8 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
                 for (OptionDTO optionDTO : optionList) {
                     option = new Option();
                     option.setRightAnswerFlag(optionDTO.getCorrect());
-                    option.setOptioncolContent(optionDTO.getOptionContent());
-                    option.setSortOrderStr(optionDTO.getOptionTitle());
+                    option.setOptioncolContent(resetContent(optionDTO.getOptionContent()));
+                    option.setSortOrderStr(resetContent(optionDTO.getOptionTitle()));
                     options.add(option);
                 }
                 questionDetail.setQuestionOptions(options);
@@ -130,7 +130,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
                 OptionAnswer optionAnswer;
                 for (OptionAnswerDTO optionAnswerDTO : optionAnswerDTOS) {
                     optionAnswer = new OptionAnswer();
-                    optionAnswer.setQuestionResult(optionAnswerDTO.getQuestionResult());
+                    optionAnswer.setQuestionResult(resetContent(optionAnswerDTO.getQuestionResult()));
                     optionAnswer.setAnswerTotal(optionAnswerDTO.getAnswerTotal());
                     optionAnswers.add(optionAnswer);
                 }
@@ -143,7 +143,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
                 ScorePoint scorePoint;
                 for (ScorePointDTO scorePointDTO : scorePointDTOS) {
                     scorePoint = new ScorePoint();
-                    scorePoint.setContent(scorePointDTO.getContent());
+                    scorePoint.setContent(resetContent(scorePointDTO.getContent()));
                     scorePoint.setScore(scorePointDTO.getScore());
                     scorePoints.add(scorePoint);
                 }
@@ -152,6 +152,14 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
             questionDetails.add(questionDetail);
         }
         return questionDetails;
+    }
+
+    /**
+     * 将content内部含有html标签的样式去掉
+     * @param content
+     */
+    private String resetContent(String content) {
+        return content.replaceAll("(style=\")[\\s\\S]*?(\")", "");
     }
 
     @Override
