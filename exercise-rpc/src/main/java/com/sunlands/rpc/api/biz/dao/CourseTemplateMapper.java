@@ -25,7 +25,7 @@ public interface CourseTemplateMapper {
             "FROM t_course_template as a" ,
             "INNER JOIN t_course_template as b ON b.`code` = a.`code` AND b.current_version = 1 AND b.delete_flag = 0" ,
             "INNER JOIN t_course_template_unit as c ON c.template_id = b.id AND c.delete_flag = 0" ,
-            "WHERE a.id = #{courseTemplateId} AND a.delete_flag = 0"})
+            "WHERE a.id = #{courseTemplateId} AND a.status_code = 'VALID' AND a.delete_flag = 0"})
     @Results({
             @Result(column = "id", property = "firstLevelNodes",
                     many = @Many(select = "getUnitFirstLevelNodes", fetchType = FetchType.EAGER))
