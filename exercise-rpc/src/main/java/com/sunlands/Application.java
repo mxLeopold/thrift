@@ -4,6 +4,8 @@ import com.sunlands.rpc.api.coursetemplate.handler.ApiCourseTemplateServiceHandl
 import com.sunlands.rpc.api.coursetemplate.service.ApiCourseTemplateService;
 import com.sunlands.rpc.api.homepage.handler.ApiHomePageServiceHandler;
 import com.sunlands.rpc.api.homepage.service.ApiHomePageService;
+import com.sunlands.rpc.web.coursetemplate.handler.WebCourseTemplateServiceHandler;
+import com.sunlands.rpc.web.coursetemplate.service.WebCourseTemplateService;
 import com.sunlands.rpc.web.statistics.handler.WebStatisticsServiceHandler;
 import com.sunlands.rpc.web.statistics.service.WebStatisticsService;
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
@@ -27,6 +29,16 @@ public class Application {
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+    }
+
+    @Bean
+    public ServletRegistrationBean courseTemplateServletRegistrationBean(TProtocolFactory protocolFactory,
+                                                           WebCourseTemplateServiceHandler handler){
+        ServletRegistrationBean courseTemplate = new ServletRegistrationBean(
+                new TServlet(new WebCourseTemplateService.Processor<>(handler), protocolFactory),
+                "/web/courseTemplate/*");
+        courseTemplate.setName("courseTemplate");
+        return courseTemplate;
     }
 
     @Bean
