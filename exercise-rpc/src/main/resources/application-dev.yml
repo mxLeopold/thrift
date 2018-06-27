@@ -34,7 +34,7 @@ spring:
                removeAbandoned: true
                filters: stat
            slave:
-               url: jdbc:mysql://172.16.116.136:3307/exercise?autoReconnect=true
+               url: jdbc:mysql://172.16.117.226:3306/exercise?autoReconnect=true
                username: ent_all
                password: ent
                driver-class-name: com.mysql.jdbc.Driver
