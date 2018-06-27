@@ -50,4 +50,25 @@ public interface PaperReportService {
 
     List<RoundStatisticsDTO> getRoundStatistics(List<Integer> roundIds);
 
+    /**
+     * 查询课堂报告列表的学员课后作业/随堂考正确率
+     * @param unitReportConditionDTO
+     * @return
+     */
+    List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(UnitReportConditionDTO unitReportConditionDTO);
+
+    /**
+     * 根据该轮次下的课程单元ID查询该轮次下的统计数据
+     * @param roundId
+     * @param teachUnitIds
+     * @return
+     */
+    ResUnitsStatisticDTO retrieveQuizOrHomeworkInfo(Integer roundId, String teachUnitIds,Integer teacherId);
+    /**
+     * 根据课程单元ID查询该轮次下的作业随堂考正确率的统计数据
+     * @param teachUnitIds
+     * @return
+     */
+    UnitsCorrectRateStatisticDTO retrieveQuizOrHomeworkCorrectInfo(String teachUnitIds);
+
 }

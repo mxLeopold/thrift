@@ -310,6 +310,68 @@ public class PaperReportServiceImpl implements PaperReportService {
         return paperReportMapper.getRoundStatistics(roundIds);
     }
 
+    @Override
+    public List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(UnitReportConditionDTO unitReportConditionDTO) {
+        Integer pageIndex =(unitReportConditionDTO.getPageNo() - 1) * unitReportConditionDTO.getPageSize();
+        Integer countPerPage = unitReportConditionDTO.getPageSize();
+        return paperReportMapper.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO,pageIndex,countPerPage);
+    }
+
+    @Override
+    public ResUnitsStatisticDTO retrieveQuizOrHomeworkInfo(Integer roundId, String teachUnitIds,Integer teacherId) {
+        List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
+        //根据paper_id分表的
+        List<Integer> paperIndexList = new ArrayList<>();
+        List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
+        for (Integer paperId:paperIdList){
+            paperIndexList.add(paperId%10);
+        }
+        ResUnitsStatisticDTO resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
+        resUnitsStatisticDTO.setRoundId(roundId);
+        resUnitsStatisticDTO.setTeachUnitIds(teachUnitIds);
+        resUnitsStatisticDTO.setTeacherId(teacherId);
+        return resUnitsStatisticDTO;
+    }
+
+    @Override
+    public UnitsCorrectRateStatisticDTO retrieveQuizOrHomeworkCorrectInfo(String teachUnitIds) {
+        List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
+        List<Integer> paperIdList = paperReportMapper.getPaperIdList(unitIdList);
+        List<String> paperIndexList = getPaperIndexList(paperIdList);
+        UnitsCorrectRateStatisticDTO unitsCorrectRateStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkCorrectInfo(unitIdList,paperIndexList);
+        unitsCorrectRateStatisticDTO.setTeachUnitIds(teachUnitIds);
+        return unitsCorrectRateStatisticDTO;
+    }
+
+    private List<String> getIndexList(){
+        List<String> indexList = new ArrayList<>();
+        for(int i=0;i<100;i++){
+            indexList.add(String.format("%02d",i));
+        }
+        return indexList;
+    }
+
+    private List<String> getPaperIndexList(List<Integer> paperIdList){
+        List<String> paperIndexList = new ArrayList<>();
+        for (Integer paperId : paperIdList){
+            paperIndexList.add(String.format("%01d", paperId % 10));
+        }
+        return paperIndexList;
+    }
+
+    private List<Integer> stringToIntegerList(String strs){
+        List<Integer> integerList = new ArrayList<Integer>();
+        if (!StringUtils.isEmpty(strs)) {
+            String[] arr = strs.split(",");
+            List<String> unitStrList = java.util.Arrays.asList(arr);
+            for(String str : unitStrList) {
+                int i = Integer.parseInt(str);
+                integerList.add(i);
+            }
+        }
+        return integerList;
+    }
+
     private String floatToPercent(float num){
         return String.format("%.2f%%", num * 100) ;
     }

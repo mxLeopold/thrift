@@ -262,4 +262,44 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         logger.debug("getRoundStatistics(roundIds:{}) -------- end, return {}", roundIds, roundStatistics1);
         return roundStatistics1;
     }
+
+    @Override
+    public List<QuizzesOrWorkUserCorrectRate> getPaperStudentCorrectRate(UnitReportCondition unitReportCondition) throws TException {
+        logger.debug("getPaperStudentCorrectRate(unitReportCondition:{}) -------- start", unitReportCondition.toString());
+        UnitReportConditionDTO unitReportConditionDTO = new UnitReportConditionDTO();
+        BeanUtils.copyProperties(unitReportCondition,unitReportConditionDTO);
+        List<QuizzesOrWorkUserCorrectRateDTO> quizzesOrWorkUserCorrectRateDTOS = paperReportService.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO);
+        List<QuizzesOrWorkUserCorrectRate> quizzesOrWorkUserCorrectRateList = new ArrayList<>();
+        if (quizzesOrWorkUserCorrectRateDTOS != null && quizzesOrWorkUserCorrectRateDTOS.size() > 0) {
+            QuizzesOrWorkUserCorrectRate quizzesOrWorkUserCorrectRate;
+            for (QuizzesOrWorkUserCorrectRateDTO quizzesOrWorkUserCorrectRateDTO : quizzesOrWorkUserCorrectRateDTOS) {
+                quizzesOrWorkUserCorrectRate = new QuizzesOrWorkUserCorrectRate();
+                BeanUtils.copyProperties(quizzesOrWorkUserCorrectRateDTO, quizzesOrWorkUserCorrectRate);
+                quizzesOrWorkUserCorrectRateList.add(quizzesOrWorkUserCorrectRate);
+            }
+        }
+        logger.debug("getPaperStudentCorrectRate(unitReportCondition:{}) -------- end", unitReportCondition.toString());
+
+        return quizzesOrWorkUserCorrectRateList;
+    }
+
+    @Override
+    public UnitsStatistic retrieveQuizzesAndAssignmentsByUnitIds(int roundId, String teachUnitIds, int teacherId) throws TException {
+        logger.debug("retrieveQuizzesAndAssignmentsByUnitIds(roundId:{},teachUnitIds:{},teacherId:{}) -------- start",roundId, teachUnitIds,teacherId);
+        UnitsStatistic unitsStatistic = new UnitsStatistic();
+        ResUnitsStatisticDTO resUnitsStatisticDTO = paperReportService.retrieveQuizOrHomeworkInfo(roundId,teachUnitIds,teacherId);
+        BeanUtils.copyProperties(resUnitsStatisticDTO, unitsStatistic);
+        logger.debug("retrieveQuizzesAndAssignmentsByUnitIds(roundId:{},teachUnitIds:{},teacherId:{}) -------- end",roundId, teachUnitIds,teacherId);
+        return unitsStatistic;
+    }
+
+    @Override
+    public UnitsCorrectRateStatistic retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(String teachUnitIds) throws TException {
+        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(teachUnitIds:{}) -------- start",teachUnitIds);
+        UnitsCorrectRateStatistic unitsCorrectRateStatistic = new UnitsCorrectRateStatistic();
+        UnitsCorrectRateStatisticDTO unitsCorrectRateStatisticDTO = paperReportService.retrieveQuizOrHomeworkCorrectInfo(teachUnitIds);
+        BeanUtils.copyProperties(unitsCorrectRateStatisticDTO, unitsCorrectRateStatistic);
+        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(teachUnitIds:{}) -------- end",teachUnitIds);
+        return unitsCorrectRateStatistic;
+    }
 }

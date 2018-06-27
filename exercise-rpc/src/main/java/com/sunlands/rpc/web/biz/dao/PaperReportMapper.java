@@ -262,4 +262,131 @@ public interface PaperReportMapper {
     })
     List<RoundStatisticsDTO> getRoundStatistics(@Param("roundIds") List<Integer> roundIds);
 
+
+    /**
+     * 获取某课程单元下所有学员作业和随堂考的正确率
+     */
+    @Select({
+            "<script>" ,
+            "SELECT t.stu_id stuId,t.unit_id unitId,t.exercise_type exerciseType,ROUND((SUM(IF(t.correct_flag = '1', 1, 0))/SUM(IF(t.correct_flag, 1, 0)))*100,2) as correctRate FROM " ,
+            "( " ,
+            "SELECT a.stu_id,a.unit_id,a.exercise_type,b.correct_flag,b.question_type,b.question_main_id,b.question_sub_id FROM " ,
+            "t_tiku_user_record_00 a " ,
+            "INNER JOIN " ,
+            "t_tiku_user_question_00 b ON b.stu_id=a.stu_id AND a.id=b.record_id AND b.question_type in ('SINGLE_CHOICE','MULTI_CHOICE','JUDGE_CHOICE') " ,
+            "WHERE a.exercise_type in ('QUIZ','ASSIGNMENTS') " ,
+            "<if test=\"unitReportConditionDTO.unitIds != null and unitReportConditionDTO.unitIds != ''\"> and unit_id in " ,
+            "<foreach item=\"item\" index=\"index\" collection=\"unitReportConditionDTO.unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach></if>",
+            "<if test=\"unitReportConditionDTO.userName != null and unitReportConditionDTO.userName != ''\"> and user_name like '%${unitReportConditionDTO.userName,jdbcType=VARCHAR}%' </if>",
+            "<if test=\"unitReportConditionDTO.stuId != null and unitReportConditionDTO.stuId != ''\"> and stu_id like '%${unitReportConditionDTO.stuId,jdbcType=INTEGER}%' </if>",
+            "<if test=\"unitReportConditionDTO.quizzesSort != null and unitReportConditionDTO.quizzesSort != '' \"> and exercise_type = 'QUIZ' </if>",
+            "<if test=\"unitReportConditionDTO.homeworkSort != null and unitReportConditionDTO.homeworkSort != ''\"> and exercise_type = 'ASSIGNMENTS' </if>",
+            ")t " ,
+            "GROUP BY t.stu_id,t.exercise_type " ,
+            "<if test=\"unitReportConditionDTO.quizzesSort == 'RATE_SORT_ASC' or unitReportConditionDTO.homeworkSort == 'RATE_SORT_ASC' \"> ORDER BY correctRate ASC </if>",
+            "<if test=\"unitReportConditionDTO.quizzesSort == 'RATE_SORT_DESC' or unitReportConditionDTO.homeworkSort == 'RATE_SORT_DESC' \"> ORDER BY correctRate DESC </if>",
+//            "LIMIT #{pageIndex},#{countPerPage} " , //TODO 暂时去掉分页测试
+            "</script>"
+    })
+    List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(@Param("unitReportConditionDTO") UnitReportConditionDTO unitReportConditionDTO,
+                                                                          @Param("pageIndex") Integer pageIndex, @Param("countPerPage") Integer countPerPage);
+
+    /**
+     * 根据课程单元ID查询相应的试卷ID
+     * @param unitIds
+     * @return
+     */
+    @Select({
+            "<script>" ,
+            "select a.t_paper_id from t_tiku_exam_statistics a where a.unit_id in " ,
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
+            "and exercise_type in ('QUIZ','ASSIGNMENTS') " ,
+            "</script>" ,
+    })
+    List<Integer> getPaperIdsByUnitIds(@Param("unitIds") List<Integer> unitIds);
+
+    /**
+     * 根据课程单元ID查询作业和随堂考的得分率和完成率
+     * @param unitIds,paperIndexList
+     * @return
+     */
+    @Select({
+            "<script>" ,
+            "SELECT sr.homeworkScoreRate,sr.quizzesScoreRate,cr.homeworkCompleteRate,cr.quizzesCompleteRate from ( " ,
+            "select ROUND(SUM(IF(t.exercise_type='ASSIGNMENTS',t.stu_total_score,0))/SUM(IF(t.exercise_type='ASSIGNMENTS',t.total_score,0))*100,2) homeworkScoreRate, "  ,
+            "ROUND(SUM(IF(t.exercise_type='QUIZ',t.stu_total_score,0))/SUM(IF(t.exercise_type='QUIZ',t.total_score,0))*100,2) quizzesScoreRate from "  ,
+            "<foreach item=\"paperIndex\" collection=\"paperIndexList\"  open=\"(\" separator=\" UNION ALL \" close=\")\"  >" ,
+            "select a.t_paper_id,a.stu_id,a.stu_total_score,a.total_score,a.exercise_type,a.record_id from t_tiku_exam_user_statistics_${paperIndex} a "  ,
+            "where a.unit_id in " ,
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
+            "and a.exercise_type in ('QUIZ','ASSIGNMENTS') "  ,
+            "</foreach> " ,
+            " t LIMIT 1 ) sr , " ,
+            "( " ,
+            "SELECT ROUND(SUM(IF(t2.exercise_type='ASSIGNMENTS' and t2.status_code='COMPLETE',t2.stuCount,0))/SUM(IF(t2.exercise_type='ASSIGNMENTS',t2.stuCount,0))*100,2) homeworkCompleteRate, " ,
+            "ROUND(SUM(IF(t2.exercise_type='QUIZ' and t2.status_code='COMPLETE',t2.stuCount,0))/SUM(IF(t2.exercise_type='QUIZ',t2.stuCount,0))*100,2) quizzesCompleteRate " ,
+            " FROM ( " ,
+            "SELECT COUNT(DISTINCT t.stu_id) stuCount,t.unit_id,t.status_code,t.exercise_type FROM " ,
+            "<foreach item=\"recordIndex\" collection=\"recordIndexList\"  open=\"(\" separator=\" UNION ALL \" close=\")\"  >" ,
+            "select a.stu_id,a.unit_id,a.status_code,a.exercise_type from t_tiku_user_record_${recordIndex} a where a.exercise_type in ('QUIZ','ASSIGNMENTS') and a.unit_id in " ,
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
+            "</foreach> " ,
+            " t " ,
+            "GROUP BY t.exercise_type,t.status_code " ,
+            ") t2 LIMIT 1 " ,
+            ") cr " ,
+            "</script>" ,
+    })
+    ResUnitsStatisticDTO retrieveQuizOrHomeworkInfo(@Param("unitIds") List<Integer> unitIds,
+                                                    @Param("paperIndexList") List<Integer> paperIndexList,
+                                                    @Param("recordIndexList") List<String> recordIndexList);
+
+    /**
+     * 根据课程单元ID查询对应的作业随堂考试卷ID
+     * @return
+     */
+    @Select({
+            "<script>" ,
+            "SELECT DISTINCT(c.t_paper_id) from t_tiku_exam_statistics c " ,
+            "where c.exercise_type in ('QUIZ','ASSIGNMENTS') and c.unit_id in " ,
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
+            "</script>"
+    })
+    List<Integer> getPaperIdList(@Param("unitIds") List<Integer> unitIds);
+
+
+    @Select({
+            "<script>" ,
+            "select SUM(IF(t1.exercise_type='ASSIGNMENTS',t1.stuCount,0)) homeworkAnswerNum, "  ,
+            "SUM(IF(t1.exercise_type='QUIZ',t1.stuCount,0)) quizzesAnswerNum, "  ,
+            "SUM(IF(t1.exercise_type='ASSIGNMENTS',t2.maxCorrectRate,0)) homeworkMaxCorrectRate, "  ,
+            "SUM(IF(t1.exercise_type='ASSIGNMENTS',t1.avgCorrectRate,0)) homeworkAvgCorrectRate, "  ,
+            "SUM(IF(t1.exercise_type='ASSIGNMENTS',t2.minCorrectRate,0)) homeworkMinCorrectRate, "  ,
+            "SUM(IF(t1.exercise_type='QUIZ',t2.maxCorrectRate,0)) quizzesMaxCorrectRate, "  ,
+            "SUM(IF(t1.exercise_type='QUIZ',t1.avgCorrectRate,0)) quizzesAvgCorrectRate, "  ,
+            "SUM(IF(t1.exercise_type='QUIZ',t2.minCorrectRate,0)) quizzesMinCorrectRate "  ,
+            "from  "  ,
+            "( "  ,
+            "SELECT SUM(a.total_answer_num) stuCount,a.exercise_type,a.unit_id,ROUND(SUM(a.total_correct_num)/SUM(a.total_question_answer_num)*100,2) avgCorrectRate from t_tiku_exam_statistics a "  ,
+            "where a.exercise_type in ('QUIZ','ASSIGNMENTS') and unit_id in "  ,
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
+            "GROUP BY a.exercise_type) t1, "  ,
+            "( "  ,
+            "SELECT MAX(t.correctRate) maxCorrectRate,MIN(t.correctRate) minCorrectRate,t.exercise_type FROM "  ,
+            "<foreach item=\"paperIndex\" collection=\"paperIndexList\"  open=\"(\" separator=\" UNION ALL \" close=\")\"  >" ,
+            "SELECT ROUND(SUM(a.correct_question_num)/SUM(a.question_num)*100,2) correctRate, a.stu_id, a.exercise_type from t_tiku_exam_user_statistics_${paperIndex} a "  ,
+            "WHERE a.exercise_type in ('QUIZ','ASSIGNMENTS') "  ,
+            "AND a.unit_id in "  ,
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
+            "GROUP BY a.stu_id,a.exercise_type "  ,
+            "</foreach>" ,
+            " t  "  ,
+            "GROUP BY t.exercise_type "  ,
+            ") t2 "  ,
+            "where t1.exercise_type = t2.exercise_type" ,
+            "</script>" ,
+    })
+    UnitsCorrectRateStatisticDTO retrieveQuizOrHomeworkCorrectInfo(@Param("unitIds") List<Integer> unitIds,
+                                                                   @Param("paperIndexList") List<String> paperIndexList);
+
 }

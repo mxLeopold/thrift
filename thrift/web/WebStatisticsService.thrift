@@ -101,6 +101,47 @@ struct RoundStatistics {
     2: i32 totalAnswerNum; // 答题人数
     3: i32 totalQuestionAnswerNum; // 总刷题数
 }
+// 课程单元下学员的统计数据
+struct QuizzesOrWorkUserCorrectRate {
+    1: i32 stuId;
+    2: i32 unitId;
+    3: string exerciseType;
+    4: double correctRate;//该学员在本课程下的正确率
+}
+//课程单元报告列表查询条件
+struct UnitReportCondition {
+    1: string unitIdStr;
+    2: string userName;
+    3: i32 userId;
+    4: string attendStatus;
+    5: string evaluateScoreLevel;
+    6: string quizzesSort;
+    7: string homeworkSort;
+    8: i32 pageNo;
+    9: i32 pageSize;
+}
+//课程单元报告列表统计数据
+struct UnitsStatistic {
+    1: i32 roundId;
+    2: string teachUnitIds;
+    3: i32 teacherId;
+    4: double homeworkScoreRate;
+    5: double homeworkCompleteRate;
+    6: double quizzesScoreRate;
+    7: double quizzesCompleteRate;
+}
+//课程单元报告首页统计数据
+struct UnitsCorrectRateStatistic {
+    1: string teachUnitIds;
+    2: i32 homeworkAnswerNum;
+    3: i32 quizzesAnswerNum;
+    4: double homeworkMaxCorrectRate;
+    5: double homeworkAvgCorrectRate;
+    6: double homeworkMinCorrectRate;
+    7: double quizzesMaxCorrectRate;
+    8: double quizzesAvgCorrectRate;
+    9: double quizzesMinCorrectRate;
+}
 
 service WebStatisticsService {
 	// 查询作业、随堂考列表
@@ -126,5 +167,14 @@ service WebStatisticsService {
 
     // 查询轮次统计数据
     list<RoundStatistics> getRoundStatistics(1: list<i32> roundIds);
+
+    //查询作业随堂考正确率
+    list<QuizzesOrWorkUserCorrectRate> getPaperStudentCorrectRate(1: UnitReportCondition unitReportCondition);
+
+    //查询作业随堂考学员完成率和得分率
+    UnitsStatistic retrieveQuizzesAndAssignmentsByUnitIds(1: i32 roundId, 2: string teachUnitIds, 3: i32 teacherId);
+
+    //查询作业随堂考的正确率
+    UnitsCorrectRateStatistic retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(1: string teachUnitIds);
 
 }
