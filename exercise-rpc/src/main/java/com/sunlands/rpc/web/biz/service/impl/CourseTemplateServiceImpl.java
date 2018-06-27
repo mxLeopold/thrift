@@ -1,11 +1,11 @@
-package com.sunlands.rpc.api.biz.service.impl;
+package com.sunlands.rpc.web.biz.service.impl;
 
 import com.sunlands.rpc.api.biz.dao.CourseTemplateMapper;
-import com.sunlands.rpc.api.biz.model.UnitNodeFrequencyInfoDTO;
-import com.sunlands.rpc.api.biz.service.CourseTemplateService;
-import com.sunlands.rpc.api.biz.model.CourseTemplateUnitDTO;
-import com.sunlands.rpc.api.biz.model.CourseTemplateUnitFirstLevelNodeDTO;
-import com.sunlands.rpc.api.biz.model.UnitNodeInfoDTO;
+import com.sunlands.rpc.web.biz.model.UnitNodeFrequencyInfoDTO;
+import com.sunlands.rpc.web.biz.model.CourseTemplateUnitDTO;
+import com.sunlands.rpc.web.biz.model.CourseTemplateUnitFirstLevelNodeDTO;
+import com.sunlands.rpc.web.biz.model.UnitNodeInfoDTO;
+import com.sunlands.rpc.web.biz.service.CourseTemplateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

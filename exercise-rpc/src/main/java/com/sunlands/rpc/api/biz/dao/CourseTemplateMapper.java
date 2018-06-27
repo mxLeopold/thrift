@@ -1,9 +1,9 @@
 package com.sunlands.rpc.api.biz.dao;
 
-import com.sunlands.rpc.api.biz.model.CourseTemplateUnitDTO;
-import com.sunlands.rpc.api.biz.model.CourseTemplateUnitFirstLevelNodeDTO;
-import com.sunlands.rpc.api.biz.model.UnitNodeFrequencyInfoDTO;
-import com.sunlands.rpc.api.biz.model.UnitNodeInfoDTO;
+import com.sunlands.rpc.web.biz.model.CourseTemplateUnitDTO;
+import com.sunlands.rpc.web.biz.model.CourseTemplateUnitFirstLevelNodeDTO;
+import com.sunlands.rpc.web.biz.model.UnitNodeFrequencyInfoDTO;
+import com.sunlands.rpc.web.biz.model.UnitNodeInfoDTO;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
 import org.springframework.stereotype.Repository;
