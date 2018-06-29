@@ -111,5 +111,5 @@ service WebCourseTemplateService {
     list<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(1: i32 knowledgeTreeId);
 
     // 查询课程标准化课程的知识点
-    TemplateUnitNodeInfo retrieveTemplateTeachUnitNodeInfo(1: i32 templateId, 2: i32 unitSequence);
+    TemplateUnitNodeInfo retrieveTemplateTeachUnitNodeInfo(1: i32 templateId, 2: i32 templateUnitId);
 }

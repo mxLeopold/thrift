@@ -224,8 +224,8 @@ public interface CourseTemplateDao {
             "LEFT JOIN `t_knowledge_node` as f ON f.id = e.parent_node_id AND f.`level` = 3 AND f.delete_flag = 0" ,
             "LEFT JOIN `t_last_knowledge_node` as g ON g.knowledge_node_id = e.id" ,
             "LEFT JOIN `t_last_knowledge_node` as h ON h.knowledge_node_id = f.id" ,
-            "WHERE a.id = 51" ,
+            "WHERE a.id = #{templateId} AND c.id = #{templateUnitId}" ,
             "GROUP BY IFNULL(g.knowledge_node_frequentness,h.knowledge_node_frequentness)" ,
             ") t"})
-    TemplateUnitNodeInfo retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence);
+    TemplateUnitNodeInfo retrieveCourseTemplateTeachUnitNodes(@Param("templateId") int templateId,@Param("templateUnitId") int templateUnitId);
 }

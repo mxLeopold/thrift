@@ -28,7 +28,7 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
     }
 
     @Override
-    public TemplateUnitNodeInfo retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence) {
-        return courseTemplateDao.retrieveCourseTemplateTeachUnitNodes(templateId, unitSequence);
+    public TemplateUnitNodeInfo retrieveCourseTemplateTeachUnitNodes(int templateId, int templateUnitId) {
+        return courseTemplateDao.retrieveCourseTemplateTeachUnitNodes(templateId, templateUnitId);
     }
 }
