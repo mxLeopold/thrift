@@ -74,6 +74,21 @@ struct ReqMockExam {
     10: string operator; // 操作人
 }
 
+// 中高极高频知识点分布
+struct NodeFrequencyInfo {
+    1: i32 extremelyHighFrequencyCount; // 极高频知识点个数
+    2: i32 highFrequencyCount; // 高频知识点个数
+    3: i32 midFrequencyCount; // 中频知识点个数
+}
+
+// 课程模板知识树信息
+struct UnitNodeInfo {
+    1: i32 knowledgeNodeId;
+    2: string knowledgeNodeName;
+    3: NodeFrequencyInfo nodeFrequencyInfo;
+    4: list<UnitNodeInfo> knowledgeNodeList;
+}
+
 service WebCourseTemplateService {
 
     //根据科目+类型获取课程模板知识树列表
@@ -88,4 +103,6 @@ service WebCourseTemplateService {
     // 新建/编辑/删除模考
     i32 operateMockExam(1: ReqMockExam reqMockExam);
 
+    // 查询课程模板的知识树信息
+    list<list<UnitNodeInfo>> retrieveCourseTemplateInfoById(1: i32 courseTemplateId);
 }

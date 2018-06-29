@@ -1,7 +1,5 @@
 package com.sunlands;
 
-import com.sunlands.rpc.api.coursetemplate.handler.ApiCourseTemplateServiceHandler;
-import com.sunlands.rpc.api.coursetemplate.service.ApiCourseTemplateService;
 import com.sunlands.rpc.api.homepage.handler.ApiHomePageServiceHandler;
 import com.sunlands.rpc.api.homepage.service.ApiHomePageService;
 import com.sunlands.rpc.web.coursetemplate.handler.WebCourseTemplateServiceHandler;
@@ -61,16 +59,6 @@ public class Application {
                 "/api/homePage/*");
         homePage.setName("homePage");
         return homePage;
-    }
-
-    @Bean
-    public ServletRegistrationBean courseTemplateRegistrationBean(TProtocolFactory protocolFactory,
-                                                                  ApiCourseTemplateServiceHandler handler) {
-        ServletRegistrationBean courseTemplate = new ServletRegistrationBean(
-                new TServlet(new ApiCourseTemplateService.Processor<>(handler), protocolFactory),
-                "/api/courseTemplate/*");
-        courseTemplate.setName("courseTemplate");
-        return courseTemplate;
     }
 
     @Bean

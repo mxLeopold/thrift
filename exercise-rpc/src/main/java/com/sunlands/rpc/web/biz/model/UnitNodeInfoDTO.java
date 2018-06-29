@@ -1,4 +1,4 @@
-package com.sunlands.rpc.api.biz.model;
+package com.sunlands.rpc.web.biz.model;
 
 import java.util.List;
 
