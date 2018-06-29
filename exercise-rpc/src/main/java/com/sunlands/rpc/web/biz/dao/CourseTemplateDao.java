@@ -210,6 +210,22 @@ public interface CourseTemplateDao {
             "GROUP BY parent_node_id"})
     String retrieveFourthLevelNodes(@Param("parentNodeId") Integer parentNodeId);
 
-    @Select({""})
-    List<Integer> retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence);
+    @Select({"SELECT " ,
+            "SUM(CASE t.frequency WHEN 0 THEN t.frequencyCount END) as midFrequencyCount," ,
+            "SUM(CASE t.frequency WHEN 1 THEN t.frequencyCount END) as highFrequencyCount," ,
+            "SUM(CASE t.frequency WHEN 2 THEN t.frequencyCount END) as extremelyHighFrequencyCount" ,
+            "FROM (" ,
+            "SELECT DISTINCT IFNULL(g.knowledge_node_frequentness,h.knowledge_node_frequentness) as frequency,COUNT(IFNULL(g.knowledge_node_frequentness,h.knowledge_node_frequentness)) as frequencyCount" ,
+            "FROM `t_course_template` as a" ,
+            "INNER JOIN `t_course_template` as b ON b.`code` = a.`code` AND b.current_version = 1 AND b.status_code = 'VALID' AND b.delete_flag = 0" ,
+            "INNER JOIN `t_course_template_unit` as c ON c.template_id = b.id AND c.delete_flag = 0" ,
+            "INNER JOIN `t_course_template_unit_knowledge_node_rel` as d ON d.template_unit_id = c.id AND d.delete_flag = 0" ,
+            "INNER JOIN `t_knowledge_node` as e ON e.id = d.knowledge_node_id AND e.delete_flag = 0" ,
+            "LEFT JOIN `t_knowledge_node` as f ON f.id = e.parent_node_id AND f.`level` = 3 AND f.delete_flag = 0" ,
+            "LEFT JOIN `t_last_knowledge_node` as g ON g.knowledge_node_id = e.id" ,
+            "LEFT JOIN `t_last_knowledge_node` as h ON h.knowledge_node_id = f.id" ,
+            "WHERE a.id = 51" ,
+            "GROUP BY IFNULL(g.knowledge_node_frequentness,h.knowledge_node_frequentness)" ,
+            ") t"})
+    TemplateUnitNodeInfo retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence);
 }

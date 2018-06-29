@@ -2,6 +2,7 @@ package com.sunlands.rpc.web.biz.service;
 
 import com.sunlands.rpc.web.biz.model.UnitNodeInfoDTO;
 import com.sunlands.rpc.web.coursetemplate.service.LastKnowledgeNodeInfo;
+import com.sunlands.rpc.web.coursetemplate.service.TemplateUnitNodeInfo;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface CourseTemplateService {
 
     List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(int knowledgeTreeId);
 
-    List<Integer> retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence);
+    TemplateUnitNodeInfo retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence);
 }

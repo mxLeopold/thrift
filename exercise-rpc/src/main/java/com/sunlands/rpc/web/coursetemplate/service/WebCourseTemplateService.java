@@ -49,7 +49,7 @@ public class WebCourseTemplateService {
 
     public List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(int knowledgeTreeId) throws TException;
 
-    public List<Integer> retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence) throws TException;
+    public TemplateUnitNodeInfo retrieveTemplateTeachUnitNodeInfo(int templateId, int unitSequence) throws TException;
 
   }
 
@@ -65,7 +65,7 @@ public class WebCourseTemplateService {
 
     public void retrieveCourseTemplateTreeInfo(int knowledgeTreeId, AsyncMethodCallback resultHandler) throws TException;
 
-    public void retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence, AsyncMethodCallback resultHandler) throws TException;
+    public void retrieveTemplateTeachUnitNodeInfo(int templateId, int unitSequence, AsyncMethodCallback resultHandler) throws TException;
 
   }
 
@@ -207,28 +207,28 @@ public class WebCourseTemplateService {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "retrieveCourseTemplateTreeInfo failed: unknown result");
     }
 
-    public List<Integer> retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence) throws TException
+    public TemplateUnitNodeInfo retrieveTemplateTeachUnitNodeInfo(int templateId, int unitSequence) throws TException
     {
-      send_retrieveCourseTemplateTeachUnitNodes(templateId, unitSequence);
-      return recv_retrieveCourseTemplateTeachUnitNodes();
+      send_retrieveTemplateTeachUnitNodeInfo(templateId, unitSequence);
+      return recv_retrieveTemplateTeachUnitNodeInfo();
     }
 
-    public void send_retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence) throws TException
+    public void send_retrieveTemplateTeachUnitNodeInfo(int templateId, int unitSequence) throws TException
     {
-      retrieveCourseTemplateTeachUnitNodes_args args = new retrieveCourseTemplateTeachUnitNodes_args();
+      retrieveTemplateTeachUnitNodeInfo_args args = new retrieveTemplateTeachUnitNodeInfo_args();
       args.setTemplateId(templateId);
       args.setUnitSequence(unitSequence);
-      sendBase("retrieveCourseTemplateTeachUnitNodes", args);
+      sendBase("retrieveTemplateTeachUnitNodeInfo", args);
     }
 
-    public List<Integer> recv_retrieveCourseTemplateTeachUnitNodes() throws TException
+    public TemplateUnitNodeInfo recv_retrieveTemplateTeachUnitNodeInfo() throws TException
     {
-      retrieveCourseTemplateTeachUnitNodes_result result = new retrieveCourseTemplateTeachUnitNodes_result();
-      receiveBase(result, "retrieveCourseTemplateTeachUnitNodes");
+      retrieveTemplateTeachUnitNodeInfo_result result = new retrieveTemplateTeachUnitNodeInfo_result();
+      receiveBase(result, "retrieveTemplateTeachUnitNodeInfo");
       if (result.isSetSuccess()) {
         return result.success;
       }
-      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "retrieveCourseTemplateTeachUnitNodes failed: unknown result");
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "retrieveTemplateTeachUnitNodeInfo failed: unknown result");
     }
 
   }
@@ -418,38 +418,38 @@ public class WebCourseTemplateService {
       }
     }
 
-    public void retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence, AsyncMethodCallback resultHandler) throws TException {
+    public void retrieveTemplateTeachUnitNodeInfo(int templateId, int unitSequence, AsyncMethodCallback resultHandler) throws TException {
       checkReady();
-      retrieveCourseTemplateTeachUnitNodes_call method_call = new retrieveCourseTemplateTeachUnitNodes_call(templateId, unitSequence, resultHandler, this, ___protocolFactory, ___transport);
+      retrieveTemplateTeachUnitNodeInfo_call method_call = new retrieveTemplateTeachUnitNodeInfo_call(templateId, unitSequence, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class retrieveCourseTemplateTeachUnitNodes_call extends org.apache.thrift.async.TAsyncMethodCall {
+    public static class retrieveTemplateTeachUnitNodeInfo_call extends org.apache.thrift.async.TAsyncMethodCall {
       private int templateId;
       private int unitSequence;
-      public retrieveCourseTemplateTeachUnitNodes_call(int templateId, int unitSequence, AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws TException {
+      public retrieveTemplateTeachUnitNodeInfo_call(int templateId, int unitSequence, AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.templateId = templateId;
         this.unitSequence = unitSequence;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("retrieveCourseTemplateTeachUnitNodes", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        retrieveCourseTemplateTeachUnitNodes_args args = new retrieveCourseTemplateTeachUnitNodes_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("retrieveTemplateTeachUnitNodeInfo", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        retrieveTemplateTeachUnitNodeInfo_args args = new retrieveTemplateTeachUnitNodeInfo_args();
         args.setTemplateId(templateId);
         args.setUnitSequence(unitSequence);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public List<Integer> getResult() throws TException {
+      public TemplateUnitNodeInfo getResult() throws TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_retrieveCourseTemplateTeachUnitNodes();
+        return (new Client(prot)).recv_retrieveTemplateTeachUnitNodeInfo();
       }
     }
 
@@ -471,7 +471,7 @@ public class WebCourseTemplateService {
       processMap.put("getCourseTemplateDetailById", new getCourseTemplateDetailById());
       processMap.put("operateMockExam", new operateMockExam());
       processMap.put("retrieveCourseTemplateTreeInfo", new retrieveCourseTemplateTreeInfo());
-      processMap.put("retrieveCourseTemplateTeachUnitNodes", new retrieveCourseTemplateTeachUnitNodes());
+      processMap.put("retrieveTemplateTeachUnitNodeInfo", new retrieveTemplateTeachUnitNodeInfo());
       return processMap;
     }
 
@@ -576,22 +576,22 @@ public class WebCourseTemplateService {
       }
     }
 
-    public static class retrieveCourseTemplateTeachUnitNodes<I extends Iface> extends org.apache.thrift.ProcessFunction<I, retrieveCourseTemplateTeachUnitNodes_args> {
-      public retrieveCourseTemplateTeachUnitNodes() {
-        super("retrieveCourseTemplateTeachUnitNodes");
+    public static class retrieveTemplateTeachUnitNodeInfo<I extends Iface> extends org.apache.thrift.ProcessFunction<I, retrieveTemplateTeachUnitNodeInfo_args> {
+      public retrieveTemplateTeachUnitNodeInfo() {
+        super("retrieveTemplateTeachUnitNodeInfo");
       }
 
-      public retrieveCourseTemplateTeachUnitNodes_args getEmptyArgsInstance() {
-        return new retrieveCourseTemplateTeachUnitNodes_args();
+      public retrieveTemplateTeachUnitNodeInfo_args getEmptyArgsInstance() {
+        return new retrieveTemplateTeachUnitNodeInfo_args();
       }
 
       protected boolean isOneway() {
         return false;
       }
 
-      public retrieveCourseTemplateTeachUnitNodes_result getResult(I iface, retrieveCourseTemplateTeachUnitNodes_args args) throws TException {
-        retrieveCourseTemplateTeachUnitNodes_result result = new retrieveCourseTemplateTeachUnitNodes_result();
-        result.success = iface.retrieveCourseTemplateTeachUnitNodes(args.templateId, args.unitSequence);
+      public retrieveTemplateTeachUnitNodeInfo_result getResult(I iface, retrieveTemplateTeachUnitNodeInfo_args args) throws TException {
+        retrieveTemplateTeachUnitNodeInfo_result result = new retrieveTemplateTeachUnitNodeInfo_result();
+        result.success = iface.retrieveTemplateTeachUnitNodeInfo(args.templateId, args.unitSequence);
         return result;
       }
     }
@@ -614,7 +614,7 @@ public class WebCourseTemplateService {
       processMap.put("getCourseTemplateDetailById", new getCourseTemplateDetailById());
       processMap.put("operateMockExam", new operateMockExam());
       processMap.put("retrieveCourseTemplateTreeInfo", new retrieveCourseTemplateTreeInfo());
-      processMap.put("retrieveCourseTemplateTeachUnitNodes", new retrieveCourseTemplateTeachUnitNodes());
+      processMap.put("retrieveTemplateTeachUnitNodeInfo", new retrieveTemplateTeachUnitNodeInfo());
       return processMap;
     }
 
@@ -874,20 +874,20 @@ public class WebCourseTemplateService {
       }
     }
 
-    public static class retrieveCourseTemplateTeachUnitNodes<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, retrieveCourseTemplateTeachUnitNodes_args, List<Integer>> {
-      public retrieveCourseTemplateTeachUnitNodes() {
-        super("retrieveCourseTemplateTeachUnitNodes");
+    public static class retrieveTemplateTeachUnitNodeInfo<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, retrieveTemplateTeachUnitNodeInfo_args, TemplateUnitNodeInfo> {
+      public retrieveTemplateTeachUnitNodeInfo() {
+        super("retrieveTemplateTeachUnitNodeInfo");
       }
 
-      public retrieveCourseTemplateTeachUnitNodes_args getEmptyArgsInstance() {
-        return new retrieveCourseTemplateTeachUnitNodes_args();
+      public retrieveTemplateTeachUnitNodeInfo_args getEmptyArgsInstance() {
+        return new retrieveTemplateTeachUnitNodeInfo_args();
       }
 
-      public AsyncMethodCallback<List<Integer>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+      public AsyncMethodCallback<TemplateUnitNodeInfo> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<List<Integer>>() { 
-          public void onComplete(List<Integer> o) {
-            retrieveCourseTemplateTeachUnitNodes_result result = new retrieveCourseTemplateTeachUnitNodes_result();
+        return new AsyncMethodCallback<TemplateUnitNodeInfo>() { 
+          public void onComplete(TemplateUnitNodeInfo o) {
+            retrieveTemplateTeachUnitNodeInfo_result result = new retrieveTemplateTeachUnitNodeInfo_result();
             result.success = o;
             try {
               fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
@@ -900,7 +900,7 @@ public class WebCourseTemplateService {
           public void onError(Exception e) {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
-            retrieveCourseTemplateTeachUnitNodes_result result = new retrieveCourseTemplateTeachUnitNodes_result();
+            retrieveTemplateTeachUnitNodeInfo_result result = new retrieveTemplateTeachUnitNodeInfo_result();
             {
               msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
               msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
@@ -920,8 +920,8 @@ public class WebCourseTemplateService {
         return false;
       }
 
-      public void start(I iface, retrieveCourseTemplateTeachUnitNodes_args args, AsyncMethodCallback<List<Integer>> resultHandler) throws TException {
-        iface.retrieveCourseTemplateTeachUnitNodes(args.templateId, args.unitSequence,resultHandler);
+      public void start(I iface, retrieveTemplateTeachUnitNodeInfo_args args, AsyncMethodCallback<TemplateUnitNodeInfo> resultHandler) throws TException {
+        iface.retrieveTemplateTeachUnitNodeInfo(args.templateId, args.unitSequence,resultHandler);
       }
     }
 
@@ -5010,16 +5010,16 @@ public class WebCourseTemplateService {
 
   }
 
-  public static class retrieveCourseTemplateTeachUnitNodes_args implements org.apache.thrift.TBase<retrieveCourseTemplateTeachUnitNodes_args, retrieveCourseTemplateTeachUnitNodes_args._Fields>, java.io.Serializable, Cloneable, Comparable<retrieveCourseTemplateTeachUnitNodes_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("retrieveCourseTemplateTeachUnitNodes_args");
+  public static class retrieveTemplateTeachUnitNodeInfo_args implements org.apache.thrift.TBase<retrieveTemplateTeachUnitNodeInfo_args, retrieveTemplateTeachUnitNodeInfo_args._Fields>, java.io.Serializable, Cloneable, Comparable<retrieveTemplateTeachUnitNodeInfo_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("retrieveTemplateTeachUnitNodeInfo_args");
 
     private static final org.apache.thrift.protocol.TField TEMPLATE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("templateId", org.apache.thrift.protocol.TType.I32, (short)1);
     private static final org.apache.thrift.protocol.TField UNIT_SEQUENCE_FIELD_DESC = new org.apache.thrift.protocol.TField("unitSequence", org.apache.thrift.protocol.TType.I32, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new retrieveCourseTemplateTeachUnitNodes_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new retrieveCourseTemplateTeachUnitNodes_argsTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new retrieveTemplateTeachUnitNodeInfo_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new retrieveTemplateTeachUnitNodeInfo_argsTupleSchemeFactory());
     }
 
     public int templateId; // required
@@ -5098,13 +5098,13 @@ public class WebCourseTemplateService {
       tmpMap.put(_Fields.UNIT_SEQUENCE, new org.apache.thrift.meta_data.FieldMetaData("unitSequence", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(retrieveCourseTemplateTeachUnitNodes_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(retrieveTemplateTeachUnitNodeInfo_args.class, metaDataMap);
     }
 
-    public retrieveCourseTemplateTeachUnitNodes_args() {
+    public retrieveTemplateTeachUnitNodeInfo_args() {
     }
 
-    public retrieveCourseTemplateTeachUnitNodes_args(
+    public retrieveTemplateTeachUnitNodeInfo_args(
       int templateId,
       int unitSequence)
     {
@@ -5118,14 +5118,14 @@ public class WebCourseTemplateService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public retrieveCourseTemplateTeachUnitNodes_args(retrieveCourseTemplateTeachUnitNodes_args other) {
+    public retrieveTemplateTeachUnitNodeInfo_args(retrieveTemplateTeachUnitNodeInfo_args other) {
       __isset_bitfield = other.__isset_bitfield;
       this.templateId = other.templateId;
       this.unitSequence = other.unitSequence;
     }
 
-    public retrieveCourseTemplateTeachUnitNodes_args deepCopy() {
-      return new retrieveCourseTemplateTeachUnitNodes_args(this);
+    public retrieveTemplateTeachUnitNodeInfo_args deepCopy() {
+      return new retrieveTemplateTeachUnitNodeInfo_args(this);
     }
 
     @Override
@@ -5140,7 +5140,7 @@ public class WebCourseTemplateService {
       return this.templateId;
     }
 
-    public retrieveCourseTemplateTeachUnitNodes_args setTemplateId(int templateId) {
+    public retrieveTemplateTeachUnitNodeInfo_args setTemplateId(int templateId) {
       this.templateId = templateId;
       setTemplateIdIsSet(true);
       return this;
@@ -5163,7 +5163,7 @@ public class WebCourseTemplateService {
       return this.unitSequence;
     }
 
-    public retrieveCourseTemplateTeachUnitNodes_args setUnitSequence(int unitSequence) {
+    public retrieveTemplateTeachUnitNodeInfo_args setUnitSequence(int unitSequence) {
       this.unitSequence = unitSequence;
       setUnitSequenceIsSet(true);
       return this;
@@ -5234,12 +5234,12 @@ public class WebCourseTemplateService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof retrieveCourseTemplateTeachUnitNodes_args)
-        return this.equals((retrieveCourseTemplateTeachUnitNodes_args)that);
+      if (that instanceof retrieveTemplateTeachUnitNodeInfo_args)
+        return this.equals((retrieveTemplateTeachUnitNodeInfo_args)that);
       return false;
     }
 
-    public boolean equals(retrieveCourseTemplateTeachUnitNodes_args that) {
+    public boolean equals(retrieveTemplateTeachUnitNodeInfo_args that) {
       if (that == null)
         return false;
 
@@ -5282,7 +5282,7 @@ public class WebCourseTemplateService {
     }
 
     @Override
-    public int compareTo(retrieveCourseTemplateTeachUnitNodes_args other) {
+    public int compareTo(retrieveTemplateTeachUnitNodeInfo_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -5326,7 +5326,7 @@ public class WebCourseTemplateService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("retrieveCourseTemplateTeachUnitNodes_args(");
+      StringBuilder sb = new StringBuilder("retrieveTemplateTeachUnitNodeInfo_args(");
       boolean first = true;
 
       sb.append("templateId:");
@@ -5363,15 +5363,15 @@ public class WebCourseTemplateService {
       }
     }
 
-    private static class retrieveCourseTemplateTeachUnitNodes_argsStandardSchemeFactory implements SchemeFactory {
-      public retrieveCourseTemplateTeachUnitNodes_argsStandardScheme getScheme() {
-        return new retrieveCourseTemplateTeachUnitNodes_argsStandardScheme();
+    private static class retrieveTemplateTeachUnitNodeInfo_argsStandardSchemeFactory implements SchemeFactory {
+      public retrieveTemplateTeachUnitNodeInfo_argsStandardScheme getScheme() {
+        return new retrieveTemplateTeachUnitNodeInfo_argsStandardScheme();
       }
     }
 
-    private static class retrieveCourseTemplateTeachUnitNodes_argsStandardScheme extends StandardScheme<retrieveCourseTemplateTeachUnitNodes_args> {
+    private static class retrieveTemplateTeachUnitNodeInfo_argsStandardScheme extends StandardScheme<retrieveTemplateTeachUnitNodeInfo_args> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, retrieveCourseTemplateTeachUnitNodes_args struct) throws TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, retrieveTemplateTeachUnitNodeInfo_args struct) throws TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -5408,7 +5408,7 @@ public class WebCourseTemplateService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, retrieveCourseTemplateTeachUnitNodes_args struct) throws TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, retrieveTemplateTeachUnitNodeInfo_args struct) throws TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -5424,16 +5424,16 @@ public class WebCourseTemplateService {
 
     }
 
-    private static class retrieveCourseTemplateTeachUnitNodes_argsTupleSchemeFactory implements SchemeFactory {
-      public retrieveCourseTemplateTeachUnitNodes_argsTupleScheme getScheme() {
-        return new retrieveCourseTemplateTeachUnitNodes_argsTupleScheme();
+    private static class retrieveTemplateTeachUnitNodeInfo_argsTupleSchemeFactory implements SchemeFactory {
+      public retrieveTemplateTeachUnitNodeInfo_argsTupleScheme getScheme() {
+        return new retrieveTemplateTeachUnitNodeInfo_argsTupleScheme();
       }
     }
 
-    private static class retrieveCourseTemplateTeachUnitNodes_argsTupleScheme extends TupleScheme<retrieveCourseTemplateTeachUnitNodes_args> {
+    private static class retrieveTemplateTeachUnitNodeInfo_argsTupleScheme extends TupleScheme<retrieveTemplateTeachUnitNodeInfo_args> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, retrieveCourseTemplateTeachUnitNodes_args struct) throws TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, retrieveTemplateTeachUnitNodeInfo_args struct) throws TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
         if (struct.isSetTemplateId()) {
@@ -5452,7 +5452,7 @@ public class WebCourseTemplateService {
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, retrieveCourseTemplateTeachUnitNodes_args struct) throws TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, retrieveTemplateTeachUnitNodeInfo_args struct) throws TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(2);
         if (incoming.get(0)) {
@@ -5468,18 +5468,18 @@ public class WebCourseTemplateService {
 
   }
 
-  public static class retrieveCourseTemplateTeachUnitNodes_result implements org.apache.thrift.TBase<retrieveCourseTemplateTeachUnitNodes_result, retrieveCourseTemplateTeachUnitNodes_result._Fields>, java.io.Serializable, Cloneable, Comparable<retrieveCourseTemplateTeachUnitNodes_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("retrieveCourseTemplateTeachUnitNodes_result");
+  public static class retrieveTemplateTeachUnitNodeInfo_result implements org.apache.thrift.TBase<retrieveTemplateTeachUnitNodeInfo_result, retrieveTemplateTeachUnitNodeInfo_result._Fields>, java.io.Serializable, Cloneable, Comparable<retrieveTemplateTeachUnitNodeInfo_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("retrieveTemplateTeachUnitNodeInfo_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new retrieveCourseTemplateTeachUnitNodes_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new retrieveCourseTemplateTeachUnitNodes_resultTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new retrieveTemplateTeachUnitNodeInfo_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new retrieveTemplateTeachUnitNodeInfo_resultTupleSchemeFactory());
     }
 
-    public List<Integer> success; // required
+    public TemplateUnitNodeInfo success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -5544,17 +5544,16 @@ public class WebCourseTemplateService {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32))));
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TemplateUnitNodeInfo.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(retrieveCourseTemplateTeachUnitNodes_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(retrieveTemplateTeachUnitNodeInfo_result.class, metaDataMap);
     }
 
-    public retrieveCourseTemplateTeachUnitNodes_result() {
+    public retrieveTemplateTeachUnitNodeInfo_result() {
     }
 
-    public retrieveCourseTemplateTeachUnitNodes_result(
-      List<Integer> success)
+    public retrieveTemplateTeachUnitNodeInfo_result(
+      TemplateUnitNodeInfo success)
     {
       this();
       this.success = success;
@@ -5563,15 +5562,14 @@ public class WebCourseTemplateService {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public retrieveCourseTemplateTeachUnitNodes_result(retrieveCourseTemplateTeachUnitNodes_result other) {
+    public retrieveTemplateTeachUnitNodeInfo_result(retrieveTemplateTeachUnitNodeInfo_result other) {
       if (other.isSetSuccess()) {
-        List<Integer> __this__success = new ArrayList<Integer>(other.success);
-        this.success = __this__success;
+        this.success = new TemplateUnitNodeInfo(other.success);
       }
     }
 
-    public retrieveCourseTemplateTeachUnitNodes_result deepCopy() {
-      return new retrieveCourseTemplateTeachUnitNodes_result(this);
+    public retrieveTemplateTeachUnitNodeInfo_result deepCopy() {
+      return new retrieveTemplateTeachUnitNodeInfo_result(this);
     }
 
     @Override
@@ -5579,26 +5577,11 @@ public class WebCourseTemplateService {
       this.success = null;
     }
 
-    public int getSuccessSize() {
-      return (this.success == null) ? 0 : this.success.size();
-    }
-
-    public java.util.Iterator<Integer> getSuccessIterator() {
-      return (this.success == null) ? null : this.success.iterator();
-    }
-
-    public void addToSuccess(int elem) {
-      if (this.success == null) {
-        this.success = new ArrayList<Integer>();
-      }
-      this.success.add(elem);
-    }
-
-    public List<Integer> getSuccess() {
+    public TemplateUnitNodeInfo getSuccess() {
       return this.success;
     }
 
-    public retrieveCourseTemplateTeachUnitNodes_result setSuccess(List<Integer> success) {
+    public retrieveTemplateTeachUnitNodeInfo_result setSuccess(TemplateUnitNodeInfo success) {
       this.success = success;
       return this;
     }
@@ -5624,7 +5607,7 @@ public class WebCourseTemplateService {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((List<Integer>)value);
+          setSuccess((TemplateUnitNodeInfo)value);
         }
         break;
 
@@ -5657,12 +5640,12 @@ public class WebCourseTemplateService {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof retrieveCourseTemplateTeachUnitNodes_result)
-        return this.equals((retrieveCourseTemplateTeachUnitNodes_result)that);
+      if (that instanceof retrieveTemplateTeachUnitNodeInfo_result)
+        return this.equals((retrieveTemplateTeachUnitNodeInfo_result)that);
       return false;
     }
 
-    public boolean equals(retrieveCourseTemplateTeachUnitNodes_result that) {
+    public boolean equals(retrieveTemplateTeachUnitNodeInfo_result that) {
       if (that == null)
         return false;
 
@@ -5691,7 +5674,7 @@ public class WebCourseTemplateService {
     }
 
     @Override
-    public int compareTo(retrieveCourseTemplateTeachUnitNodes_result other) {
+    public int compareTo(retrieveTemplateTeachUnitNodeInfo_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -5725,7 +5708,7 @@ public class WebCourseTemplateService {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("retrieveCourseTemplateTeachUnitNodes_result(");
+      StringBuilder sb = new StringBuilder("retrieveTemplateTeachUnitNodeInfo_result(");
       boolean first = true;
 
       sb.append("success:");
@@ -5742,6 +5725,9 @@ public class WebCourseTemplateService {
     public void validate() throws TException {
       // check for required fields
       // check for sub-struct validity
+      if (success != null) {
+        success.validate();
+      }
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -5760,15 +5746,15 @@ public class WebCourseTemplateService {
       }
     }
 
-    private static class retrieveCourseTemplateTeachUnitNodes_resultStandardSchemeFactory implements SchemeFactory {
-      public retrieveCourseTemplateTeachUnitNodes_resultStandardScheme getScheme() {
-        return new retrieveCourseTemplateTeachUnitNodes_resultStandardScheme();
+    private static class retrieveTemplateTeachUnitNodeInfo_resultStandardSchemeFactory implements SchemeFactory {
+      public retrieveTemplateTeachUnitNodeInfo_resultStandardScheme getScheme() {
+        return new retrieveTemplateTeachUnitNodeInfo_resultStandardScheme();
       }
     }
 
-    private static class retrieveCourseTemplateTeachUnitNodes_resultStandardScheme extends StandardScheme<retrieveCourseTemplateTeachUnitNodes_result> {
+    private static class retrieveTemplateTeachUnitNodeInfo_resultStandardScheme extends StandardScheme<retrieveTemplateTeachUnitNodeInfo_result> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, retrieveCourseTemplateTeachUnitNodes_result struct) throws TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, retrieveTemplateTeachUnitNodeInfo_result struct) throws TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -5779,18 +5765,9 @@ public class WebCourseTemplateService {
           }
           switch (schemeField.id) {
             case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
-                {
-                  org.apache.thrift.protocol.TList _list72 = iprot.readListBegin();
-                  struct.success = new ArrayList<Integer>(_list72.size);
-                  int _elem73;
-                  for (int _i74 = 0; _i74 < _list72.size; ++_i74)
-                  {
-                    _elem73 = iprot.readI32();
-                    struct.success.add(_elem73);
-                  }
-                  iprot.readListEnd();
-                }
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new TemplateUnitNodeInfo();
+                struct.success.read(iprot);
                 struct.setSuccessIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
@@ -5807,20 +5784,13 @@ public class WebCourseTemplateService {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, retrieveCourseTemplateTeachUnitNodes_result struct) throws TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, retrieveTemplateTeachUnitNodeInfo_result struct) throws TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-          {
-            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.success.size()));
-            for (int _iter75 : struct.success)
-            {
-              oprot.writeI32(_iter75);
-            }
-            oprot.writeListEnd();
-          }
+          struct.success.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -5829,16 +5799,16 @@ public class WebCourseTemplateService {
 
     }
 
-    private static class retrieveCourseTemplateTeachUnitNodes_resultTupleSchemeFactory implements SchemeFactory {
-      public retrieveCourseTemplateTeachUnitNodes_resultTupleScheme getScheme() {
-        return new retrieveCourseTemplateTeachUnitNodes_resultTupleScheme();
+    private static class retrieveTemplateTeachUnitNodeInfo_resultTupleSchemeFactory implements SchemeFactory {
+      public retrieveTemplateTeachUnitNodeInfo_resultTupleScheme getScheme() {
+        return new retrieveTemplateTeachUnitNodeInfo_resultTupleScheme();
       }
     }
 
-    private static class retrieveCourseTemplateTeachUnitNodes_resultTupleScheme extends TupleScheme<retrieveCourseTemplateTeachUnitNodes_result> {
+    private static class retrieveTemplateTeachUnitNodeInfo_resultTupleScheme extends TupleScheme<retrieveTemplateTeachUnitNodeInfo_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, retrieveCourseTemplateTeachUnitNodes_result struct) throws TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, retrieveTemplateTeachUnitNodeInfo_result struct) throws TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
         if (struct.isSetSuccess()) {
@@ -5846,31 +5816,17 @@ public class WebCourseTemplateService {
         }
         oprot.writeBitSet(optionals, 1);
         if (struct.isSetSuccess()) {
-          {
-            oprot.writeI32(struct.success.size());
-            for (int _iter76 : struct.success)
-            {
-              oprot.writeI32(_iter76);
-            }
-          }
+          struct.success.write(oprot);
         }
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, retrieveCourseTemplateTeachUnitNodes_result struct) throws TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, retrieveTemplateTeachUnitNodeInfo_result struct) throws TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          {
-            org.apache.thrift.protocol.TList _list77 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
-            struct.success = new ArrayList<Integer>(_list77.size);
-            int _elem78;
-            for (int _i79 = 0; _i79 < _list77.size; ++_i79)
-            {
-              _elem78 = iprot.readI32();
-              struct.success.add(_elem78);
-            }
-          }
+          struct.success = new TemplateUnitNodeInfo();
+          struct.success.read(iprot);
           struct.setSuccessIsSet(true);
         }
       }
