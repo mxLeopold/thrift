@@ -74,19 +74,16 @@ struct ReqMockExam {
     10: string operator; // 操作人
 }
 
-// 中高极高频知识点分布
-struct NodeFrequencyInfo {
-    1: i32 extremelyHighFrequencyCount; // 极高频知识点个数
-    2: i32 highFrequencyCount; // 高频知识点个数
-    3: i32 midFrequencyCount; // 中频知识点个数
-}
 
 // 课程模板知识树信息
-struct UnitNodeInfo {
-    1: i32 knowledgeNodeId;
-    2: string knowledgeNodeName;
-    3: NodeFrequencyInfo nodeFrequencyInfo;
-    4: list<UnitNodeInfo> knowledgeNodeList;
+struct LastKnowledgeNodeInfo {
+    1: i32 knowledgeNodeId; // 知识点id
+    2: string knowledgeNodeName; // 知识点名称
+    3: i32 level; // 知识点层级
+    4: i32 lastLevelFlag; // 是否为末级知识点（三级为末级，1是，0否）
+    5: string lastLevelIds; // 末级知识点下的四级知识点
+    6: i32 frequency; // 知识点频度（0-中频，1-高频，2-极高频）
+    7: list<LastKnowledgeNodeInfo> knowledgeNodeList; //
 }
 
 service WebCourseTemplateService {
@@ -104,5 +101,5 @@ service WebCourseTemplateService {
     i32 operateMockExam(1: ReqMockExam reqMockExam);
 
     // 查询课程模板的知识树信息
-    list<list<UnitNodeInfo>> retrieveCourseTemplateInfoById(1: i32 courseTemplateId);
+    list<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(1: i32 knowledgeTreeId);
 }

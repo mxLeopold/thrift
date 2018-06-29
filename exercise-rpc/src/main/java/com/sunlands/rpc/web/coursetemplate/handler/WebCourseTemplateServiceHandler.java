@@ -99,60 +99,7 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
     }
 
     @Override
-    public List<List<UnitNodeInfo>> retrieveCourseTemplateInfoById(int courseTemplateId) throws TException {
-        List<List<UnitNodeInfo>> rst = new ArrayList<>();
-        List<List<UnitNodeInfoDTO>> unitsNodeInfo = courseTemplateService.retrieveCourseTemplateInfoById(courseTemplateId);
-        Iterator<List<UnitNodeInfoDTO>> iterator = unitsNodeInfo.iterator();
-        for (; iterator.hasNext(); ) {
-            List<UnitNodeInfoDTO> unitNodeInfo = iterator.next();
-            List<UnitNodeInfo> svUnitNodeInfo = this.transferUnitsToSvUnits(unitNodeInfo);
-            rst.add(svUnitNodeInfo);
-        }
-        return rst;
-    }
-
-    private List<UnitNodeInfo> transferUnitsToSvUnits(List<UnitNodeInfoDTO> req) {
-        List<UnitNodeInfo> res = new ArrayList<>();
-        Iterator<UnitNodeInfoDTO> iterator = req.iterator();
-        for ( ; iterator.hasNext(); ) {
-            UnitNodeInfoDTO unitFirstLevelNode = iterator.next();
-            UnitNodeInfo svUnitNode = new UnitNodeInfo();
-            svUnitNode.setKnowledgeNodeId(unitFirstLevelNode.getKnowledgeNodeId());
-            svUnitNode.setKnowledgeNodeName(unitFirstLevelNode.getKnowledgeNodeName());
-            UnitNodeFrequencyInfoDTO reqNodeFrequency = unitFirstLevelNode.getNodeFrequencyInfo();
-            NodeFrequencyInfo svNodeFrequencyInfo = transferNodeFrequencyToSvNodeFrequency(reqNodeFrequency);
-            svUnitNode.setNodeFrequencyInfo(svNodeFrequencyInfo);
-            List<UnitNodeInfo> svKnowledgeNodeList = new ArrayList<>();
-            List<UnitNodeInfoDTO> knowledgeNodeList = unitFirstLevelNode.getKnowledgeNodeList();
-            if (knowledgeNodeList != null && knowledgeNodeList.size() > 0) {
-                Iterator<UnitNodeInfoDTO> unitNodeIterator = knowledgeNodeList.iterator();
-                for ( ; unitNodeIterator.hasNext(); ) {
-                    UnitNodeInfoDTO unitSecondNode = unitNodeIterator.next();
-                    UnitNodeInfo svUnitSecondNode = new UnitNodeInfo();
-                    svUnitSecondNode.setKnowledgeNodeId(unitSecondNode.getKnowledgeNodeId());
-                    svUnitSecondNode.setKnowledgeNodeName(unitSecondNode.getKnowledgeNodeName());
-                    svUnitSecondNode.setNodeFrequencyInfo(transferNodeFrequencyToSvNodeFrequency(unitSecondNode.getNodeFrequencyInfo()));
-                    svKnowledgeNodeList.add(svUnitSecondNode);
-                }
-            }
-            svUnitNode.setKnowledgeNodeList(svKnowledgeNodeList);
-            res.add(svUnitNode);
-        }
-        return res;
-    }
-
-    private NodeFrequencyInfo transferNodeFrequencyToSvNodeFrequency(UnitNodeFrequencyInfoDTO req) {
-        NodeFrequencyInfo res = null;
-        if (req != null
-                &&
-                !(new Integer(0).equals(req.getMidFrequencyCount())
-                        && new Integer(0).equals(req.getHighFrequencyCount())
-                        && new Integer(0).equals(req.getExtremelyHighFrequencyCount()))) {
-            res = new NodeFrequencyInfo();
-            res.setMidFrequencyCount(req.getMidFrequencyCount());
-            res.setHighFrequencyCount(req.getHighFrequencyCount());
-            res.setExtremelyHighFrequencyCount(req.getExtremelyHighFrequencyCount());
-        }
-        return res;
+    public List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(int knowledgeTreeId) throws TException {
+        return courseTemplateService.retrieveCourseTemplateTreeInfo(knowledgeTreeId);
     }
 }
