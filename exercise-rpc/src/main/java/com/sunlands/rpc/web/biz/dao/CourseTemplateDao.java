@@ -182,7 +182,7 @@ public interface CourseTemplateDao {
     })
     List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(@Param("knowledgeTreeId") int knowledgeTreeId);
 
-    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgenodeName, a.`level`, IF(a.id IS NULL, 0, 1) as lastLevelFlag," ,
+    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgenodeName, a.`level`, IF(b.id IS NULL, 0, 1) as lastLevelFlag," ,
             "b.knowledge_node_frequentness as frequency, a.id as nextQueryParentNodeId" ,
             "FROM t_knowledge_node as a" ,
             "LEFT JOIN t_last_knowledge_node as b ON b.knowledge_node_id = a.id AND b.delete_flag = 0" ,
@@ -193,7 +193,7 @@ public interface CourseTemplateDao {
     })
     List<LastKnowledgeNodeInfo> retrieveSecondLevelNodeInfo(@Param("parentNodeId") Integer parentNodeId);
 
-    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgenodeName, a.`level`, IF(a.id IS NULL, 0, 1) as lastLevelFlag," ,
+    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgenodeName, a.`level`, IF(b.id IS NULL, 0, 1) as lastLevelFlag," ,
             "b.knowledge_node_frequentness as frequency, a.id as nextQueryParentNodeId" ,
             "FROM t_knowledge_node as a" ,
             "LEFT JOIN t_last_knowledge_node as b ON b.knowledge_node_id = a.id AND b.delete_flag = 0" ,
