@@ -25,4 +25,9 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
     public List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(int knowledgeTreeId) {
         return courseTemplateDao.retrieveCourseTemplateTreeInfo(knowledgeTreeId);
     }
+
+    @Override
+    public List<Integer> retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence) {
+        return courseTemplateDao.retrieveCourseTemplateTeachUnitNodes(templateId, unitSequence);
+    }
 }
