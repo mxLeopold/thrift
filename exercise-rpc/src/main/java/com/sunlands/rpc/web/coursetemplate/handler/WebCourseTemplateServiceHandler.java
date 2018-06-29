@@ -23,7 +23,7 @@ import java.util.List;
  * @author gml
  */
 @Component
-public class WebCourseTemplateServiceHandler implements WebCourseTemplateService.Iface{
+public class WebCourseTemplateServiceHandler implements WebCourseTemplateService.Iface {
     @Autowired
     private CourseTemplateDao courseTemplateDao;
     @Autowired
@@ -101,5 +101,10 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
     @Override
     public List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(int knowledgeTreeId) throws TException {
         return courseTemplateService.retrieveCourseTemplateTreeInfo(knowledgeTreeId);
+    }
+
+    @Override
+    public List<Integer> retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence) throws TException {
+        return courseTemplateService.retrieveCourseTemplateTeachUnitNodes(templateId, unitSequence);
     }
 }

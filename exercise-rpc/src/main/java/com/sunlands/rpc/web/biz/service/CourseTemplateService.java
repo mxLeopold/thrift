@@ -16,4 +16,5 @@ public interface CourseTemplateService {
 
     List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(int knowledgeTreeId);
 
+    List<Integer> retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence);
 }

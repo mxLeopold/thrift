@@ -49,6 +49,8 @@ public class WebCourseTemplateService {
 
     public List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(int knowledgeTreeId) throws TException;
 
+    public List<Integer> retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence) throws TException;
+
   }
 
   public interface AsyncIface {
@@ -62,6 +64,8 @@ public class WebCourseTemplateService {
     public void operateMockExam(ReqMockExam reqMockExam, AsyncMethodCallback resultHandler) throws TException;
 
     public void retrieveCourseTemplateTreeInfo(int knowledgeTreeId, AsyncMethodCallback resultHandler) throws TException;
+
+    public void retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence, AsyncMethodCallback resultHandler) throws TException;
 
   }
 
@@ -201,6 +205,30 @@ public class WebCourseTemplateService {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "retrieveCourseTemplateTreeInfo failed: unknown result");
+    }
+
+    public List<Integer> retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence) throws TException
+    {
+      send_retrieveCourseTemplateTeachUnitNodes(templateId, unitSequence);
+      return recv_retrieveCourseTemplateTeachUnitNodes();
+    }
+
+    public void send_retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence) throws TException
+    {
+      retrieveCourseTemplateTeachUnitNodes_args args = new retrieveCourseTemplateTeachUnitNodes_args();
+      args.setTemplateId(templateId);
+      args.setUnitSequence(unitSequence);
+      sendBase("retrieveCourseTemplateTeachUnitNodes", args);
+    }
+
+    public List<Integer> recv_retrieveCourseTemplateTeachUnitNodes() throws TException
+    {
+      retrieveCourseTemplateTeachUnitNodes_result result = new retrieveCourseTemplateTeachUnitNodes_result();
+      receiveBase(result, "retrieveCourseTemplateTeachUnitNodes");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "retrieveCourseTemplateTeachUnitNodes failed: unknown result");
     }
 
   }
@@ -390,6 +418,41 @@ public class WebCourseTemplateService {
       }
     }
 
+    public void retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence, AsyncMethodCallback resultHandler) throws TException {
+      checkReady();
+      retrieveCourseTemplateTeachUnitNodes_call method_call = new retrieveCourseTemplateTeachUnitNodes_call(templateId, unitSequence, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class retrieveCourseTemplateTeachUnitNodes_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private int templateId;
+      private int unitSequence;
+      public retrieveCourseTemplateTeachUnitNodes_call(int templateId, int unitSequence, AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.templateId = templateId;
+        this.unitSequence = unitSequence;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("retrieveCourseTemplateTeachUnitNodes", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        retrieveCourseTemplateTeachUnitNodes_args args = new retrieveCourseTemplateTeachUnitNodes_args();
+        args.setTemplateId(templateId);
+        args.setUnitSequence(unitSequence);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public List<Integer> getResult() throws TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_retrieveCourseTemplateTeachUnitNodes();
+      }
+    }
+
   }
 
   public static class Processor<I extends Iface> extends org.apache.thrift.TBaseProcessor<I> implements org.apache.thrift.TProcessor {
@@ -408,6 +471,7 @@ public class WebCourseTemplateService {
       processMap.put("getCourseTemplateDetailById", new getCourseTemplateDetailById());
       processMap.put("operateMockExam", new operateMockExam());
       processMap.put("retrieveCourseTemplateTreeInfo", new retrieveCourseTemplateTreeInfo());
+      processMap.put("retrieveCourseTemplateTeachUnitNodes", new retrieveCourseTemplateTeachUnitNodes());
       return processMap;
     }
 
@@ -512,6 +576,26 @@ public class WebCourseTemplateService {
       }
     }
 
+    public static class retrieveCourseTemplateTeachUnitNodes<I extends Iface> extends org.apache.thrift.ProcessFunction<I, retrieveCourseTemplateTeachUnitNodes_args> {
+      public retrieveCourseTemplateTeachUnitNodes() {
+        super("retrieveCourseTemplateTeachUnitNodes");
+      }
+
+      public retrieveCourseTemplateTeachUnitNodes_args getEmptyArgsInstance() {
+        return new retrieveCourseTemplateTeachUnitNodes_args();
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public retrieveCourseTemplateTeachUnitNodes_result getResult(I iface, retrieveCourseTemplateTeachUnitNodes_args args) throws TException {
+        retrieveCourseTemplateTeachUnitNodes_result result = new retrieveCourseTemplateTeachUnitNodes_result();
+        result.success = iface.retrieveCourseTemplateTeachUnitNodes(args.templateId, args.unitSequence);
+        return result;
+      }
+    }
+
   }
 
   public static class AsyncProcessor<I extends AsyncIface> extends org.apache.thrift.TBaseAsyncProcessor<I> {
@@ -530,6 +614,7 @@ public class WebCourseTemplateService {
       processMap.put("getCourseTemplateDetailById", new getCourseTemplateDetailById());
       processMap.put("operateMockExam", new operateMockExam());
       processMap.put("retrieveCourseTemplateTreeInfo", new retrieveCourseTemplateTreeInfo());
+      processMap.put("retrieveCourseTemplateTeachUnitNodes", new retrieveCourseTemplateTeachUnitNodes());
       return processMap;
     }
 
@@ -786,6 +871,57 @@ public class WebCourseTemplateService {
 
       public void start(I iface, retrieveCourseTemplateTreeInfo_args args, AsyncMethodCallback<List<LastKnowledgeNodeInfo>> resultHandler) throws TException {
         iface.retrieveCourseTemplateTreeInfo(args.knowledgeTreeId,resultHandler);
+      }
+    }
+
+    public static class retrieveCourseTemplateTeachUnitNodes<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, retrieveCourseTemplateTeachUnitNodes_args, List<Integer>> {
+      public retrieveCourseTemplateTeachUnitNodes() {
+        super("retrieveCourseTemplateTeachUnitNodes");
+      }
+
+      public retrieveCourseTemplateTeachUnitNodes_args getEmptyArgsInstance() {
+        return new retrieveCourseTemplateTeachUnitNodes_args();
+      }
+
+      public AsyncMethodCallback<List<Integer>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+        final org.apache.thrift.AsyncProcessFunction fcall = this;
+        return new AsyncMethodCallback<List<Integer>>() { 
+          public void onComplete(List<Integer> o) {
+            retrieveCourseTemplateTeachUnitNodes_result result = new retrieveCourseTemplateTeachUnitNodes_result();
+            result.success = o;
+            try {
+              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
+              return;
+            } catch (Exception e) {
+              LOGGER.error("Exception writing to internal frame buffer", e);
+            }
+            fb.close();
+          }
+          public void onError(Exception e) {
+            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
+            org.apache.thrift.TBase msg;
+            retrieveCourseTemplateTeachUnitNodes_result result = new retrieveCourseTemplateTeachUnitNodes_result();
+            {
+              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
+              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
+            }
+            try {
+              fcall.sendResponse(fb,msg,msgType,seqid);
+              return;
+            } catch (Exception ex) {
+              LOGGER.error("Exception writing to internal frame buffer", ex);
+            }
+            fb.close();
+          }
+        };
+      }
+
+      protected boolean isOneway() {
+        return false;
+      }
+
+      public void start(I iface, retrieveCourseTemplateTeachUnitNodes_args args, AsyncMethodCallback<List<Integer>> resultHandler) throws TException {
+        iface.retrieveCourseTemplateTeachUnitNodes(args.templateId, args.unitSequence,resultHandler);
       }
     }
 
@@ -4865,6 +5001,874 @@ public class WebCourseTemplateService {
               _elem70 = new LastKnowledgeNodeInfo();
               _elem70.read(iprot);
               struct.success.add(_elem70);
+            }
+          }
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class retrieveCourseTemplateTeachUnitNodes_args implements org.apache.thrift.TBase<retrieveCourseTemplateTeachUnitNodes_args, retrieveCourseTemplateTeachUnitNodes_args._Fields>, java.io.Serializable, Cloneable, Comparable<retrieveCourseTemplateTeachUnitNodes_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("retrieveCourseTemplateTeachUnitNodes_args");
+
+    private static final org.apache.thrift.protocol.TField TEMPLATE_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("templateId", org.apache.thrift.protocol.TType.I32, (short)1);
+    private static final org.apache.thrift.protocol.TField UNIT_SEQUENCE_FIELD_DESC = new org.apache.thrift.protocol.TField("unitSequence", org.apache.thrift.protocol.TType.I32, (short)2);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new retrieveCourseTemplateTeachUnitNodes_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new retrieveCourseTemplateTeachUnitNodes_argsTupleSchemeFactory());
+    }
+
+    public int templateId; // required
+    public int unitSequence; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      TEMPLATE_ID((short)1, "templateId"),
+      UNIT_SEQUENCE((short)2, "unitSequence");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // TEMPLATE_ID
+            return TEMPLATE_ID;
+          case 2: // UNIT_SEQUENCE
+            return UNIT_SEQUENCE;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __TEMPLATEID_ISSET_ID = 0;
+    private static final int __UNITSEQUENCE_ISSET_ID = 1;
+    private byte __isset_bitfield = 0;
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.TEMPLATE_ID, new org.apache.thrift.meta_data.FieldMetaData("templateId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      tmpMap.put(_Fields.UNIT_SEQUENCE, new org.apache.thrift.meta_data.FieldMetaData("unitSequence", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(retrieveCourseTemplateTeachUnitNodes_args.class, metaDataMap);
+    }
+
+    public retrieveCourseTemplateTeachUnitNodes_args() {
+    }
+
+    public retrieveCourseTemplateTeachUnitNodes_args(
+      int templateId,
+      int unitSequence)
+    {
+      this();
+      this.templateId = templateId;
+      setTemplateIdIsSet(true);
+      this.unitSequence = unitSequence;
+      setUnitSequenceIsSet(true);
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public retrieveCourseTemplateTeachUnitNodes_args(retrieveCourseTemplateTeachUnitNodes_args other) {
+      __isset_bitfield = other.__isset_bitfield;
+      this.templateId = other.templateId;
+      this.unitSequence = other.unitSequence;
+    }
+
+    public retrieveCourseTemplateTeachUnitNodes_args deepCopy() {
+      return new retrieveCourseTemplateTeachUnitNodes_args(this);
+    }
+
+    @Override
+    public void clear() {
+      setTemplateIdIsSet(false);
+      this.templateId = 0;
+      setUnitSequenceIsSet(false);
+      this.unitSequence = 0;
+    }
+
+    public int getTemplateId() {
+      return this.templateId;
+    }
+
+    public retrieveCourseTemplateTeachUnitNodes_args setTemplateId(int templateId) {
+      this.templateId = templateId;
+      setTemplateIdIsSet(true);
+      return this;
+    }
+
+    public void unsetTemplateId() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __TEMPLATEID_ISSET_ID);
+    }
+
+    /** Returns true if field templateId is set (has been assigned a value) and false otherwise */
+    public boolean isSetTemplateId() {
+      return EncodingUtils.testBit(__isset_bitfield, __TEMPLATEID_ISSET_ID);
+    }
+
+    public void setTemplateIdIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __TEMPLATEID_ISSET_ID, value);
+    }
+
+    public int getUnitSequence() {
+      return this.unitSequence;
+    }
+
+    public retrieveCourseTemplateTeachUnitNodes_args setUnitSequence(int unitSequence) {
+      this.unitSequence = unitSequence;
+      setUnitSequenceIsSet(true);
+      return this;
+    }
+
+    public void unsetUnitSequence() {
+      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __UNITSEQUENCE_ISSET_ID);
+    }
+
+    /** Returns true if field unitSequence is set (has been assigned a value) and false otherwise */
+    public boolean isSetUnitSequence() {
+      return EncodingUtils.testBit(__isset_bitfield, __UNITSEQUENCE_ISSET_ID);
+    }
+
+    public void setUnitSequenceIsSet(boolean value) {
+      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __UNITSEQUENCE_ISSET_ID, value);
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case TEMPLATE_ID:
+        if (value == null) {
+          unsetTemplateId();
+        } else {
+          setTemplateId((Integer)value);
+        }
+        break;
+
+      case UNIT_SEQUENCE:
+        if (value == null) {
+          unsetUnitSequence();
+        } else {
+          setUnitSequence((Integer)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case TEMPLATE_ID:
+        return getTemplateId();
+
+      case UNIT_SEQUENCE:
+        return getUnitSequence();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case TEMPLATE_ID:
+        return isSetTemplateId();
+      case UNIT_SEQUENCE:
+        return isSetUnitSequence();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof retrieveCourseTemplateTeachUnitNodes_args)
+        return this.equals((retrieveCourseTemplateTeachUnitNodes_args)that);
+      return false;
+    }
+
+    public boolean equals(retrieveCourseTemplateTeachUnitNodes_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_templateId = true;
+      boolean that_present_templateId = true;
+      if (this_present_templateId || that_present_templateId) {
+        if (!(this_present_templateId && that_present_templateId))
+          return false;
+        if (this.templateId != that.templateId)
+          return false;
+      }
+
+      boolean this_present_unitSequence = true;
+      boolean that_present_unitSequence = true;
+      if (this_present_unitSequence || that_present_unitSequence) {
+        if (!(this_present_unitSequence && that_present_unitSequence))
+          return false;
+        if (this.unitSequence != that.unitSequence)
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      List<Object> list = new ArrayList<Object>();
+
+      boolean present_templateId = true;
+      list.add(present_templateId);
+      if (present_templateId)
+        list.add(templateId);
+
+      boolean present_unitSequence = true;
+      list.add(present_unitSequence);
+      if (present_unitSequence)
+        list.add(unitSequence);
+
+      return list.hashCode();
+    }
+
+    @Override
+    public int compareTo(retrieveCourseTemplateTeachUnitNodes_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetTemplateId()).compareTo(other.isSetTemplateId());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetTemplateId()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.templateId, other.templateId);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetUnitSequence()).compareTo(other.isSetUnitSequence());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetUnitSequence()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.unitSequence, other.unitSequence);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("retrieveCourseTemplateTeachUnitNodes_args(");
+      boolean first = true;
+
+      sb.append("templateId:");
+      sb.append(this.templateId);
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("unitSequence:");
+      sb.append(this.unitSequence);
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+        __isset_bitfield = 0;
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class retrieveCourseTemplateTeachUnitNodes_argsStandardSchemeFactory implements SchemeFactory {
+      public retrieveCourseTemplateTeachUnitNodes_argsStandardScheme getScheme() {
+        return new retrieveCourseTemplateTeachUnitNodes_argsStandardScheme();
+      }
+    }
+
+    private static class retrieveCourseTemplateTeachUnitNodes_argsStandardScheme extends StandardScheme<retrieveCourseTemplateTeachUnitNodes_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, retrieveCourseTemplateTeachUnitNodes_args struct) throws TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // TEMPLATE_ID
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.templateId = iprot.readI32();
+                struct.setTemplateIdIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // UNIT_SEQUENCE
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.unitSequence = iprot.readI32();
+                struct.setUnitSequenceIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, retrieveCourseTemplateTeachUnitNodes_args struct) throws TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        oprot.writeFieldBegin(TEMPLATE_ID_FIELD_DESC);
+        oprot.writeI32(struct.templateId);
+        oprot.writeFieldEnd();
+        oprot.writeFieldBegin(UNIT_SEQUENCE_FIELD_DESC);
+        oprot.writeI32(struct.unitSequence);
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class retrieveCourseTemplateTeachUnitNodes_argsTupleSchemeFactory implements SchemeFactory {
+      public retrieveCourseTemplateTeachUnitNodes_argsTupleScheme getScheme() {
+        return new retrieveCourseTemplateTeachUnitNodes_argsTupleScheme();
+      }
+    }
+
+    private static class retrieveCourseTemplateTeachUnitNodes_argsTupleScheme extends TupleScheme<retrieveCourseTemplateTeachUnitNodes_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, retrieveCourseTemplateTeachUnitNodes_args struct) throws TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetTemplateId()) {
+          optionals.set(0);
+        }
+        if (struct.isSetUnitSequence()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetTemplateId()) {
+          oprot.writeI32(struct.templateId);
+        }
+        if (struct.isSetUnitSequence()) {
+          oprot.writeI32(struct.unitSequence);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, retrieveCourseTemplateTeachUnitNodes_args struct) throws TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          struct.templateId = iprot.readI32();
+          struct.setTemplateIdIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.unitSequence = iprot.readI32();
+          struct.setUnitSequenceIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class retrieveCourseTemplateTeachUnitNodes_result implements org.apache.thrift.TBase<retrieveCourseTemplateTeachUnitNodes_result, retrieveCourseTemplateTeachUnitNodes_result._Fields>, java.io.Serializable, Cloneable, Comparable<retrieveCourseTemplateTeachUnitNodes_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("retrieveCourseTemplateTeachUnitNodes_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new retrieveCourseTemplateTeachUnitNodes_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new retrieveCourseTemplateTeachUnitNodes_resultTupleSchemeFactory());
+    }
+
+    public List<Integer> success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
+              new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32))));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(retrieveCourseTemplateTeachUnitNodes_result.class, metaDataMap);
+    }
+
+    public retrieveCourseTemplateTeachUnitNodes_result() {
+    }
+
+    public retrieveCourseTemplateTeachUnitNodes_result(
+      List<Integer> success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public retrieveCourseTemplateTeachUnitNodes_result(retrieveCourseTemplateTeachUnitNodes_result other) {
+      if (other.isSetSuccess()) {
+        List<Integer> __this__success = new ArrayList<Integer>(other.success);
+        this.success = __this__success;
+      }
+    }
+
+    public retrieveCourseTemplateTeachUnitNodes_result deepCopy() {
+      return new retrieveCourseTemplateTeachUnitNodes_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
+    }
+
+    public java.util.Iterator<Integer> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(int elem) {
+      if (this.success == null) {
+        this.success = new ArrayList<Integer>();
+      }
+      this.success.add(elem);
+    }
+
+    public List<Integer> getSuccess() {
+      return this.success;
+    }
+
+    public retrieveCourseTemplateTeachUnitNodes_result setSuccess(List<Integer> success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((List<Integer>)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof retrieveCourseTemplateTeachUnitNodes_result)
+        return this.equals((retrieveCourseTemplateTeachUnitNodes_result)that);
+      return false;
+    }
+
+    public boolean equals(retrieveCourseTemplateTeachUnitNodes_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      List<Object> list = new ArrayList<Object>();
+
+      boolean present_success = true && (isSetSuccess());
+      list.add(present_success);
+      if (present_success)
+        list.add(success);
+
+      return list.hashCode();
+    }
+
+    @Override
+    public int compareTo(retrieveCourseTemplateTeachUnitNodes_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("retrieveCourseTemplateTeachUnitNodes_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws TException {
+      // check for required fields
+      // check for sub-struct validity
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class retrieveCourseTemplateTeachUnitNodes_resultStandardSchemeFactory implements SchemeFactory {
+      public retrieveCourseTemplateTeachUnitNodes_resultStandardScheme getScheme() {
+        return new retrieveCourseTemplateTeachUnitNodes_resultStandardScheme();
+      }
+    }
+
+    private static class retrieveCourseTemplateTeachUnitNodes_resultStandardScheme extends StandardScheme<retrieveCourseTemplateTeachUnitNodes_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, retrieveCourseTemplateTeachUnitNodes_result struct) throws TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
+                {
+                  org.apache.thrift.protocol.TList _list72 = iprot.readListBegin();
+                  struct.success = new ArrayList<Integer>(_list72.size);
+                  int _elem73;
+                  for (int _i74 = 0; _i74 < _list72.size; ++_i74)
+                  {
+                    _elem73 = iprot.readI32();
+                    struct.success.add(_elem73);
+                  }
+                  iprot.readListEnd();
+                }
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, retrieveCourseTemplateTeachUnitNodes_result struct) throws TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, struct.success.size()));
+            for (int _iter75 : struct.success)
+            {
+              oprot.writeI32(_iter75);
+            }
+            oprot.writeListEnd();
+          }
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class retrieveCourseTemplateTeachUnitNodes_resultTupleSchemeFactory implements SchemeFactory {
+      public retrieveCourseTemplateTeachUnitNodes_resultTupleScheme getScheme() {
+        return new retrieveCourseTemplateTeachUnitNodes_resultTupleScheme();
+      }
+    }
+
+    private static class retrieveCourseTemplateTeachUnitNodes_resultTupleScheme extends TupleScheme<retrieveCourseTemplateTeachUnitNodes_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, retrieveCourseTemplateTeachUnitNodes_result struct) throws TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (int _iter76 : struct.success)
+            {
+              oprot.writeI32(_iter76);
+            }
+          }
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, retrieveCourseTemplateTeachUnitNodes_result struct) throws TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          {
+            org.apache.thrift.protocol.TList _list77 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.I32, iprot.readI32());
+            struct.success = new ArrayList<Integer>(_list77.size);
+            int _elem78;
+            for (int _i79 = 0; _i79 < _list77.size; ++_i79)
+            {
+              _elem78 = iprot.readI32();
+              struct.success.add(_elem78);
             }
           }
           struct.setSuccessIsSet(true);
