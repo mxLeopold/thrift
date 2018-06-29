@@ -2,6 +2,7 @@ package com.sunlands.rpc.web.biz.dao;
 
 import com.sunlands.rpc.web.coursetemplate.service.*;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.FetchType;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.stereotype.Repository;
 
@@ -168,4 +169,44 @@ public interface CourseTemplateDao {
     })
     @Options(useGeneratedKeys = true, keyProperty = "exam.exerciseExamId")
     int deleteMockExam(@Param("exam") ReqMockExam exam, @Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime);
+
+    @Select({"SELECT DISTINCT b.id as knowledgeNodeId, b.`name` as knowledgenodeName, b.`level`, IF(c.id IS NULL, 0, 1) as lastLevelFlag," ,
+            "c.knowledge_node_frequentness as frequency, b.id as nextQueryParentNodeId" ,
+            "FROM t_knowledge_tree as a" ,
+            "LEFT JOIN t_knowledge_node as b ON b.knowledge_tree_id = a.id AND b.`level` = 1 AND b.delete_flag = 0" ,
+            "LEFT JOIN t_last_knowledge_node as c ON c.knowledge_node_id = b.id AND c.delete_flag = 0" ,
+            "WHERE a.id = #{knowledgeTreeId} AND a.delete_flag = 0"})
+    @Results({
+            @Result(column = "nextQueryParentNodeId", property = "knowledgeNodeList",
+                        many = @Many(select = "retrieveSecondLevelNodeInfo", fetchType = FetchType.EAGER))
+    })
+    List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(@Param("knowledgeTreeId") int knowledgeTreeId);
+
+    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgenodeName, a.`level`, IF(a.id IS NULL, 0, 1) as lastLevelFlag," ,
+            "b.knowledge_node_frequentness as frequency, a.id as nextQueryParentNodeId" ,
+            "FROM t_knowledge_node as a" ,
+            "LEFT JOIN t_last_knowledge_node as b ON b.knowledge_node_id = a.id AND b.delete_flag = 0" ,
+            "WHERE a.parent_node_id = #{parentNodeId} AND a.`level` = 2 AND a.delete_flag = 0"})
+    @Results({
+            @Result(column = "nextQueryParentNodeId", property = "knowledgeNodeList",
+                    many = @Many(select = "retrieveThirdLevelNodeInfo", fetchType = FetchType.EAGER))
+    })
+    List<LastKnowledgeNodeInfo> retrieveSecondLevelNodeInfo(@Param("parentNodeId") Integer parentNodeId);
+
+    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgenodeName, a.`level`, IF(a.id IS NULL, 0, 1) as lastLevelFlag," ,
+            "b.knowledge_node_frequentness as frequency, a.id as nextQueryParentNodeId" ,
+            "FROM t_knowledge_node as a" ,
+            "LEFT JOIN t_last_knowledge_node as b ON b.knowledge_node_id = a.id AND b.delete_flag = 0" ,
+            "WHERE a.parent_node_id = #{parentNodeId} AND a.`level` = 3 AND a.delete_flag = 0"})
+    @Results({
+            @Result(column = "nextQueryParentNodeId", property = "lastLevelIds",
+                    many = @Many(select = "retrieveFourthLevelNodes", fetchType = FetchType.EAGER))
+    })
+    List<LastKnowledgeNodeInfo> retrieveThirdLevelNodeInfo(@Param("parentNodeId") Integer parentNodeId);
+
+    @Select({"SELECT GROUP_CONCAT(id) as lastLevelIds" ,
+            "FROM t_knowledge_node" ,
+            "WHERE parent_node_id = #{parentNodeId} AND `level` = 4 AND delete_flag = 0" ,
+            "GROUP BY parent_node_id"})
+    String retrieveFourthLevelNodes(@Param("parentNodeId") Integer parentNodeId);
 }

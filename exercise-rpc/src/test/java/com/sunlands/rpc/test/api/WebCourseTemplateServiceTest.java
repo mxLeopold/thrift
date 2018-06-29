@@ -1,8 +1,8 @@
 package com.sunlands.rpc.test.api;
 
-import com.sunlands.rpc.api.coursetemplate.handler.ApiCourseTemplateServiceHandler;
-import com.sunlands.rpc.api.coursetemplate.service.ApiCourseTemplateService;
-import com.sunlands.rpc.api.coursetemplate.service.UnitNodeInfo;
+import com.sunlands.rpc.web.coursetemplate.handler.WebCourseTemplateServiceHandler;
+import com.sunlands.rpc.web.coursetemplate.service.LastKnowledgeNodeInfo;
+import com.sunlands.rpc.web.coursetemplate.service.WebCourseTemplateService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
@@ -30,7 +30,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DirtiesContext
-public class ApiCourseTemplateServiceTest {
+public class WebCourseTemplateServiceTest {
 
     @Autowired
     protected TProtocolFactory protocolFactory;
@@ -38,22 +38,23 @@ public class ApiCourseTemplateServiceTest {
     @LocalServerPort
     protected int port;
 
-    protected ApiCourseTemplateService.Client client;
+    protected WebCourseTemplateService.Client client;
 
     @Autowired
-    private ApiCourseTemplateServiceHandler handler;
+    private WebCourseTemplateServiceHandler handler;
 
     @Before
     public void setUp() throws Exception {
-        TTransport transport = new THttpClient("http://localhost:" + port + "/api/courseTemplate");
+        TTransport transport = new THttpClient("http://localhost:" + port + "/web/courseTemplate");
         TProtocol protocol = protocolFactory.getProtocol(transport);
-        client = new ApiCourseTemplateService.Client(protocol);
+        client = new WebCourseTemplateService.Client(protocol);
     }
 
     @Test
     public void testRetrieveCourseTemplateInfoById() throws TException {
         DateTime before = DateTime.now();
-        List<List<UnitNodeInfo>> res = client.retrieveCourseTemplateInfoById(180);
+        List<LastKnowledgeNodeInfo> lastKnowledgeNodeInfo =
+                client.retrieveCourseTemplateTreeInfo(71);
         DateTime end = DateTime.now();
         printTimeSpend(before, end, 1);
     }
