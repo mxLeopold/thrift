@@ -2,6 +2,7 @@ package com.sunlands.rpc.test.api;
 
 import com.sunlands.rpc.web.coursetemplate.handler.WebCourseTemplateServiceHandler;
 import com.sunlands.rpc.web.coursetemplate.service.LastKnowledgeNodeInfo;
+import com.sunlands.rpc.web.coursetemplate.service.TemplateUnitNodeInfo;
 import com.sunlands.rpc.web.coursetemplate.service.WebCourseTemplateService;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocol;
@@ -55,6 +56,17 @@ public class WebCourseTemplateServiceTest {
         DateTime before = DateTime.now();
         List<LastKnowledgeNodeInfo> lastKnowledgeNodeInfo =
                 client.retrieveCourseTemplateTreeInfo(71);
+        DateTime end = DateTime.now();
+        printTimeSpend(before, end, 1);
+    }
+
+    @Test
+    public void testRetrieveCourseTemplateTeachUnitNodes() throws TException {
+        DateTime before = DateTime.now();
+        Integer templateId = 71;
+        Integer templateUnitId = 86;
+        TemplateUnitNodeInfo res =
+                client.retrieveTemplateTeachUnitNodeInfo(templateId, templateUnitId);
         DateTime end = DateTime.now();
         printTimeSpend(before, end, 1);
     }

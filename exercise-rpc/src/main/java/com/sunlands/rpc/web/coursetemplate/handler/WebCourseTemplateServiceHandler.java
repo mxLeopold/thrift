@@ -1,7 +1,5 @@
 package com.sunlands.rpc.web.coursetemplate.handler;
 
-import com.sunlands.rpc.web.biz.model.UnitNodeFrequencyInfoDTO;
-import com.sunlands.rpc.web.biz.model.UnitNodeInfoDTO;
 import com.sunlands.rpc.common.CourseTemplateConstants;
 import com.sunlands.rpc.web.biz.dao.CourseTemplateDao;
 import com.sunlands.rpc.web.biz.service.CourseTemplateService;
@@ -14,9 +12,7 @@ import org.springframework.stereotype.Component;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -104,7 +100,7 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
     }
 
     @Override
-    public List<Integer> retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence) throws TException {
-        return courseTemplateService.retrieveCourseTemplateTeachUnitNodes(templateId, unitSequence);
+    public TemplateUnitNodeInfo retrieveTemplateTeachUnitNodeInfo(int templateId, int templateUnitId) throws TException {
+        return courseTemplateService.retrieveCourseTemplateTeachUnitNodes(templateId, templateUnitId);
     }
 }

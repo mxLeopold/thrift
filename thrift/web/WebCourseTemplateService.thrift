@@ -86,6 +86,13 @@ struct LastKnowledgeNodeInfo {
     7: list<LastKnowledgeNodeInfo> knowledgeNodeList; //
 }
 
+// 课程标准化课次的知识点频度信息
+struct TemplateUnitNodeInfo {
+    1: i32 extremelyHighFrequencyCount; // 极高频知识点个数
+    2: i32 highFrequencyCount; // 高频知识点个数
+    3: i32 midFrequencyCount; // 中频知识点个数
+}
+
 service WebCourseTemplateService {
 
     //根据科目+类型获取课程模板知识树列表
@@ -104,5 +111,5 @@ service WebCourseTemplateService {
     list<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(1: i32 knowledgeTreeId);
 
     // 查询课程标准化课程的知识点
-    list<i32> retrieveCourseTemplateTeachUnitNodes(1: i32 templateId, 2: i32 unitSequence);
+    TemplateUnitNodeInfo retrieveTemplateTeachUnitNodeInfo(1: i32 templateId, 2: i32 templateUnitId);
 }

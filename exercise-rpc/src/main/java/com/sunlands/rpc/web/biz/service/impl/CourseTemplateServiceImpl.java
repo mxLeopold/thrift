@@ -3,6 +3,7 @@ package com.sunlands.rpc.web.biz.service.impl;
 import com.sunlands.rpc.web.biz.dao.CourseTemplateDao;
 import com.sunlands.rpc.web.biz.service.CourseTemplateService;
 import com.sunlands.rpc.web.coursetemplate.service.LastKnowledgeNodeInfo;
+import com.sunlands.rpc.web.coursetemplate.service.TemplateUnitNodeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
     }
 
     @Override
-    public List<Integer> retrieveCourseTemplateTeachUnitNodes(int templateId, int unitSequence) {
-        return courseTemplateDao.retrieveCourseTemplateTeachUnitNodes(templateId, unitSequence);
+    public TemplateUnitNodeInfo retrieveCourseTemplateTeachUnitNodes(int templateId, int templateUnitId) {
+        return courseTemplateDao.retrieveCourseTemplateTeachUnitNodes(templateId, templateUnitId);
     }
 }
