@@ -311,20 +311,36 @@ public class PaperReportServiceImpl implements PaperReportService {
     }
 
     @Override
-    public List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(UnitReportConditionDTO unitReportConditionDTO) {
+    public List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(UnitReportConditionDTO unitReportConditionDTO,List<Integer> stuIds) {
         Integer pageIndex =(unitReportConditionDTO.getPageNo() - 1) * unitReportConditionDTO.getPageSize();
         Integer countPerPage = unitReportConditionDTO.getPageSize();
-        return paperReportMapper.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO,pageIndex,countPerPage);
+        if (unitReportConditionDTO.getUnitIds() == null || "".equals(unitReportConditionDTO.getUnitIds())){
+            throw new RuntimeException("课程单元ID不能为空");
+        }
+        //测试
+        unitReportConditionDTO.setStuId( null );
+
+        List<Integer> unitIdList = stringToIntegerList(unitReportConditionDTO.getUnitIds());
+        //根据paper_id分表的
+        List<String> paperIndexList = new ArrayList<>();
+        List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
+        for (Integer paperId:paperIdList){
+            paperIndexList.add(String.format("%01d",paperId%10));
+        }
+        if (stuIds==null || stuIds.size()==0){
+            stuIds = null;
+        }
+        return paperReportMapper.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO,unitIdList,stuIds,paperIndexList,pageIndex,countPerPage);
     }
 
     @Override
     public ResUnitsStatisticDTO retrieveQuizOrHomeworkInfo(Integer roundId, String teachUnitIds,Integer teacherId) {
         List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
         //根据paper_id分表的
-        List<Integer> paperIndexList = new ArrayList<>();
+        List<String> paperIndexList = new ArrayList<>();
         List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
         for (Integer paperId:paperIdList){
-            paperIndexList.add(paperId%10);
+            paperIndexList.add(String.format("%01d",paperId%10));
         }
         ResUnitsStatisticDTO resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
         resUnitsStatisticDTO.setRoundId(roundId);

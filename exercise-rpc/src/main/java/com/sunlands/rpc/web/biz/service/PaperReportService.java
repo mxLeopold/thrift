@@ -52,10 +52,10 @@ public interface PaperReportService {
 
     /**
      * 查询课堂报告列表的学员课后作业/随堂考正确率
-     * @param unitReportConditionDTO
+     * @param unitReportConditionDTO,stuIds
      * @return
      */
-    List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(UnitReportConditionDTO unitReportConditionDTO);
+    List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(UnitReportConditionDTO unitReportConditionDTO,List<Integer> stuIds);
 
     /**
      * 根据该轮次下的课程单元ID查询该轮次下的统计数据

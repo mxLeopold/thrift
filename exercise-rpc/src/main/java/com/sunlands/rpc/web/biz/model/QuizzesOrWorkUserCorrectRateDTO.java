@@ -8,9 +8,8 @@ package com.sunlands.rpc.web.biz.model;
  **/
 public class QuizzesOrWorkUserCorrectRateDTO {
     private Integer stuId;
-    private Integer unitId;
-    private String exerciseType;
-    private Double correctRate;
+    private Double quizzesCorrectRate;
+    private Double homeworkCorrectRate;
 
     public Integer getStuId() {
         return stuId;
@@ -20,27 +19,19 @@ public class QuizzesOrWorkUserCorrectRateDTO {
         this.stuId = stuId;
     }
 
-    public Integer getUnitId() {
-        return unitId;
+    public Double getQuizzesCorrectRate() {
+        return quizzesCorrectRate;
     }
 
-    public void setUnitId(Integer unitId) {
-        this.unitId = unitId;
+    public void setQuizzesCorrectRate(Double quizzesCorrectRate) {
+        this.quizzesCorrectRate = quizzesCorrectRate;
     }
 
-    public String getExerciseType() {
-        return exerciseType;
+    public Double getHomeworkCorrectRate() {
+        return homeworkCorrectRate;
     }
 
-    public void setExerciseType(String exerciseType) {
-        this.exerciseType = exerciseType;
-    }
-
-    public Double getCorrectRate() {
-        return correctRate;
-    }
-
-    public void setCorrectRate(Double correctRate) {
-        this.correctRate = correctRate;
+    public void setHomeworkCorrectRate(Double homeworkCorrectRate) {
+        this.homeworkCorrectRate = homeworkCorrectRate;
     }
 }

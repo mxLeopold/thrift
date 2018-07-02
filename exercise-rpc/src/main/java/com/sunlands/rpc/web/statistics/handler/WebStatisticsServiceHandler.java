@@ -275,11 +275,11 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     }
 
     @Override
-    public List<QuizzesOrWorkUserCorrectRate> getPaperStudentCorrectRate(UnitReportCondition unitReportCondition) throws TException {
+    public List<QuizzesOrWorkUserCorrectRate> getPaperStudentCorrectRate(UnitReportCondition unitReportCondition,List<Integer> stuIds) throws TException {
         logger.debug("getPaperStudentCorrectRate(unitReportCondition:{}) -------- start", unitReportCondition.toString());
         UnitReportConditionDTO unitReportConditionDTO = new UnitReportConditionDTO();
         BeanUtils.copyProperties(unitReportCondition,unitReportConditionDTO);
-        List<QuizzesOrWorkUserCorrectRateDTO> quizzesOrWorkUserCorrectRateDTOS = paperReportService.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO);
+        List<QuizzesOrWorkUserCorrectRateDTO> quizzesOrWorkUserCorrectRateDTOS = paperReportService.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO,stuIds);
         List<QuizzesOrWorkUserCorrectRate> quizzesOrWorkUserCorrectRateList = new ArrayList<>();
         if (quizzesOrWorkUserCorrectRateDTOS != null && quizzesOrWorkUserCorrectRateDTOS.size() > 0) {
             QuizzesOrWorkUserCorrectRate quizzesOrWorkUserCorrectRate;
