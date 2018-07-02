@@ -268,27 +268,38 @@ public interface PaperReportMapper {
      */
     @Select({
             "<script>" ,
-            "SELECT t.stu_id stuId,t.unit_id unitId,t.exercise_type exerciseType,ROUND((SUM(IF(t.correct_flag = '1', 1, 0))/SUM(IF(t.correct_flag, 1, 0)))*100,2) as correctRate FROM " ,
-            "( " ,
-            "SELECT a.stu_id,a.unit_id,a.exercise_type,b.correct_flag,b.question_type,b.question_main_id,b.question_sub_id FROM " ,
-            "t_tiku_user_record_00 a " ,
-            "INNER JOIN " ,
-            "t_tiku_user_question_00 b ON b.stu_id=a.stu_id AND a.id=b.record_id AND b.question_type in ('SINGLE_CHOICE','MULTI_CHOICE','JUDGE_CHOICE') " ,
-            "WHERE a.exercise_type in ('QUIZ','ASSIGNMENTS') " ,
-            "<if test=\"unitReportConditionDTO.unitIds != null and unitReportConditionDTO.unitIds != ''\"> and unit_id in " ,
-            "<foreach item=\"item\" index=\"index\" collection=\"unitReportConditionDTO.unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach></if>",
-            "<if test=\"unitReportConditionDTO.userName != null and unitReportConditionDTO.userName != ''\"> and user_name like '%${unitReportConditionDTO.userName,jdbcType=VARCHAR}%' </if>",
-            "<if test=\"unitReportConditionDTO.stuId != null and unitReportConditionDTO.stuId != ''\"> and stu_id like '%${unitReportConditionDTO.stuId,jdbcType=INTEGER}%' </if>",
-            "<if test=\"unitReportConditionDTO.quizzesSort != null and unitReportConditionDTO.quizzesSort != '' \"> and exercise_type = 'QUIZ' </if>",
-            "<if test=\"unitReportConditionDTO.homeworkSort != null and unitReportConditionDTO.homeworkSort != ''\"> and exercise_type = 'ASSIGNMENTS' </if>",
-            ")t " ,
-            "GROUP BY t.stu_id,t.exercise_type " ,
-            "<if test=\"unitReportConditionDTO.quizzesSort == 'RATE_SORT_ASC' or unitReportConditionDTO.homeworkSort == 'RATE_SORT_ASC' \"> ORDER BY correctRate ASC </if>",
-            "<if test=\"unitReportConditionDTO.quizzesSort == 'RATE_SORT_DESC' or unitReportConditionDTO.homeworkSort == 'RATE_SORT_DESC' \"> ORDER BY correctRate DESC </if>",
-//            "LIMIT #{pageIndex},#{countPerPage} " , //TODO 暂时去掉分页测试
+            "SELECT t1.stuId,SUM(homeworkCorrectRate) homeworkCorrectRate,SUM(quizzesCorrectRate) quizzesCorrectRate from (" ,
+            "SELECT t.stuId,IF(t.exerciseType = 'ASSIGNMENTS',ROUND(SUM(t.correctQuestionNum)/SUM(t.questionNum)*100,2),0) homeworkCorrectRate, " ,
+            "IF(t.exerciseType = 'QUIZ',ROUND(SUM(t.correctQuestionNum)/SUM(t.questionNum)*100,2),0) quizzesCorrectRate FROM " ,
+            "<foreach item=\"paperIndex\" collection=\"paperIndexList\"  open=\"(\" separator=\" UNION ALL \" close=\")\"  >" ,
+            "SELECT a.stu_id stuId,a.exercise_type exerciseType,a.correct_question_num correctQuestionNum,a.question_num questionNum " ,
+            "FROM " ,
+            "t_tiku_exam_user_statistics_${paperIndex} a " ,
+            "INNER JOIN stu_user_info b ON a.stu_id = b.stu_id " ,
+            "WHERE a.exercise_type in ('ASSIGNMENTS','QUIZ') AND a.unit_id in " ,
+            "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
+            "<if test=\"unitReportConditionDTO.stuId != null and unitReportConditionDTO.stuId != '' \"> and a.stu_id like '%${unitReportConditionDTO.stuId}%' </if>",
+            "<if test=\"unitReportConditionDTO.userName != null and unitReportConditionDTO.userName != '' \"> and b.name like '%${unitReportConditionDTO.userName}%' </if>",
+            "GROUP BY a.stu_id,a.exercise_type " ,
+            "</foreach>" ,
+            " t " ,
+            "WHERE 1=1 " ,
+            "<if test=\"stuIds != null \"> AND t.stuId in ",
+            "<foreach item=\"item\" index=\"index\" collection=\"stuIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach> </if> " ,
+            "GROUP BY t.stuId,t.exerciseType " ,
+            " )t1 " ,
+            "GROUP BY t1.stuId " ,
+            "<if test=\"unitReportConditionDTO.quizzesSort == 'RATE_SORT_ASC' \"> ORDER BY quizzesCorrectRate ASC </if>",
+            "<if test=\"unitReportConditionDTO.homeworkSort == 'RATE_SORT_ASC' \"> ORDER BY homeworkCorrectRate ASC </if>",
+            "<if test=\"unitReportConditionDTO.quizzesSort == 'RATE_SORT_DESC' \"> ORDER BY quizzesCorrectRate DESC </if>",
+            "<if test=\"unitReportConditionDTO.homeworkSort == 'RATE_SORT_DESC' \"> ORDER BY homeworkCorrectRate DESC </if>",
+//            "LIMIT #{pageIndex},#{countPerPage} " ,//RPC去掉分页，在讲师端去判断分页
             "</script>"
     })
     List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(@Param("unitReportConditionDTO") UnitReportConditionDTO unitReportConditionDTO,
+                                                                          @Param("unitIds") List<Integer> unitIds,
+                                                                          @Param("stuIds") List<Integer> stuIds,
+                                                                          @Param("paperIndexList") List<String> paperIndexList,
                                                                           @Param("pageIndex") Integer pageIndex, @Param("countPerPage") Integer countPerPage);
 
     /**
@@ -338,7 +349,7 @@ public interface PaperReportMapper {
             "</script>" ,
     })
     ResUnitsStatisticDTO retrieveQuizOrHomeworkInfo(@Param("unitIds") List<Integer> unitIds,
-                                                    @Param("paperIndexList") List<Integer> paperIndexList,
+                                                    @Param("paperIndexList") List<String> paperIndexList,
                                                     @Param("recordIndexList") List<String> recordIndexList);
 
     /**

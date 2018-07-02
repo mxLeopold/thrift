@@ -104,15 +104,14 @@ struct RoundStatistics {
 // 课程单元下学员的统计数据
 struct QuizzesOrWorkUserCorrectRate {
     1: i32 stuId;
-    2: i32 unitId;
-    3: string exerciseType;
-    4: double correctRate;//该学员在本课程下的正确率
+    2: double quizzesCorrectRate;
+    3: double homeworkCorrectRate;//该学员在本课程下的正确率
 }
 //课程单元报告列表查询条件
 struct UnitReportCondition {
-    1: string unitIdStr;
+    1: string unitIds;
     2: string userName;
-    3: i32 userId;
+    3: i32 stuId;
     4: string attendStatus;
     5: string evaluateScoreLevel;
     6: string quizzesSort;
@@ -169,7 +168,7 @@ service WebStatisticsService {
     list<RoundStatistics> getRoundStatistics(1: list<i32> roundIds);
 
     //查询作业随堂考正确率
-    list<QuizzesOrWorkUserCorrectRate> getPaperStudentCorrectRate(1: UnitReportCondition unitReportCondition);
+    list<QuizzesOrWorkUserCorrectRate> getPaperStudentCorrectRate(1: UnitReportCondition unitReportCondition, 2: list<i32> stuIds);
 
     //查询作业随堂考学员完成率和得分率
     UnitsStatistic retrieveQuizzesAndAssignmentsByUnitIds(1: i32 roundId, 2: string teachUnitIds, 3: i32 teacherId);
