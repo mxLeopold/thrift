@@ -228,4 +228,63 @@ public interface CourseTemplateDao {
             "GROUP BY IFNULL(g.knowledge_node_frequentness,h.knowledge_node_frequentness)" ,
             ") t"})
     TemplateUnitNodeInfo retrieveCourseTemplateTeachUnitNodes(@Param("templateId") int templateId,@Param("templateUnitId") int templateUnitId);
+
+    @Select({"SELECT b.code as templateCode, c.id as templateUnitId, c.sequence, c.id" ,
+            "FROM `t_course_template` as a" ,
+            "INNER JOIN `t_course_template` as b ON b.`code` = a.`code` AND b.current_version = 1 AND b.status_code = 'VALID' AND b.delete_flag = 0" ,
+            "INNER JOIN `t_course_template_unit` as c ON c.template_id = b.id AND c.delete_flag = 0" ,
+            "WHERE a.id = #{templateId}"})
+    List<TemplateUnitInfo> retrieveTemplateUnitNodeDetailInfo(@Param("templateId") int templateId);
+
+    @Select({"SELECT DISTINCT d.id, d.id as nodeId, d.`name` as nodeName" ,
+            "FROM t_course_template_unit as a" ,
+            "INNER JOIN t_course_template_unit_knowledge_node_rel as b ON b.template_unit_id = a.id AND b.delete_flag = 0" ,
+            "INNER JOIN t_knowledge_node as c ON c.id = b.knowledge_node_id AND c.delete_flag = 0" ,
+            "INNER JOIN t_knowledge_node as d ON d.knowledge_tree_id = c.knowledge_tree_id AND d.serial_number = SUBSTRING(c.serial_number,1,1) AND d.`level` = 1 AND d.delete_flag = 0" ,
+            "WHERE a.id = #{templateUnitId} AND a.template_id = #{templateId} AND a.delete_flag = 0"})
+    List<TemplateUnitNodeDetailInfo> selectTemplateUnitFirstLevelNodes(@Param("templateId") int templateId, @Param("templateUnitId") int templateUnitId);
+
+    @Select({"SELECT " ,
+            "SUM(CASE t.frequency WHEN 0 THEN t.frequencyCount END) as midFrequencyCount," ,
+            "SUM(CASE t.frequency WHEN 1 THEN t.frequencyCount END) as highFrequencyCount," ,
+            "SUM(CASE t.frequency WHEN 2 THEN t.frequencyCount END) as extremelyHighFrequencyCount" ,
+            "FROM (" ,
+            "SELECT DISTINCT d.knowledge_node_frequentness as frequency,COUNT(d.knowledge_node_frequentness) as frequencyCount" ,
+            "FROM `t_course_template_unit` as a" ,
+            "INNER JOIN `t_course_template_unit_knowledge_node_rel` as b ON b.template_unit_id = a.id AND b.delete_flag = 0" ,
+            "INNER JOIN `t_knowledge_node` as c ON c.id = b.knowledge_node_id AND c.delete_flag = 0" ,
+            "INNER JOIN `t_last_knowledge_node` as d ON d.knowledge_node_id = c.id" ,
+            "WHERE a.template_id = #{templateId} AND b.knowledge_node_id = #{nodeId}" ,
+            "GROUP BY d.knowledge_node_frequentness" ,
+            ") t"})
+    TemplateUnitNodeInfo selectNodeFrequencyInfo(@Param("templateId") int templateId, @Param("nodeId") int nodeId);
+
+    @Select({"SELECT DISTINCT d.id as nodeId, d.`name` as nodeName" ,
+            "FROM `t_course_template_unit_knowledge_node_rel` as a " ,
+            "INNER JOIN `t_knowledge_node` as b ON b.id = a.knowledge_node_id AND b.delete_flag = 0" ,
+            "INNER JOIN `t_knowledge_node` as c ON c.knowledge_tree_id = b.knowledge_tree_id AND c.serial_number = SUBSTRING(b.serial_number,1,1) AND c.`level` = 1 AND c.delete_flag = 0" ,
+            "INNER JOIN `t_knowledge_node` as d ON d.parent_node_id = c.id AND d.`level` = 2 AND d.delete_flag = 0" ,
+            "LEFT JOIN t_course_template_unit_knowledge_node_rel as e ON e.knowledge_node_id = d.id " ,
+            "LEFT JOIN t_knowledge_node as f ON f.parent_node_id = IFNULL(e.id,d.id)" ,
+            "WHERE a.template_unit_id = #{templateId} AND a.delete_flag = 0 AND c.id = #{nodeId}"})
+    List<TemplateUnitNodeDetailInfo> selectTemplateUnitSecondLevelNodes(@Param("templateId") int templateId, @Param("nodeId") int nodeId);
+
+    @Select({"SELECT " ,
+            "IFNULL(SUM(CASE t.frequency WHEN 0 THEN t.frequencyCount END),0) as midFrequencyCount," ,
+            "IFNULL(SUM(CASE t.frequency WHEN 1 THEN t.frequencyCount END),0) as highFrequencyCount," ,
+            "IFNULL(SUM(CASE t.frequency WHEN 2 THEN t.frequencyCount END),0) as extremelyHighFrequencyCount" ,
+            "FROM (" ,
+            "SELECT IFNULL(IFNULL(h.knowledge_node_frequentness,g.knowledge_node_frequentness),f.knowledge_node_frequentness) as frequency," ,
+            " COUNT(IFNULL(IFNULL(h.knowledge_node_frequentness,g.knowledge_node_frequentness),f.knowledge_node_frequentness)) as frequencyCount" ,
+            "FROM t_course_template_unit as a" ,
+            "INNER JOIN t_course_template_unit_knowledge_node_rel as b ON b.template_unit_id = a.id AND b.delete_flag = 0" ,
+            "INNER JOIN t_knowledge_node as c ON c.id = b.knowledge_node_id AND c.delete_flag = 0" ,
+            "LEFT JOIN t_knowledge_node as d ON d.id = c.parent_node_id AND d.`level` = 3 AND d.delete_flag = 0" ,
+            "LEFT JOIN t_knowledge_node as e ON e.id = d.parent_node_id AND e.`level` = 2 AND e.delete_flag = 0" ,
+            "LEFT JOIN t_knowledge_node as i ON i.id = e.parent_node_id AND i.`level` = 1 AND i.delete_flag = 0" ,
+            "LEFT JOIN t_last_knowledge_node as f ON f.knowledge_node_id = c.id AND f.delete_flag = 0" ,
+            "LEFT JOIN t_last_knowledge_node as g ON g.knowledge_node_id = d.id AND g.delete_flag = 0" ,
+            "LEFT JOIN t_last_knowledge_node as h ON h.knowledge_node_id = e.id AND h.delete_flag = 0" ,
+            "WHERE a.template_id = #{templateId} AND a.id = #{templateUnitId} AND e.id = #{nodeId}) as t"})
+    TemplateUnitNodeInfo selectSecondNodeFrequencyInfo(@Param("templateId") int templateId, @Param("templateUnitId") int templateUnitId, @Param("nodeId") int nodeId);
 }

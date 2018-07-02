@@ -103,4 +103,9 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
     public TemplateUnitNodeInfo retrieveTemplateTeachUnitNodeInfo(int templateId, int templateUnitId) throws TException {
         return courseTemplateService.retrieveCourseTemplateTeachUnitNodes(templateId, templateUnitId);
     }
+
+    @Override
+    public List<TemplateUnitInfo> retrieveTemplateUnitNodeDetailInfo(int templateId) throws TException {
+        return courseTemplateService.retrieveTemplateUnitNodeDetailInfo(templateId);
+    }
 }
