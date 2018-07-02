@@ -40,8 +40,7 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
 
   private static final org.apache.thrift.protocol.TField TEMPLATE_CODE_FIELD_DESC = new org.apache.thrift.protocol.TField("templateCode", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField TEMPLATE_UNIT_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("templateUnitId", org.apache.thrift.protocol.TType.I32, (short)2);
-  private static final org.apache.thrift.protocol.TField SEQUENCE_FIELD_DESC = new org.apache.thrift.protocol.TField("sequence", org.apache.thrift.protocol.TType.I32, (short)3);
-  private static final org.apache.thrift.protocol.TField TEMPLATE_UNIT_NODE_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("templateUnitNodeInfo", org.apache.thrift.protocol.TType.LIST, (short)4);
+  private static final org.apache.thrift.protocol.TField TEMPLATE_UNIT_NODE_INFO_FIELD_DESC = new org.apache.thrift.protocol.TField("templateUnitNodeInfo", org.apache.thrift.protocol.TType.LIST, (short)3);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -51,15 +50,13 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
 
   public int templateCode; // required
   public int templateUnitId; // required
-  public int sequence; // required
   public List<TemplateUnitNodeDetailInfo> templateUnitNodeInfo; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     TEMPLATE_CODE((short)1, "templateCode"),
     TEMPLATE_UNIT_ID((short)2, "templateUnitId"),
-    SEQUENCE((short)3, "sequence"),
-    TEMPLATE_UNIT_NODE_INFO((short)4, "templateUnitNodeInfo");
+    TEMPLATE_UNIT_NODE_INFO((short)3, "templateUnitNodeInfo");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -78,9 +75,7 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
           return TEMPLATE_CODE;
         case 2: // TEMPLATE_UNIT_ID
           return TEMPLATE_UNIT_ID;
-        case 3: // SEQUENCE
-          return SEQUENCE;
-        case 4: // TEMPLATE_UNIT_NODE_INFO
+        case 3: // TEMPLATE_UNIT_NODE_INFO
           return TEMPLATE_UNIT_NODE_INFO;
         default:
           return null;
@@ -124,7 +119,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
   // isset id assignments
   private static final int __TEMPLATECODE_ISSET_ID = 0;
   private static final int __TEMPLATEUNITID_ISSET_ID = 1;
-  private static final int __SEQUENCE_ISSET_ID = 2;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -132,8 +126,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
     tmpMap.put(_Fields.TEMPLATE_CODE, new org.apache.thrift.meta_data.FieldMetaData("templateCode", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.TEMPLATE_UNIT_ID, new org.apache.thrift.meta_data.FieldMetaData("templateUnitId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.SEQUENCE, new org.apache.thrift.meta_data.FieldMetaData("sequence", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     tmpMap.put(_Fields.TEMPLATE_UNIT_NODE_INFO, new org.apache.thrift.meta_data.FieldMetaData("templateUnitNodeInfo", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
@@ -148,7 +140,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
   public TemplateUnitInfo(
     int templateCode,
     int templateUnitId,
-    int sequence,
     List<TemplateUnitNodeDetailInfo> templateUnitNodeInfo)
   {
     this();
@@ -156,8 +147,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
     setTemplateCodeIsSet(true);
     this.templateUnitId = templateUnitId;
     setTemplateUnitIdIsSet(true);
-    this.sequence = sequence;
-    setSequenceIsSet(true);
     this.templateUnitNodeInfo = templateUnitNodeInfo;
   }
 
@@ -168,7 +157,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
     __isset_bitfield = other.__isset_bitfield;
     this.templateCode = other.templateCode;
     this.templateUnitId = other.templateUnitId;
-    this.sequence = other.sequence;
     if (other.isSetTemplateUnitNodeInfo()) {
       List<TemplateUnitNodeDetailInfo> __this__templateUnitNodeInfo = new ArrayList<TemplateUnitNodeDetailInfo>(other.templateUnitNodeInfo.size());
       for (TemplateUnitNodeDetailInfo other_element : other.templateUnitNodeInfo) {
@@ -188,8 +176,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
     this.templateCode = 0;
     setTemplateUnitIdIsSet(false);
     this.templateUnitId = 0;
-    setSequenceIsSet(false);
-    this.sequence = 0;
     this.templateUnitNodeInfo = null;
   }
 
@@ -237,29 +223,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
 
   public void setTemplateUnitIdIsSet(boolean value) {
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __TEMPLATEUNITID_ISSET_ID, value);
-  }
-
-  public int getSequence() {
-    return this.sequence;
-  }
-
-  public TemplateUnitInfo setSequence(int sequence) {
-    this.sequence = sequence;
-    setSequenceIsSet(true);
-    return this;
-  }
-
-  public void unsetSequence() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __SEQUENCE_ISSET_ID);
-  }
-
-  /** Returns true if field sequence is set (has been assigned a value) and false otherwise */
-  public boolean isSetSequence() {
-    return EncodingUtils.testBit(__isset_bitfield, __SEQUENCE_ISSET_ID);
-  }
-
-  public void setSequenceIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __SEQUENCE_ISSET_ID, value);
   }
 
   public int getTemplateUnitNodeInfoSize() {
@@ -319,14 +282,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
       }
       break;
 
-    case SEQUENCE:
-      if (value == null) {
-        unsetSequence();
-      } else {
-        setSequence((Integer)value);
-      }
-      break;
-
     case TEMPLATE_UNIT_NODE_INFO:
       if (value == null) {
         unsetTemplateUnitNodeInfo();
@@ -346,9 +301,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
     case TEMPLATE_UNIT_ID:
       return getTemplateUnitId();
 
-    case SEQUENCE:
-      return getSequence();
-
     case TEMPLATE_UNIT_NODE_INFO:
       return getTemplateUnitNodeInfo();
 
@@ -367,8 +319,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
       return isSetTemplateCode();
     case TEMPLATE_UNIT_ID:
       return isSetTemplateUnitId();
-    case SEQUENCE:
-      return isSetSequence();
     case TEMPLATE_UNIT_NODE_INFO:
       return isSetTemplateUnitNodeInfo();
     }
@@ -406,15 +356,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
         return false;
     }
 
-    boolean this_present_sequence = true;
-    boolean that_present_sequence = true;
-    if (this_present_sequence || that_present_sequence) {
-      if (!(this_present_sequence && that_present_sequence))
-        return false;
-      if (this.sequence != that.sequence)
-        return false;
-    }
-
     boolean this_present_templateUnitNodeInfo = true && this.isSetTemplateUnitNodeInfo();
     boolean that_present_templateUnitNodeInfo = true && that.isSetTemplateUnitNodeInfo();
     if (this_present_templateUnitNodeInfo || that_present_templateUnitNodeInfo) {
@@ -440,11 +381,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
     list.add(present_templateUnitId);
     if (present_templateUnitId)
       list.add(templateUnitId);
-
-    boolean present_sequence = true;
-    list.add(present_sequence);
-    if (present_sequence)
-      list.add(sequence);
 
     boolean present_templateUnitNodeInfo = true && (isSetTemplateUnitNodeInfo());
     list.add(present_templateUnitNodeInfo);
@@ -478,16 +414,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
     }
     if (isSetTemplateUnitId()) {
       lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.templateUnitId, other.templateUnitId);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetSequence()).compareTo(other.isSetSequence());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetSequence()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.sequence, other.sequence);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -528,10 +454,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
     if (!first) sb.append(", ");
     sb.append("templateUnitId:");
     sb.append(this.templateUnitId);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("sequence:");
-    sb.append(this.sequence);
     first = false;
     if (!first) sb.append(", ");
     sb.append("templateUnitNodeInfo:");
@@ -602,15 +524,7 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 3: // SEQUENCE
-            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-              struct.sequence = iprot.readI32();
-              struct.setSequenceIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
-          case 4: // TEMPLATE_UNIT_NODE_INFO
+          case 3: // TEMPLATE_UNIT_NODE_INFO
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list56 = iprot.readListBegin();
@@ -650,9 +564,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
       oprot.writeFieldBegin(TEMPLATE_UNIT_ID_FIELD_DESC);
       oprot.writeI32(struct.templateUnitId);
       oprot.writeFieldEnd();
-      oprot.writeFieldBegin(SEQUENCE_FIELD_DESC);
-      oprot.writeI32(struct.sequence);
-      oprot.writeFieldEnd();
       if (struct.templateUnitNodeInfo != null) {
         oprot.writeFieldBegin(TEMPLATE_UNIT_NODE_INFO_FIELD_DESC);
         {
@@ -689,21 +600,15 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
       if (struct.isSetTemplateUnitId()) {
         optionals.set(1);
       }
-      if (struct.isSetSequence()) {
+      if (struct.isSetTemplateUnitNodeInfo()) {
         optionals.set(2);
       }
-      if (struct.isSetTemplateUnitNodeInfo()) {
-        optionals.set(3);
-      }
-      oprot.writeBitSet(optionals, 4);
+      oprot.writeBitSet(optionals, 3);
       if (struct.isSetTemplateCode()) {
         oprot.writeI32(struct.templateCode);
       }
       if (struct.isSetTemplateUnitId()) {
         oprot.writeI32(struct.templateUnitId);
-      }
-      if (struct.isSetSequence()) {
-        oprot.writeI32(struct.sequence);
       }
       if (struct.isSetTemplateUnitNodeInfo()) {
         {
@@ -719,7 +624,7 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, TemplateUnitInfo struct) throws TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(4);
+      BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {
         struct.templateCode = iprot.readI32();
         struct.setTemplateCodeIsSet(true);
@@ -729,10 +634,6 @@ public class TemplateUnitInfo implements org.apache.thrift.TBase<TemplateUnitInf
         struct.setTemplateUnitIdIsSet(true);
       }
       if (incoming.get(2)) {
-        struct.sequence = iprot.readI32();
-        struct.setSequenceIsSet(true);
-      }
-      if (incoming.get(3)) {
         {
           org.apache.thrift.protocol.TList _list61 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
           struct.templateUnitNodeInfo = new ArrayList<TemplateUnitNodeDetailInfo>(_list61.size);
