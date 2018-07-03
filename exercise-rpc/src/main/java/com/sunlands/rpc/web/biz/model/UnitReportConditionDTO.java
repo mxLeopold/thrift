@@ -18,7 +18,7 @@ public class UnitReportConditionDTO {
     /**
      *学员ID
      */
-    private Integer stuId;
+    private Integer userId;
     /**
      *出勤状态，ALL_ATTEND:全部，NOT_ATTEND:未出勤，IS_ATTEND:已出勤
      */
@@ -26,7 +26,7 @@ public class UnitReportConditionDTO {
     /**
      *评价分数筛选条件，ALL_EVALUATE_SCORE:全部，LEVEL1_EVALUATE_SCORE:1-3分，LEVEL2_EVALUATE_SCORE:4-5分
      */
-    private String evaluateScoreLevel;
+    private String evaluateScore;
     /**
      *随堂考正确率排序，RATE_SORT_ORIGIN:还原，RATE_SORT_ASC:升序，RATE_SORT_DESC:降序
      */
@@ -54,12 +54,12 @@ public class UnitReportConditionDTO {
         this.userName = userName;
     }
 
-    public Integer getStuId() {
-        return stuId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setStuId(Integer stuId) {
-        this.stuId = stuId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getAttendStatus() {
@@ -70,12 +70,12 @@ public class UnitReportConditionDTO {
         this.attendStatus = attendStatus;
     }
 
-    public String getEvaluateScoreLevel() {
-        return evaluateScoreLevel;
+    public String getEvaluateScore() {
+        return evaluateScore;
     }
 
-    public void setEvaluateScoreLevel(String evaluateScoreLevel) {
-        this.evaluateScoreLevel = evaluateScoreLevel;
+    public void setEvaluateScore(String evaluateScore) {
+        this.evaluateScore = evaluateScore;
     }
 
     public String getQuizzesSort() {

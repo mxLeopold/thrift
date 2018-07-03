@@ -34,6 +34,16 @@ public interface PaperReportMapper {
     })
     PaperDTO selectPaperByCode(@Param("paperCode") String paperCode);
 
+    /**
+     * 根据合班后的课程单元ID查询作业或随堂考的试卷
+     * @param unitId
+     * @return
+     */
+    @Select({
+        "" ,
+    })
+    PaperDTO selectPaperByUnitIds(@Param("unitId") Integer unitId);
+
 
     /**
      * 查询作业、随堂考--考试统计数据：参考人数、总答对题数，总用时
@@ -269,8 +279,8 @@ public interface PaperReportMapper {
     @Select({
             "<script>" ,
             "SELECT t1.stuId,SUM(homeworkCorrectRate) homeworkCorrectRate,SUM(quizzesCorrectRate) quizzesCorrectRate from (" ,
-            "SELECT t.stuId,IF(t.exerciseType = 'ASSIGNMENTS',ROUND(SUM(t.correctQuestionNum)/SUM(t.questionNum)*100,2),0) homeworkCorrectRate, " ,
-            "IF(t.exerciseType = 'QUIZ',ROUND(SUM(t.correctQuestionNum)/SUM(t.questionNum)*100,2),0) quizzesCorrectRate FROM " ,
+            "SELECT t.stuId,IF(t.exerciseType = 'ASSIGNMENTS',ROUND(SUM(t.correctQuestionNum)/SUM(t.questionNum)*100,2),null) homeworkCorrectRate, " ,
+            "IF(t.exerciseType = 'QUIZ',ROUND(SUM(t.correctQuestionNum)/SUM(t.questionNum)*100,2),null) quizzesCorrectRate FROM " ,
             "<foreach item=\"paperIndex\" collection=\"paperIndexList\"  open=\"(\" separator=\" UNION ALL \" close=\")\"  >" ,
             "SELECT a.stu_id stuId,a.exercise_type exerciseType,a.correct_question_num correctQuestionNum,a.question_num questionNum " ,
             "FROM " ,
@@ -278,7 +288,7 @@ public interface PaperReportMapper {
             "INNER JOIN stu_user_info b ON a.stu_id = b.stu_id " ,
             "WHERE a.exercise_type in ('ASSIGNMENTS','QUIZ') AND a.unit_id in " ,
             "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
-            "<if test=\"unitReportConditionDTO.stuId != null and unitReportConditionDTO.stuId != '' \"> and a.stu_id like '%${unitReportConditionDTO.stuId}%' </if>",
+            "<if test=\"unitReportConditionDTO.userId != null and unitReportConditionDTO.userId != '' \"> and a.stu_id like '%${unitReportConditionDTO.userId}%' </if>",
             "<if test=\"unitReportConditionDTO.userName != null and unitReportConditionDTO.userName != '' \"> and b.name like '%${unitReportConditionDTO.userName}%' </if>",
             "GROUP BY a.stu_id,a.exercise_type " ,
             "</foreach>" ,

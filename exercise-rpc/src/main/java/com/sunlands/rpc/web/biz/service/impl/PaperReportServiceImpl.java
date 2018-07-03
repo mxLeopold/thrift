@@ -317,8 +317,10 @@ public class PaperReportServiceImpl implements PaperReportService {
         if (unitReportConditionDTO.getUnitIds() == null || "".equals(unitReportConditionDTO.getUnitIds())){
             throw new RuntimeException("课程单元ID不能为空");
         }
-        //测试
-        unitReportConditionDTO.setStuId( null );
+        //RPC不支持基本类型空值传递，因此设置-1代表默认为空
+        if (unitReportConditionDTO.getUserId() == -1){
+            unitReportConditionDTO.setUserId( null );
+        }
 
         List<Integer> unitIdList = stringToIntegerList(unitReportConditionDTO.getUnitIds());
         //根据paper_id分表的
@@ -330,7 +332,21 @@ public class PaperReportServiceImpl implements PaperReportService {
         if (stuIds==null || stuIds.size()==0){
             stuIds = null;
         }
-        return paperReportMapper.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO,unitIdList,stuIds,paperIndexList,pageIndex,countPerPage);
+        if (paperIdList==null || paperIdList.size()==0){
+            throw new RuntimeException("该课程单元下没有配置试卷！");
+        }
+        List<QuizzesOrWorkUserCorrectRateDTO> quizzesOrWorkUserCorrectRateDTOS = paperReportMapper.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO,unitIdList,stuIds,paperIndexList,pageIndex,countPerPage);
+
+        //RPC不支持基本类型空值传递，因此设置-1代表默认为空
+        for (QuizzesOrWorkUserCorrectRateDTO quizzesOrWorkUserCorrectRateDTO : quizzesOrWorkUserCorrectRateDTOS){
+            if (quizzesOrWorkUserCorrectRateDTO.getHomeworkCorrectRate()==null){
+                quizzesOrWorkUserCorrectRateDTO.setHomeworkCorrectRate(-1.0);
+            }
+            if (quizzesOrWorkUserCorrectRateDTO.getQuizzesCorrectRate()==null){
+                quizzesOrWorkUserCorrectRateDTO.setQuizzesCorrectRate(-1.0);
+            }
+        }
+        return quizzesOrWorkUserCorrectRateDTOS;
     }
 
     @Override
