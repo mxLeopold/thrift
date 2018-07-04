@@ -35,17 +35,6 @@ public interface PaperReportMapper {
     PaperDTO selectPaperByCode(@Param("paperCode") String paperCode);
 
     /**
-     * 根据合班后的课程单元ID查询作业或随堂考的试卷
-     * @param unitId
-     * @return
-     */
-    @Select({
-        "" ,
-    })
-    PaperDTO selectPaperByUnitIds(@Param("unitId") Integer unitId);
-
-
-    /**
      * 查询作业、随堂考--考试统计数据：参考人数、总答对题数，总用时
      * @param paperId
      * @param unitIds

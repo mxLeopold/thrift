@@ -358,6 +358,9 @@ public class PaperReportServiceImpl implements PaperReportService {
         for (Integer paperId:paperIdList){
             paperIndexList.add(String.format("%01d",paperId%10));
         }
+        if (CollectionUtils.isEmpty(paperIndexList)){
+            throw new RuntimeException("该课程单元下没有配置试卷！");
+        }
         ResUnitsStatisticDTO resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
         resUnitsStatisticDTO.setRoundId(roundId);
         resUnitsStatisticDTO.setTeachUnitIds(teachUnitIds);

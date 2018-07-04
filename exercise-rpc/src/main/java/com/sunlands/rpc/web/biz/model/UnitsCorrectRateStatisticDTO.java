@@ -1,7 +1,5 @@
 package com.sunlands.rpc.web.biz.model;
 
-import java.math.BigDecimal;
-
 /**
  * 课堂报告作业随堂考正确率统计数据
  *
@@ -24,27 +22,27 @@ public class UnitsCorrectRateStatisticDTO {
     /**
      *作业最大正确率
      */
-    private BigDecimal homeworkMaxCorrectRate;
+    private Double homeworkMaxCorrectRate;
     /**
      *作业平均正确率
      */
-    private BigDecimal homeworkAvgCorrectRate;
+    private Double homeworkAvgCorrectRate;
     /**
      *作业最小正确率
      */
-    private BigDecimal homeworkMinCorrectRate;
+    private Double homeworkMinCorrectRate;
     /**
      * 随堂考最大正确率
      */
-    private BigDecimal quizzesMaxCorrectRate;
+    private Double quizzesMaxCorrectRate;
     /**
      * 随堂考平均正确率
      */
-    private BigDecimal quizzesAvgCorrectRate;
+    private Double quizzesAvgCorrectRate;
     /**
      * 随堂考最小正确率
      */
-    private BigDecimal quizzesMinCorrectRate;
+    private Double quizzesMinCorrectRate;
 
     public String getTeachUnitIds() {
         return teachUnitIds;
@@ -70,51 +68,66 @@ public class UnitsCorrectRateStatisticDTO {
         this.quizzesAnswerNum = quizzesAnswerNum;
     }
 
-    public BigDecimal getHomeworkMaxCorrectRate() {
+    public Double getHomeworkMaxCorrectRate() {
         return homeworkMaxCorrectRate;
     }
 
-    public void setHomeworkMaxCorrectRate(BigDecimal homeworkMaxCorrectRate) {
+    public void setHomeworkMaxCorrectRate(Double homeworkMaxCorrectRate) {
         this.homeworkMaxCorrectRate = homeworkMaxCorrectRate;
     }
 
-    public BigDecimal getHomeworkAvgCorrectRate() {
+    public Double getHomeworkAvgCorrectRate() {
         return homeworkAvgCorrectRate;
     }
 
-    public void setHomeworkAvgCorrectRate(BigDecimal homeworkAvgCorrectRate) {
+    public void setHomeworkAvgCorrectRate(Double homeworkAvgCorrectRate) {
         this.homeworkAvgCorrectRate = homeworkAvgCorrectRate;
     }
 
-    public BigDecimal getHomeworkMinCorrectRate() {
+    public Double getHomeworkMinCorrectRate() {
         return homeworkMinCorrectRate;
     }
 
-    public void setHomeworkMinCorrectRate(BigDecimal homeworkMinCorrectRate) {
+    public void setHomeworkMinCorrectRate(Double homeworkMinCorrectRate) {
         this.homeworkMinCorrectRate = homeworkMinCorrectRate;
     }
 
-    public BigDecimal getQuizzesMaxCorrectRate() {
+    public Double getQuizzesMaxCorrectRate() {
         return quizzesMaxCorrectRate;
     }
 
-    public void setQuizzesMaxCorrectRate(BigDecimal quizzesMaxCorrectRate) {
+    public void setQuizzesMaxCorrectRate(Double quizzesMaxCorrectRate) {
         this.quizzesMaxCorrectRate = quizzesMaxCorrectRate;
     }
 
-    public BigDecimal getQuizzesAvgCorrectRate() {
+    public Double getQuizzesAvgCorrectRate() {
         return quizzesAvgCorrectRate;
     }
 
-    public void setQuizzesAvgCorrectRate(BigDecimal quizzesAvgCorrectRate) {
+    public void setQuizzesAvgCorrectRate(Double quizzesAvgCorrectRate) {
         this.quizzesAvgCorrectRate = quizzesAvgCorrectRate;
     }
 
-    public BigDecimal getQuizzesMinCorrectRate() {
+    public Double getQuizzesMinCorrectRate() {
         return quizzesMinCorrectRate;
     }
 
-    public void setQuizzesMinCorrectRate(BigDecimal quizzesMinCorrectRate) {
+    public void setQuizzesMinCorrectRate(Double quizzesMinCorrectRate) {
         this.quizzesMinCorrectRate = quizzesMinCorrectRate;
+    }
+
+    @Override
+    public String toString() {
+        return "UnitsCorrectRateStatisticDTO{" +
+                "teachUnitIds='" + teachUnitIds + '\'' +
+                ", homeworkAnswerNum=" + homeworkAnswerNum +
+                ", quizzesAnswerNum=" + quizzesAnswerNum +
+                ", homeworkMaxCorrectRate=" + homeworkMaxCorrectRate +
+                ", homeworkAvgCorrectRate=" + homeworkAvgCorrectRate +
+                ", homeworkMinCorrectRate=" + homeworkMinCorrectRate +
+                ", quizzesMaxCorrectRate=" + quizzesMaxCorrectRate +
+                ", quizzesAvgCorrectRate=" + quizzesAvgCorrectRate +
+                ", quizzesMinCorrectRate=" + quizzesMinCorrectRate +
+                '}';
     }
 }

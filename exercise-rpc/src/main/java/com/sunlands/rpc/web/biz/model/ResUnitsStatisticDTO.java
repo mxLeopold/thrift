@@ -1,7 +1,5 @@
 package com.sunlands.rpc.web.biz.model;
 
-import java.math.BigDecimal;
-
 /**
  * 一个轮次下的多个课程单元的综合统计数据
  *
@@ -24,19 +22,19 @@ public class ResUnitsStatisticDTO {
     /**'
      * 作业得分率
      */
-    private BigDecimal homeworkScoreRate;
+    private Double homeworkScoreRate;
     /**
      * 作业完成率
      */
-    private BigDecimal homeworkCompleteRate;
+    private Double homeworkCompleteRate;
     /**
      * 随堂考得分率
      */
-    private BigDecimal quizzesScoreRate;
+    private Double quizzesScoreRate;
     /**
      * 随堂考完成率
      */
-    private BigDecimal quizzesCompleteRate;
+    private Double quizzesCompleteRate;
 
     public Integer getRoundId() {
         return roundId;
@@ -62,35 +60,48 @@ public class ResUnitsStatisticDTO {
         this.teacherId = teacherId;
     }
 
-    public BigDecimal getHomeworkScoreRate() {
+    public Double getHomeworkScoreRate() {
         return homeworkScoreRate;
     }
 
-    public void setHomeworkScoreRate(BigDecimal homeworkScoreRate) {
+    public void setHomeworkScoreRate(Double homeworkScoreRate) {
         this.homeworkScoreRate = homeworkScoreRate;
     }
 
-    public BigDecimal getHomeworkCompleteRate() {
+    public Double getHomeworkCompleteRate() {
         return homeworkCompleteRate;
     }
 
-    public void setHomeworkCompleteRate(BigDecimal homeworkCompleteRate) {
+    public void setHomeworkCompleteRate(Double homeworkCompleteRate) {
         this.homeworkCompleteRate = homeworkCompleteRate;
     }
 
-    public BigDecimal getQuizzesScoreRate() {
+    public Double getQuizzesScoreRate() {
         return quizzesScoreRate;
     }
 
-    public void setQuizzesScoreRate(BigDecimal quizzesScoreRate) {
+    public void setQuizzesScoreRate(Double quizzesScoreRate) {
         this.quizzesScoreRate = quizzesScoreRate;
     }
 
-    public BigDecimal getQuizzesCompleteRate() {
+    public Double getQuizzesCompleteRate() {
         return quizzesCompleteRate;
     }
 
-    public void setQuizzesCompleteRate(BigDecimal quizzesCompleteRate) {
+    public void setQuizzesCompleteRate(Double quizzesCompleteRate) {
         this.quizzesCompleteRate = quizzesCompleteRate;
+    }
+
+    @Override
+    public String toString() {
+        return "ResUnitsStatisticDTO{" +
+                "roundId=" + roundId +
+                ", teachUnitIds='" + teachUnitIds + '\'' +
+                ", teacherId=" + teacherId +
+                ", homeworkScoreRate=" + homeworkScoreRate +
+                ", homeworkCompleteRate=" + homeworkCompleteRate +
+                ", quizzesScoreRate=" + quizzesScoreRate +
+                ", quizzesCompleteRate=" + quizzesCompleteRate +
+                '}';
     }
 }
