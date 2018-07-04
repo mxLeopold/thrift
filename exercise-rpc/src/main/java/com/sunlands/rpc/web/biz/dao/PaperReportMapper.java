@@ -377,7 +377,7 @@ public interface PaperReportMapper {
             "SUM(IF(t1.exercise_type='QUIZ',t2.minCorrectRate,0)) quizzesMinCorrectRate "  ,
             "from  "  ,
             "( "  ,
-            "SELECT SUM(a.total_answer_num) stuCount,a.exercise_type,a.unit_id,ROUND(SUM(a.total_correct_num)/SUM(a.total_question_answer_num)*100,2) avgCorrectRate from t_tiku_exam_statistics a "  ,
+            "SELECT SUM(IFNULL(a.total_answer_num,0)) stuCount,a.exercise_type,a.unit_id,ROUND(SUM(a.total_correct_num)/SUM(a.total_question_answer_num)*100,2) avgCorrectRate from t_tiku_exam_statistics a "  ,
             "where a.exercise_type in ('QUIZ','ASSIGNMENTS') and unit_id in "  ,
             "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
             "GROUP BY a.exercise_type) t1, "  ,
