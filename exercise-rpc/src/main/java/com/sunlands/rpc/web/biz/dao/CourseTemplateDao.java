@@ -168,4 +168,20 @@ public interface CourseTemplateDao {
     })
     @Options(useGeneratedKeys = true, keyProperty = "exam.exerciseExamId")
     int deleteMockExam(@Param("exam") ReqMockExam exam, @Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime);
+
+    /**
+     * 根据课程模板Code获取课程模板内容
+     * @param courseTemplateCode
+     * @return
+     */
+    @Select({
+            "select id, code courseTemplateCode, subject_id subjectId, t_knowledge_tree_id knowledgeTreeId, version, " ,
+            "name courseTemplateName, total_unit_count totalUnitCount, mock_exam_paper_code mockExamPaperCode from t_course_template " ,
+            "where code = #{courseTemplateCode} and delete_flag = 0 and status_code = 'VALID' and current_version = 1"
+    })
+    @Results({
+            @Result(column = "id", property = "courseTemplateId", jdbcType = JdbcType.INTEGER),
+            @Result(column = "id", property = "templateUnitList", javaType = List.class, many = @Many(select = "queryCourseTemplateUnitByCourseTemplateId"))
+    })
+    CourseTemplateDetail queryCourseTemplateByCode(@Param("courseTemplateCode") int courseTemplateCode);
 }

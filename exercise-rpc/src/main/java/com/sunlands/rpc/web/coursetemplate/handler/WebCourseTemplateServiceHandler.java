@@ -88,4 +88,16 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
 
         return reqMockExam.exerciseExamId;
     }
+
+    @Override
+    public CourseTemplateDetail getCourseTemplateDetailByCode(int courseTemplateCode) throws TException {
+        CourseTemplateDetail courseTemplateDetail = courseTemplateDao.queryCourseTemplateByCode(courseTemplateCode);
+        if (courseTemplateDetail == null) {
+            courseTemplateDetail = new CourseTemplateDetail();
+            courseTemplateDetail.setCourseTemplateId(-1);
+            return courseTemplateDetail;
+        }
+        return courseTemplateDetail;
+    }
+
 }
