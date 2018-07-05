@@ -15,9 +15,9 @@ spring:
       datasource:
            type: com.alibaba.druid.pool.DruidDataSource
            master:
-               url: jdbc:mysql://172.16.117.226:3306/exercise?autoReconnect=true
-               username: ent_all
-               password: ent
+               url: jdbc:mysql://172.16.100.69:3306/exercise?autoReconnect=true
+               username: exer_gz_read
+               password: 08Gy#Exer
                driver-class-name: com.mysql.jdbc.Driver
                minIdle: 5
                maxActive: 100
