@@ -312,6 +312,7 @@ public class PaperReportServiceImpl implements PaperReportService {
 
     @Override
     public List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(UnitReportConditionDTO unitReportConditionDTO,List<Integer> stuIds) {
+        List<QuizzesOrWorkUserCorrectRateDTO> quizzesOrWorkUserCorrectRateDTOS;
         Integer pageIndex =(unitReportConditionDTO.getPageNo() - 1) * unitReportConditionDTO.getPageSize();
         Integer countPerPage = unitReportConditionDTO.getPageSize();
         if (unitReportConditionDTO.getUnitIds() == null || "".equals(unitReportConditionDTO.getUnitIds())){
@@ -326,18 +327,20 @@ public class PaperReportServiceImpl implements PaperReportService {
         //根据paper_id分表的
         List<String> paperIndexList = new ArrayList<>();
         List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
+        if (paperIdList==null || paperIdList.size()==0){
+            return null;
+//            throw new RuntimeException("该课程单元下没有配置试卷！");
+        }
         for (Integer paperId:paperIdList){
             paperIndexList.add(String.format("%01d",paperId%10));
         }
         if (stuIds==null || stuIds.size()==0){
             stuIds = null;
         }
-        if (paperIdList==null || paperIdList.size()==0){
-            throw new RuntimeException("该课程单元下没有配置试卷！");
-        }
-        List<QuizzesOrWorkUserCorrectRateDTO> quizzesOrWorkUserCorrectRateDTOS = paperReportMapper.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO,unitIdList,stuIds,paperIndexList,pageIndex,countPerPage);
 
-        //RPC不支持基本类型空值传递，因此设置-1代表默认为空
+        quizzesOrWorkUserCorrectRateDTOS = paperReportMapper.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO,unitIdList,stuIds,paperIndexList,pageIndex,countPerPage);
+
+        //RPC不支持基本类型空值传递，因此设置-1代表为空,在调用方需解析
         for (QuizzesOrWorkUserCorrectRateDTO quizzesOrWorkUserCorrectRateDTO : quizzesOrWorkUserCorrectRateDTOS){
             quizzesOrWorkUserCorrectRateDTO.setHomeworkCorrectRate(setDefaultValueToNull(quizzesOrWorkUserCorrectRateDTO.getHomeworkCorrectRate()));
             quizzesOrWorkUserCorrectRateDTO.setQuizzesCorrectRate(setDefaultValueToNull(quizzesOrWorkUserCorrectRateDTO.getQuizzesCorrectRate()));
@@ -422,7 +425,7 @@ public class PaperReportServiceImpl implements PaperReportService {
 
     private Double setDefaultValueToNull(Double d){
         if (d == null){
-            return new Double(-1.0);
+            return new Double(Constant.DEFAULT_DOUBLE_VALUE);
         }
         return d;
     }
