@@ -211,14 +211,13 @@ public interface CourseTemplateDao {
     String retrieveFourthLevelNodes(@Param("parentNodeId") Integer parentNodeId);
 
     @Select({"SELECT " ,
-            "SUM(CASE t.frequency WHEN 0 THEN t.frequencyCount END) as midFrequencyCount," ,
-            "SUM(CASE t.frequency WHEN 1 THEN t.frequencyCount END) as highFrequencyCount," ,
-            "SUM(CASE t.frequency WHEN 2 THEN t.frequencyCount END) as extremelyHighFrequencyCount" ,
+            "IFNULL(SUM(CASE t.frequency WHEN 0 THEN t.frequencyCount END),0) as midFrequencyCount," ,
+            "IFNULL(SUM(CASE t.frequency WHEN 1 THEN t.frequencyCount END),0) as highFrequencyCount," ,
+            "IFNULL(SUM(CASE t.frequency WHEN 2 THEN t.frequencyCount END),0) as extremelyHighFrequencyCount" ,
             "FROM (" ,
             "SELECT DISTINCT IFNULL(g.knowledge_node_frequentness,h.knowledge_node_frequentness) as frequency,COUNT(IFNULL(g.knowledge_node_frequentness,h.knowledge_node_frequentness)) as frequencyCount" ,
             "FROM `t_course_template` as a" ,
-            "INNER JOIN `t_course_template` as b ON b.`code` = a.`code` AND b.current_version = 1 AND b.status_code = 'VALID' AND b.delete_flag = 0" ,
-            "INNER JOIN `t_course_template_unit` as c ON c.template_id = b.id AND c.delete_flag = 0" ,
+            "INNER JOIN `t_course_template_unit` as c ON c.template_id = a.id AND c.delete_flag = 0" ,
             "INNER JOIN `t_course_template_unit_knowledge_node_rel` as d ON d.template_unit_id = c.id AND d.delete_flag = 0" ,
             "INNER JOIN `t_knowledge_node` as e ON e.id = d.knowledge_node_id AND e.delete_flag = 0" ,
             "LEFT JOIN `t_knowledge_node` as f ON f.id = e.parent_node_id AND f.`level` = 3 AND f.delete_flag = 0" ,
@@ -231,7 +230,7 @@ public interface CourseTemplateDao {
 
     @Select({"SELECT b.code as templateCode, c.id as templateUnitId, c.sequence, c.id" ,
             "FROM `t_course_template` as a" ,
-            "INNER JOIN `t_course_template` as b ON b.`code` = a.`code` AND b.current_version = 1 AND b.status_code = 'VALID' AND b.delete_flag = 0" ,
+            "INNER JOIN `t_course_template` as b ON b.`code` = a.`code` AND b.delete_flag = 0" ,
             "INNER JOIN `t_course_template_unit` as c ON c.template_id = b.id AND c.delete_flag = 0" ,
             "WHERE a.id = #{templateId}"})
     List<TemplateUnitInfo> retrieveTemplateUnitNodeDetailInfo(@Param("templateId") int templateId);
@@ -241,7 +240,7 @@ public interface CourseTemplateDao {
             "INNER JOIN t_course_template_unit_knowledge_node_rel as b ON b.template_unit_id = a.id AND b.delete_flag = 0" ,
             "INNER JOIN t_knowledge_node as c ON c.id = b.knowledge_node_id AND c.delete_flag = 0" ,
             "INNER JOIN t_knowledge_node as d ON d.knowledge_tree_id = c.knowledge_tree_id AND d.serial_number = SUBSTRING(c.serial_number,1,1) AND d.`level` = 1 AND d.delete_flag = 0" ,
-            "WHERE a.id = #{templateUnitId} AND a.template_id = #{templateId} AND a.delete_flag = 0"})
+            "WHERE a.id = #{templateUnitId} AND a.template_id = #{templateId}"})
     List<TemplateUnitNodeDetailInfo> selectTemplateUnitFirstLevelNodes(@Param("templateId") int templateId, @Param("templateUnitId") int templateUnitId);
 
     @Select({"SELECT " ,
