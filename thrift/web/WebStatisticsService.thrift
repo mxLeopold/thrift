@@ -111,7 +111,7 @@ struct QuizzesOrWorkUserCorrectRate {
 struct UnitReportCondition {
     1: string unitIds;
     2: string userName;
-    3: i32 stuId;
+    3: i32 userId;
     4: string attendStatus;
     5: string evaluateScoreLevel;
     6: string quizzesSort;

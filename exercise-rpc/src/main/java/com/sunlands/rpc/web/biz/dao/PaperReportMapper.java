@@ -34,7 +34,6 @@ public interface PaperReportMapper {
     })
     PaperDTO selectPaperByCode(@Param("paperCode") String paperCode);
 
-
     /**
      * 查询作业、随堂考--考试统计数据：参考人数、总答对题数，总用时
      * @param paperId
@@ -269,8 +268,8 @@ public interface PaperReportMapper {
     @Select({
             "<script>" ,
             "SELECT t1.stuId,SUM(homeworkCorrectRate) homeworkCorrectRate,SUM(quizzesCorrectRate) quizzesCorrectRate from (" ,
-            "SELECT t.stuId,IF(t.exerciseType = 'ASSIGNMENTS',ROUND(SUM(t.correctQuestionNum)/SUM(t.questionNum)*100,2),0) homeworkCorrectRate, " ,
-            "IF(t.exerciseType = 'QUIZ',ROUND(SUM(t.correctQuestionNum)/SUM(t.questionNum)*100,2),0) quizzesCorrectRate FROM " ,
+            "SELECT t.stuId,IF(t.exerciseType = 'ASSIGNMENTS',ROUND(SUM(t.correctQuestionNum)/SUM(t.questionNum)*100,2),null) homeworkCorrectRate, " ,
+            "IF(t.exerciseType = 'QUIZ',ROUND(SUM(t.correctQuestionNum)/SUM(t.questionNum)*100,2),null) quizzesCorrectRate FROM " ,
             "<foreach item=\"paperIndex\" collection=\"paperIndexList\"  open=\"(\" separator=\" UNION ALL \" close=\")\"  >" ,
             "SELECT a.stu_id stuId,a.exercise_type exerciseType,a.correct_question_num correctQuestionNum,a.question_num questionNum " ,
             "FROM " ,
@@ -278,7 +277,7 @@ public interface PaperReportMapper {
             "INNER JOIN stu_user_info b ON a.stu_id = b.stu_id " ,
             "WHERE a.exercise_type in ('ASSIGNMENTS','QUIZ') AND a.unit_id in " ,
             "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
-            "<if test=\"unitReportConditionDTO.stuId != null and unitReportConditionDTO.stuId != '' \"> and a.stu_id like '%${unitReportConditionDTO.stuId}%' </if>",
+            "<if test=\"unitReportConditionDTO.userId != null and unitReportConditionDTO.userId != '' \"> and a.stu_id like '%${unitReportConditionDTO.userId}%' </if>",
             "<if test=\"unitReportConditionDTO.userName != null and unitReportConditionDTO.userName != '' \"> and b.name like '%${unitReportConditionDTO.userName}%' </if>",
             "GROUP BY a.stu_id,a.exercise_type " ,
             "</foreach>" ,
@@ -378,7 +377,7 @@ public interface PaperReportMapper {
             "SUM(IF(t1.exercise_type='QUIZ',t2.minCorrectRate,0)) quizzesMinCorrectRate "  ,
             "from  "  ,
             "( "  ,
-            "SELECT SUM(a.total_answer_num) stuCount,a.exercise_type,a.unit_id,ROUND(SUM(a.total_correct_num)/SUM(a.total_question_answer_num)*100,2) avgCorrectRate from t_tiku_exam_statistics a "  ,
+            "SELECT SUM(IFNULL(a.total_answer_num,0)) stuCount,a.exercise_type,a.unit_id,ROUND(SUM(a.total_correct_num)/SUM(a.total_question_answer_num)*100,2) avgCorrectRate from t_tiku_exam_statistics a "  ,
             "where a.exercise_type in ('QUIZ','ASSIGNMENTS') and unit_id in "  ,
             "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
             "GROUP BY a.exercise_type) t1, "  ,

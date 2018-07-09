@@ -312,29 +312,45 @@ public class PaperReportServiceImpl implements PaperReportService {
 
     @Override
     public List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(UnitReportConditionDTO unitReportConditionDTO,List<Integer> stuIds) {
+        List<QuizzesOrWorkUserCorrectRateDTO> quizzesOrWorkUserCorrectRateDTOS;
         Integer pageIndex =(unitReportConditionDTO.getPageNo() - 1) * unitReportConditionDTO.getPageSize();
         Integer countPerPage = unitReportConditionDTO.getPageSize();
         if (unitReportConditionDTO.getUnitIds() == null || "".equals(unitReportConditionDTO.getUnitIds())){
             throw new RuntimeException("课程单元ID不能为空");
         }
-        //测试
-        unitReportConditionDTO.setStuId( null );
+        //RPC不支持基本类型空值传递，因此设置-1代表默认为空
+        if (unitReportConditionDTO.getUserId() == -1){
+            unitReportConditionDTO.setUserId( null );
+        }
 
         List<Integer> unitIdList = stringToIntegerList(unitReportConditionDTO.getUnitIds());
         //根据paper_id分表的
         List<String> paperIndexList = new ArrayList<>();
         List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
+        if (paperIdList==null || paperIdList.size()==0){
+            return null;
+//            throw new RuntimeException("该课程单元下没有配置试卷！");
+        }
         for (Integer paperId:paperIdList){
             paperIndexList.add(String.format("%01d",paperId%10));
         }
         if (stuIds==null || stuIds.size()==0){
             stuIds = null;
         }
-        return paperReportMapper.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO,unitIdList,stuIds,paperIndexList,pageIndex,countPerPage);
+
+        quizzesOrWorkUserCorrectRateDTOS = paperReportMapper.getQuizzesOrWorkUserCorrectRate(unitReportConditionDTO,unitIdList,stuIds,paperIndexList,pageIndex,countPerPage);
+
+        //RPC不支持基本类型空值传递，因此设置-1代表为空,在调用方需解析
+        for (QuizzesOrWorkUserCorrectRateDTO quizzesOrWorkUserCorrectRateDTO : quizzesOrWorkUserCorrectRateDTOS){
+            quizzesOrWorkUserCorrectRateDTO.setHomeworkCorrectRate(setDefaultValueToNull(quizzesOrWorkUserCorrectRateDTO.getHomeworkCorrectRate()));
+            quizzesOrWorkUserCorrectRateDTO.setQuizzesCorrectRate(setDefaultValueToNull(quizzesOrWorkUserCorrectRateDTO.getQuizzesCorrectRate()));
+        }
+        return quizzesOrWorkUserCorrectRateDTOS;
     }
 
     @Override
     public ResUnitsStatisticDTO retrieveQuizOrHomeworkInfo(Integer roundId, String teachUnitIds,Integer teacherId) {
+        ResUnitsStatisticDTO resUnitsStatisticDTO = new ResUnitsStatisticDTO();
         List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
         //根据paper_id分表的
         List<String> paperIndexList = new ArrayList<>();
@@ -342,20 +358,39 @@ public class PaperReportServiceImpl implements PaperReportService {
         for (Integer paperId:paperIdList){
             paperIndexList.add(String.format("%01d",paperId%10));
         }
-        ResUnitsStatisticDTO resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
+        if (!CollectionUtils.isEmpty(paperIndexList)){
+//            throw new RuntimeException("该课程单元下没有配置试卷！");
+            resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
+        }
         resUnitsStatisticDTO.setRoundId(roundId);
         resUnitsStatisticDTO.setTeachUnitIds(teachUnitIds);
         resUnitsStatisticDTO.setTeacherId(teacherId);
+        resUnitsStatisticDTO.setHomeworkCompleteRate(setDefaultValueToNull(resUnitsStatisticDTO.getHomeworkCompleteRate()));
+        resUnitsStatisticDTO.setHomeworkScoreRate(setDefaultValueToNull(resUnitsStatisticDTO.getHomeworkScoreRate()));
+        resUnitsStatisticDTO.setQuizzesCompleteRate(setDefaultValueToNull(resUnitsStatisticDTO.getQuizzesCompleteRate()));
+        resUnitsStatisticDTO.setQuizzesScoreRate(setDefaultValueToNull(resUnitsStatisticDTO.getQuizzesScoreRate()));
         return resUnitsStatisticDTO;
     }
 
     @Override
     public UnitsCorrectRateStatisticDTO retrieveQuizOrHomeworkCorrectInfo(String teachUnitIds) {
+        UnitsCorrectRateStatisticDTO unitsCorrectRateStatisticDTO = new UnitsCorrectRateStatisticDTO();
         List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
         List<Integer> paperIdList = paperReportMapper.getPaperIdList(unitIdList);
         List<String> paperIndexList = getPaperIndexList(paperIdList);
-        UnitsCorrectRateStatisticDTO unitsCorrectRateStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkCorrectInfo(unitIdList,paperIndexList);
+        if (!CollectionUtils.isEmpty(paperIndexList)){
+//            throw new RuntimeException("该课程单元下没有配置试卷！");
+            unitsCorrectRateStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkCorrectInfo(unitIdList,paperIndexList);
+        }
         unitsCorrectRateStatisticDTO.setTeachUnitIds(teachUnitIds);
+        unitsCorrectRateStatisticDTO.setHomeworkAnswerNum(unitsCorrectRateStatisticDTO.getHomeworkAnswerNum()==null ? 0 :unitsCorrectRateStatisticDTO.getHomeworkAnswerNum());
+        unitsCorrectRateStatisticDTO.setQuizzesAnswerNum(unitsCorrectRateStatisticDTO.getQuizzesAnswerNum()==null ? 0 : unitsCorrectRateStatisticDTO.getQuizzesAnswerNum());
+        unitsCorrectRateStatisticDTO.setHomeworkAvgCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkAvgCorrectRate()));
+        unitsCorrectRateStatisticDTO.setHomeworkMaxCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMaxCorrectRate()));
+        unitsCorrectRateStatisticDTO.setHomeworkMinCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMinCorrectRate()));
+        unitsCorrectRateStatisticDTO.setHomeworkAvgCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkAvgCorrectRate()));
+        unitsCorrectRateStatisticDTO.setHomeworkMaxCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMaxCorrectRate()));
+        unitsCorrectRateStatisticDTO.setHomeworkMinCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMinCorrectRate()));
         return unitsCorrectRateStatisticDTO;
     }
 
@@ -386,6 +421,13 @@ public class PaperReportServiceImpl implements PaperReportService {
             }
         }
         return integerList;
+    }
+
+    private Double setDefaultValueToNull(Double d){
+        if (d == null){
+            return new Double(Constant.DEFAULT_DOUBLE_VALUE);
+        }
+        return d;
     }
 
     private String floatToPercent(float num){

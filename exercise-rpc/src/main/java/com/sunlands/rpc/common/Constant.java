@@ -14,6 +14,11 @@ public class Constant {
     public static final String CONTENT_TYPE_ESSAY = "ESSAY";
     public static final String CONTENT_TYPE_BLANK = "BLANK";
     public static final String CONTENT_TYPE_CHOICE = "CHOICE";
+
+    /**
+     * RPC接口返回的DOUBLE默认值
+     */
+    public static final Double DEFAULT_DOUBLE_VALUE = -1.0;
     /**
      * 试卷类型
      */
