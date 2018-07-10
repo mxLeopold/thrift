@@ -228,10 +228,9 @@ public interface CourseTemplateDao {
             ") t"})
     TemplateUnitNodeInfo retrieveCourseTemplateTeachUnitNodes(@Param("templateId") int templateId,@Param("templateUnitId") int templateUnitId);
 
-    @Select({"SELECT b.code as templateCode, c.id as templateUnitId, c.sequence, c.id" ,
+    @Select({"SELECT DISTINCT a.code as templateCode, b.id as templateUnitId" ,
             "FROM `t_course_template` as a" ,
-            "INNER JOIN `t_course_template` as b ON b.`code` = a.`code` AND b.delete_flag = 0" ,
-            "INNER JOIN `t_course_template_unit` as c ON c.template_id = b.id AND c.delete_flag = 0" ,
+            "INNER JOIN `t_course_template_unit` as b ON b.template_id = a.id" ,
             "WHERE a.id = #{templateId}"})
     List<TemplateUnitInfo> retrieveTemplateUnitNodeDetailInfo(@Param("templateId") int templateId);
 
