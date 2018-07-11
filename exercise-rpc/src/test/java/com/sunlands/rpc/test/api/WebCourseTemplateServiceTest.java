@@ -64,8 +64,8 @@ public class WebCourseTemplateServiceTest {
     @Test
     public void testRetrieveCourseTemplateTeachUnitNodes() throws TException {
         DateTime before = DateTime.now();
-        Integer templateId = 71;
-        Integer templateUnitId = 86;
+        Integer templateId = 36;
+        Integer templateUnitId = 124;
         TemplateUnitNodeInfo res =
                 client.retrieveTemplateTeachUnitNodeInfo(templateId, templateUnitId);
         DateTime end = DateTime.now();
@@ -75,8 +75,8 @@ public class WebCourseTemplateServiceTest {
     @Test
     public void testRetrieveTemplateUnitNodeDetailInfo() throws TException {
         DateTime before = DateTime.now();
-        Integer templateId = 71;
-        List<TemplateUnitInfo> templateUnitInfos =
+        Integer templateId = 36;
+        List<TemplateUnitInfo> res =
                 client.retrieveTemplateUnitNodeDetailInfo(templateId);
         DateTime end = DateTime.now();
         printTimeSpend(before, end, 1);

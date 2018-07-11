@@ -103,9 +103,8 @@ struct TemplateUnitNodeDetailInfo {
 
 // 课程模板的课次
 struct TemplateUnitInfo {
-    1: i32 templateCode; // 课程模板code，为前端显示id
-    2: i32 templateUnitId;  // 课程模板课次id
-    3: list<TemplateUnitNodeDetailInfo> templateUnitNodeInfo; // 课次所含知识点
+    1: i32 templateUnitId;  // 课程模板课次id
+    2: list<TemplateUnitNodeDetailInfo> templateUnitNodeInfo; // 课次所含知识点
 }
 
 service WebCourseTemplateService {

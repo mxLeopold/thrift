@@ -36,4 +36,12 @@ public class CourseTemplateConstants {
      * 模考操作类型：删除
      */
     public static final String DELETE  = "DELETE";
+
+    /**
+     * 知识点频度
+     *  0-中频，1-高频，2-极高频
+     */
+    public static final Integer FREQUENCY_MIDDLE = 0;
+    public static final Integer FREQUENCY_HIGH = 1;
+    public static final Integer FREQUENCY_EXTREMELY_HIGH = 2;
 }

@@ -1,5 +1,6 @@
 package com.sunlands.rpc.web.biz.dao;
 
+import com.sunlands.rpc.web.biz.model.TemplateUnitNodeDetailInfoDTO;
 import com.sunlands.rpc.web.coursetemplate.service.*;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
@@ -285,4 +286,41 @@ public interface CourseTemplateDao {
             "LEFT JOIN t_last_knowledge_node as h ON h.knowledge_node_id = e.id AND h.delete_flag = 0" ,
             "WHERE a.template_id = #{templateId} AND a.id = #{templateUnitId} AND e.id = #{nodeId}) as t"})
     TemplateUnitNodeInfo selectSecondNodeFrequencyInfo(@Param("templateId") int templateId, @Param("templateUnitId") int templateUnitId, @Param("nodeId") int nodeId);
+
+    @Select({"SELECT * FROM (" ,
+            "SELECT " ,
+            "t.templateUnitId," ,
+            "t.lastNodeId," ,
+            "t.lastNodeLevel," ,
+            "k3.knowledge_node_frequentness as lastNodeFreq," ,
+            "IF(k3.`level` = 1, k3.knowledge_node_id, IF(k2.`level` = 1, k2.knowledge_node_id, k1.knowledge_node_id)) as firstLevelNodeId," ,
+            "IF(k3.`level` = 1, k3.knowledge_node_name, IF(k2.`level` = 1, k2.knowledge_node_name, k1.knowledge_node_name)) as firstLevelNodeName," ,
+            "IF(k3.`level` = 1, k3.serial_number, IF(k2.`level` = 1, k2.serial_number, k1.serial_number)) as firstLevelNodeSerial," ,
+            "IF(k3.`level` = 2, k3.knowledge_node_id, IF(k2.`level` = 2, k2.knowledge_node_id, k1.knowledge_node_id)) as secondLevelNodeId," ,
+            "IF(k3.`level` = 2, k3.knowledge_node_name, IF(k2.`level` = 2, k2.knowledge_node_name, k1.knowledge_node_name)) as secondLevelNodeName," ,
+            "IF(k3.`level` = 2, k3.serial_number, IF(k2.`level` = 2, k2.serial_number, k1.serial_number)) as secondLevelNodeSerial," ,
+            "IF(k3.`level` = 3, k3.knowledge_node_id, IF(k2.`level` = 3, k2.knowledge_node_id, k1.knowledge_node_id)) as thirdLevelNodeId," ,
+            "IF(k3.`level` = 3, k3.knowledge_node_name, IF(k2.`level` = 3, k2.knowledge_node_name, k1.knowledge_node_name)) as thirdLevelNodeName," ,
+            "IF(k3.`level` = 3, k3.serial_number, IF(k2.`level` = 3, k2.serial_number, k1.serial_number)) as thirdLevelNodeSerial" ,
+            "FROM (" ,
+            "SELECT " ,
+            "b.id as templateUnitId," ,
+            "d.id as relNodeId," ,
+            "d.`level` as relNodeLevel," ,
+            "IF(e.id is NULL, d.id, e.id) as lastNodeId," ,
+            "IF(e.id is NULL, d.`level`, e.`level`) as lastNodeLevel" ,
+            "FROM t_course_template as a" ,
+            "INNER JOIN t_course_template_unit as b ON b.template_id = a.id AND b.delete_flag = 0" ,
+            "INNER JOIN t_course_template_unit_knowledge_node_rel as c ON c.template_unit_id = b.id AND c.delete_flag = 0" ,
+            "INNER JOIN t_knowledge_node as d ON d.id = c.knowledge_node_id" ,
+            "LEFT JOIN t_knowledge_node as e ON e.id = d.parent_node_id AND d.`level` = 4 AND e.`level` = 3" ,
+            "WHERE a.id = #{templateId}" ,
+            ") as t" ,
+            "INNER JOIN t_last_knowledge_node as k3 ON k3.knowledge_node_id = t.lastNodeId AND k3.delete_flag = 0" ,
+            "LEFT JOIN t_last_knowledge_node as k2 ON k2.knowledge_node_id = k3.parent_node_id AND k2.delete_flag = 0" ,
+            "LEFT JOIN t_last_knowledge_node as k1 ON k1.knowledge_node_id = k2.parent_node_id AND k1.delete_flag = 0" ,
+            "GROUP BY t.templateUnitId, t.lastNodeId" ,
+            ") as res " ,
+            "ORDER BY res.templateUnitId, res.firstLevelNodeSerial, res.secondLevelNodeSerial, res.thirdLevelNodeSerial"})
+    List<TemplateUnitNodeDetailInfoDTO> retrieveTemplateUnitNodeDetailList(@Param("templateId") int templateId);
 }
