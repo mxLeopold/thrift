@@ -142,6 +142,12 @@ struct UnitsCorrectRateStatistic {
     9: double quizzesMinCorrectRate;
 }
 
+struct UnitsStatisticCondition {
+    1: i32 roundId;
+    2: string teachUnitIds;
+    3: i32 teacherId;
+}
+
 service WebStatisticsService {
 	// 查询作业、随堂考列表
 	list<WorkPaperReport> getPaperReport(1: string paperId, 2: string unitIdStr);
@@ -173,7 +179,13 @@ service WebStatisticsService {
     //查询作业随堂考学员完成率和得分率
     UnitsStatistic retrieveQuizzesAndAssignmentsByUnitIds(1: i32 roundId, 2: string teachUnitIds, 3: i32 teacherId);
 
+    //批量查询作业随堂考学员完成率和得分率
+    map<string,UnitsStatistic> retrieveQuizzesAndAssignmentListByUnitIds(1: list<UnitsStatisticCondition> unitsStatisticConditionList);
+
     //查询作业随堂考的正确率
     UnitsCorrectRateStatistic retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(1: string teachUnitIds);
+
+    //批量查询作业随堂考学员完成率和得分率
+    map<string,UnitsCorrectRateStatistic> retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(1: list<string> teachUnitIdsList);
 
 }

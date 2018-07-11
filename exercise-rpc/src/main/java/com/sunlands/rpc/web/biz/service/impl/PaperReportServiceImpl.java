@@ -4,6 +4,7 @@ import com.sunlands.rpc.common.Constant;
 import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
+import com.sunlands.rpc.web.statistics.service.UnitsStatisticCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -359,7 +360,6 @@ public class PaperReportServiceImpl implements PaperReportService {
             paperIndexList.add(String.format("%01d",paperId%10));
         }
         if (!CollectionUtils.isEmpty(paperIndexList)){
-//            throw new RuntimeException("该课程单元下没有配置试卷！");
             resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
         }
         resUnitsStatisticDTO.setRoundId(roundId);
@@ -373,13 +373,39 @@ public class PaperReportServiceImpl implements PaperReportService {
     }
 
     @Override
+    public Map<String, ResUnitsStatisticDTO> retrieveQuizOrHomeworkInfoMap(List<UnitsStatisticCondition> unitsStatisticConditionList) {
+        Map<String, ResUnitsStatisticDTO> resMap = new HashMap<>();
+        for (UnitsStatisticCondition unitsStatisticCondition : unitsStatisticConditionList){
+            ResUnitsStatisticDTO resUnitsStatisticDTO = new ResUnitsStatisticDTO();
+            List<Integer> unitIdList = stringToIntegerList(unitsStatisticCondition.getTeachUnitIds());
+            //根据paper_id分表的
+            List<String> paperIndexList = new ArrayList<>();
+            List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
+            for (Integer paperId:paperIdList){
+                paperIndexList.add(String.format("%01d",paperId%10));
+            }
+            if (!CollectionUtils.isEmpty(paperIndexList)){
+                resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
+            }
+            resUnitsStatisticDTO.setRoundId(unitsStatisticCondition.getRoundId());
+            resUnitsStatisticDTO.setTeachUnitIds(unitsStatisticCondition.getTeachUnitIds());
+            resUnitsStatisticDTO.setTeacherId(unitsStatisticCondition.getTeacherId());
+            resUnitsStatisticDTO.setHomeworkCompleteRate(setDefaultValueToNull(resUnitsStatisticDTO.getHomeworkCompleteRate()));
+            resUnitsStatisticDTO.setHomeworkScoreRate(setDefaultValueToNull(resUnitsStatisticDTO.getHomeworkScoreRate()));
+            resUnitsStatisticDTO.setQuizzesCompleteRate(setDefaultValueToNull(resUnitsStatisticDTO.getQuizzesCompleteRate()));
+            resUnitsStatisticDTO.setQuizzesScoreRate(setDefaultValueToNull(resUnitsStatisticDTO.getQuizzesScoreRate()));
+            resMap.put(unitsStatisticCondition.getTeachUnitIds(),resUnitsStatisticDTO);
+        }
+        return resMap;
+    }
+
+    @Override
     public UnitsCorrectRateStatisticDTO retrieveQuizOrHomeworkCorrectInfo(String teachUnitIds) {
         UnitsCorrectRateStatisticDTO unitsCorrectRateStatisticDTO = new UnitsCorrectRateStatisticDTO();
         List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
         List<Integer> paperIdList = paperReportMapper.getPaperIdList(unitIdList);
         List<String> paperIndexList = getPaperIndexList(paperIdList);
         if (!CollectionUtils.isEmpty(paperIndexList)){
-//            throw new RuntimeException("该课程单元下没有配置试卷！");
             unitsCorrectRateStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkCorrectInfo(unitIdList,paperIndexList);
         }
         unitsCorrectRateStatisticDTO.setTeachUnitIds(teachUnitIds);
@@ -392,6 +418,31 @@ public class PaperReportServiceImpl implements PaperReportService {
         unitsCorrectRateStatisticDTO.setHomeworkMaxCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMaxCorrectRate()));
         unitsCorrectRateStatisticDTO.setHomeworkMinCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMinCorrectRate()));
         return unitsCorrectRateStatisticDTO;
+    }
+
+    @Override
+    public Map<String, UnitsCorrectRateStatisticDTO> retrieveQuizOrHomeworkCorrectInfoMap(List<String> teachUnitIdsList) {
+        Map<String, UnitsCorrectRateStatisticDTO> resMap = new HashMap<>();
+        for (String teachUnitIds : teachUnitIdsList){
+            UnitsCorrectRateStatisticDTO unitsCorrectRateStatisticDTO = new UnitsCorrectRateStatisticDTO();
+            List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
+            List<Integer> paperIdList = paperReportMapper.getPaperIdList(unitIdList);
+            List<String> paperIndexList = getPaperIndexList(paperIdList);
+            if (!CollectionUtils.isEmpty(paperIndexList)){
+                unitsCorrectRateStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkCorrectInfo(unitIdList,paperIndexList);
+            }
+            unitsCorrectRateStatisticDTO.setTeachUnitIds(teachUnitIds);
+            unitsCorrectRateStatisticDTO.setHomeworkAnswerNum(unitsCorrectRateStatisticDTO.getHomeworkAnswerNum()==null ? 0 :unitsCorrectRateStatisticDTO.getHomeworkAnswerNum());
+            unitsCorrectRateStatisticDTO.setQuizzesAnswerNum(unitsCorrectRateStatisticDTO.getQuizzesAnswerNum()==null ? 0 : unitsCorrectRateStatisticDTO.getQuizzesAnswerNum());
+            unitsCorrectRateStatisticDTO.setHomeworkAvgCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkAvgCorrectRate()));
+            unitsCorrectRateStatisticDTO.setHomeworkMaxCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMaxCorrectRate()));
+            unitsCorrectRateStatisticDTO.setHomeworkMinCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMinCorrectRate()));
+            unitsCorrectRateStatisticDTO.setHomeworkAvgCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkAvgCorrectRate()));
+            unitsCorrectRateStatisticDTO.setHomeworkMaxCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMaxCorrectRate()));
+            unitsCorrectRateStatisticDTO.setHomeworkMinCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMinCorrectRate()));
+            resMap.put(teachUnitIds,unitsCorrectRateStatisticDTO);
+        }
+        return resMap;
     }
 
     private List<String> getIndexList(){

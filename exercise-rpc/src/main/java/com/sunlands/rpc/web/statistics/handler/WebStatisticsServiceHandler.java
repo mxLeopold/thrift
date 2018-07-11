@@ -15,9 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * <p>Title:</p>
@@ -305,6 +303,20 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     }
 
     @Override
+    public Map<String, UnitsStatistic> retrieveQuizzesAndAssignmentListByUnitIds(List<UnitsStatisticCondition> unitsStatisticConditionList) throws TException {
+        logger.debug("retrieveQuizzesAndAssignmentListByUnitIds(unitsStatisticConditionList:{}) -------- start",unitsStatisticConditionList);
+        Map <String,UnitsStatistic> unitsStatisticMap = new HashMap<>();
+        Map<String,ResUnitsStatisticDTO> resUnitsStatisticDTOMap = paperReportService.retrieveQuizOrHomeworkInfoMap(unitsStatisticConditionList);
+        for (String key : resUnitsStatisticDTOMap.keySet()){
+            UnitsStatistic unitsStatistic = new UnitsStatistic();
+            BeanUtils.copyProperties(resUnitsStatisticDTOMap.get(key), unitsStatistic);
+            unitsStatisticMap.put(key,unitsStatistic);
+        }
+        logger.debug("retrieveQuizzesAndAssignmentListByUnitIds(unitsStatisticConditionList:{}) -------- end",unitsStatisticConditionList);
+        return unitsStatisticMap;
+    }
+
+    @Override
     public UnitsCorrectRateStatistic retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(String teachUnitIds) throws TException {
         logger.debug("retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(teachUnitIds:{}) -------- start",teachUnitIds);
         UnitsCorrectRateStatistic unitsCorrectRateStatistic = new UnitsCorrectRateStatistic();
@@ -313,4 +325,20 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
         logger.debug("retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(teachUnitIds:{}) -------- end",teachUnitIds);
         return unitsCorrectRateStatistic;
     }
+
+    @Override
+    public Map<String, UnitsCorrectRateStatistic> retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(List<String> teachUnitIdsList) throws TException {
+
+        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(teachUnitIdsList:{}) -------- start",teachUnitIdsList);
+        Map <String,UnitsCorrectRateStatistic> unitsCorrectRateStatisticMap = new HashMap<>();
+        Map<String,UnitsCorrectRateStatisticDTO> unitsCorrectRateStatisticDTOMap = paperReportService.retrieveQuizOrHomeworkCorrectInfoMap(teachUnitIdsList);
+        for (String key : unitsCorrectRateStatisticDTOMap.keySet()){
+            UnitsCorrectRateStatistic unitsCorrectRateStatistic = new UnitsCorrectRateStatistic();
+            BeanUtils.copyProperties(unitsCorrectRateStatisticDTOMap.get(key), unitsCorrectRateStatistic);
+            unitsCorrectRateStatisticMap.put(key,unitsCorrectRateStatistic);
+        }
+        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(teachUnitIdsList:{}) -------- end",teachUnitIdsList);
+        return unitsCorrectRateStatisticMap;
+    }
+
 }
