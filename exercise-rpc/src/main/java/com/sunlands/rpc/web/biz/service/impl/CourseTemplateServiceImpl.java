@@ -58,6 +58,9 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
             if (reqUnitId == null || "".equals(reqUnitId)) {
                 throw new RuntimeException("课程模板关联课次id为空！");
             }
+            if (reqUnit.getFirstLevelNodeId() == null || "".equals(reqUnit.getFirstLevelNodeId())) {
+                throw new RuntimeException("获取标准课程化课次知识点失败！课次id：" + reqUnit.getTemplateUnitId());
+            }
             // 课次id不同
             if (!preTemplateUnitId.equals(reqUnitId)) {
                 // 组装新课
@@ -67,7 +70,6 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                 // 组装一级知识点List
                 List<TemplateUnitNodeDetailInfo> resFirstNodes = new ArrayList<>();
                 TemplateUnitNodeDetailInfo resFirstNode = new TemplateUnitNodeDetailInfo();
-                // TODO:一级知识点id为空，需要报错
                 resFirstNode.setNodeId(reqUnit.getFirstLevelNodeId());
                 resFirstNode.setNodeName(reqUnit.getFirstLevelNodeName());
                 resFirstNodes.add(resFirstNode);
@@ -129,9 +131,6 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                     } else {
                         // 如果不同，组装一级和二级
                         TemplateUnitNodeDetailInfo resFirstNode = new TemplateUnitNodeDetailInfo();
-                        if (reqUnit.getFirstLevelNodeId() == null || "".equals(reqUnit.getFirstLevelNodeId())) {
-                            throw new RuntimeException("获取标准课程化课次知识点失败！课次id：" + reqUnit.getTemplateUnitId());
-                        }
                         resFirstNode.setNodeId(reqUnit.getFirstLevelNodeId());
                         resFirstNode.setNodeName(reqUnit.getFirstLevelNodeName());
                         preUnitFirstNodes.add(resFirstNode);
