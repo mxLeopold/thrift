@@ -1,8 +1,10 @@
 package com.sunlands.rpc.web.biz.service;
 
 import com.sunlands.rpc.web.biz.model.*;
+import com.sunlands.rpc.web.statistics.service.UnitsStatisticCondition;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 新题库 - 随堂考统计数据
@@ -64,11 +66,26 @@ public interface PaperReportService {
      * @return
      */
     ResUnitsStatisticDTO retrieveQuizOrHomeworkInfo(Integer roundId, String teachUnitIds,Integer teacherId);
+
+    /**
+     * 批量根据该轮次下的课程单元ID查询该轮次下的统计数据
+     * @param unitsStatisticConditionList
+     * @return
+     */
+    Map<String,ResUnitsStatisticDTO> retrieveQuizOrHomeworkInfoMap(List<UnitsStatisticCondition> unitsStatisticConditionList);
+
     /**
      * 根据课程单元ID查询该轮次下的作业随堂考正确率的统计数据
      * @param teachUnitIds
      * @return
      */
     UnitsCorrectRateStatisticDTO retrieveQuizOrHomeworkCorrectInfo(String teachUnitIds);
+
+    /**
+     * 批量根据课程单元ID查询该轮次下的作业随堂考正确率的统计数据
+     * @param teachUnitIdsList
+     * @return
+     */
+    Map<String,UnitsCorrectRateStatisticDTO> retrieveQuizOrHomeworkCorrectInfoMap(List<String> teachUnitIdsList);
 
 }
