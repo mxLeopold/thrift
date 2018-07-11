@@ -75,17 +75,7 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                 // 如果同行记录的二级知识点id为空 && 末级知识点为1，设置一级的频度
                 if (reqUnit.getSecondLevelNodeId() != null && "".equals(reqUnit.getSecondLevelNodeId())
                         && reqUnit.getLastNodeLevel() != null && new Integer(1).equals(reqUnit.getLastNodeLevel())) {
-                    TemplateUnitNodeInfo resFirstNodeFreq = new TemplateUnitNodeInfo();
-                    resFirstNodeFreq.setMidFrequencyCount(0);
-                    resFirstNodeFreq.setHighFrequencyCount(0);
-                    resFirstNodeFreq.setExtremelyHighFrequencyCount(0);
-                    if (reqUnit.getLastNodeFreq().equals(0)) {
-                        resFirstNodeFreq.setMidFrequencyCount(1);
-                    } else if (reqUnit.getLastNodeFreq().equals(1)) {
-                        resFirstNodeFreq.setHighFrequencyCount(1);
-                    } else if (reqUnit.getLastNodeFreq().equals(2)) {
-                        resFirstNodeFreq.setExtremelyHighFrequencyCount(1);
-                    }
+                    TemplateUnitNodeInfo resFirstNodeFreq = this.constructNodeFreqInfo(reqUnit);
                     resFirstNode.setNodeFrequencyInfo(resFirstNodeFreq);
                 } else {
                     // 组装二级知识点
@@ -94,17 +84,7 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                     resSecondNode.setNodeId(reqUnit.getSecondLevelNodeId());
                     resSecondNode.setNodeName(reqUnit.getSecondLevelNodeName());
 
-                    TemplateUnitNodeInfo resSecondNodeFreq = new TemplateUnitNodeInfo();
-                    resSecondNodeFreq.setMidFrequencyCount(0);
-                    resSecondNodeFreq.setHighFrequencyCount(0);
-                    resSecondNodeFreq.setExtremelyHighFrequencyCount(0);
-                    if (reqUnit.getLastNodeFreq().equals(0)) {
-                        resSecondNodeFreq.setMidFrequencyCount(1);
-                    } else if (reqUnit.getLastNodeFreq().equals(1)) {
-                        resSecondNodeFreq.setHighFrequencyCount(1);
-                    } else if (reqUnit.getLastNodeFreq().equals(2)) {
-                        resSecondNodeFreq.setExtremelyHighFrequencyCount(1);
-                    }
+                    TemplateUnitNodeInfo resSecondNodeFreq = this.constructNodeFreqInfo(reqUnit);
                     resSecondNode.setNodeFrequencyInfo(resSecondNodeFreq);
                     resSecondNodes.add(resSecondNode);
                     resFirstNode.setKnowledgeNodeList(resSecondNodes);
@@ -142,43 +122,25 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                             TemplateUnitNodeDetailInfo resSecondNode = new TemplateUnitNodeDetailInfo();
                             resSecondNode.setNodeId(reqUnit.getSecondLevelNodeId());
                             resSecondNode.setNodeName(reqUnit.getSecondLevelNodeName());
-
-                            TemplateUnitNodeInfo resSecondNodeFreq = new TemplateUnitNodeInfo();
-                            resSecondNodeFreq.setMidFrequencyCount(0);
-                            resSecondNodeFreq.setHighFrequencyCount(0);
-                            resSecondNodeFreq.setExtremelyHighFrequencyCount(0);
-                            if (reqUnit.getLastNodeFreq().equals(0)) {
-                                resSecondNodeFreq.setMidFrequencyCount(1);
-                            } else if (reqUnit.getLastNodeFreq().equals(1)) {
-                                resSecondNodeFreq.setHighFrequencyCount(1);
-                            } else if (reqUnit.getLastNodeFreq().equals(2)) {
-                                resSecondNodeFreq.setExtremelyHighFrequencyCount(1);
-                            }
+                            TemplateUnitNodeInfo resSecondNodeFreq = this.constructNodeFreqInfo(reqUnit);
                             resSecondNode.setNodeFrequencyInfo(resSecondNodeFreq);
                             preUnitFirstNode.getKnowledgeNodeList().add(resSecondNode);
                         }
                     } else {
                         // 如果不同，组装一级和二级
                         TemplateUnitNodeDetailInfo resFirstNode = new TemplateUnitNodeDetailInfo();
-                        // TODO:一级知识点id为空，需要报错
+                        if (reqUnit.getFirstLevelNodeId() == null || "".equals(reqUnit.getFirstLevelNodeId())) {
+                            throw new RuntimeException("获取标准课程化课次知识点失败！课次id：" + reqUnit.getTemplateUnitId());
+                        }
                         resFirstNode.setNodeId(reqUnit.getFirstLevelNodeId());
                         resFirstNode.setNodeName(reqUnit.getFirstLevelNodeName());
                         preUnitFirstNodes.add(resFirstNode);
                         // 如果同行记录的二级知识点id为空 && 末级知识点为1，设置一级的频度
                         if (reqUnit.getSecondLevelNodeId() != null && "".equals(reqUnit.getSecondLevelNodeId())
                                 && reqUnit.getLastNodeLevel() != null && new Integer(1).equals(reqUnit.getLastNodeLevel())) {
-                            TemplateUnitNodeInfo resFirstNodeFreq = new TemplateUnitNodeInfo();
-                            resFirstNodeFreq.setMidFrequencyCount(0);
-                            resFirstNodeFreq.setHighFrequencyCount(0);
-                            resFirstNodeFreq.setExtremelyHighFrequencyCount(0);
-                            if (reqUnit.getLastNodeFreq().equals(0)) {
-                                resFirstNodeFreq.setMidFrequencyCount(1);
-                            } else if (reqUnit.getLastNodeFreq().equals(1)) {
-                                resFirstNodeFreq.setHighFrequencyCount(1);
-                            } else if (reqUnit.getLastNodeFreq().equals(2)) {
-                                resFirstNodeFreq.setExtremelyHighFrequencyCount(1);
-                            }
+                            TemplateUnitNodeInfo resFirstNodeFreq = this.constructNodeFreqInfo(reqUnit);
                             resFirstNode.setNodeFrequencyInfo(resFirstNodeFreq);
+                            break;
                         } else {
                             // 组装二级知识点
                             List<TemplateUnitNodeDetailInfo> resSecondNodes = new ArrayList<>();
@@ -186,20 +148,11 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                             resSecondNode.setNodeId(reqUnit.getSecondLevelNodeId());
                             resSecondNode.setNodeName(reqUnit.getSecondLevelNodeName());
 
-                            TemplateUnitNodeInfo resSecondNodeFreq = new TemplateUnitNodeInfo();
-                            resSecondNodeFreq.setMidFrequencyCount(0);
-                            resSecondNodeFreq.setHighFrequencyCount(0);
-                            resSecondNodeFreq.setExtremelyHighFrequencyCount(0);
-                            if (reqUnit.getLastNodeFreq().equals(0)) {
-                                resSecondNodeFreq.setMidFrequencyCount(1);
-                            } else if (reqUnit.getLastNodeFreq().equals(1)) {
-                                resSecondNodeFreq.setHighFrequencyCount(1);
-                            } else if (reqUnit.getLastNodeFreq().equals(2)) {
-                                resSecondNodeFreq.setExtremelyHighFrequencyCount(1);
-                            }
+                            TemplateUnitNodeInfo resSecondNodeFreq = this.constructNodeFreqInfo(reqUnit);
                             resSecondNode.setNodeFrequencyInfo(resSecondNodeFreq);
                             resSecondNodes.add(resSecondNode);
                             resFirstNode.setKnowledgeNodeList(resSecondNodes);
+                            break;
                         }
                     }
                 }
@@ -207,43 +160,23 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
             preTemplateUnitId = reqUnit.getTemplateUnitId();
             preFirstLevelNodeId = reqUnit.getFirstLevelNodeId();
         }
-
-
         return res;
-
-
-
-        /*// 获取所有课次
-        List<TemplateUnitInfo> templateUnitList = courseTemplateDao.retrieveTemplateUnitNodeDetailInfo(templateId);
-        for (TemplateUnitInfo templateUnit : templateUnitList) {
-            List<TemplateUnitNodeDetailInfo> unitFirstLevelNodes = courseTemplateDao.selectTemplateUnitFirstLevelNodes(templateId, templateUnit.getTemplateUnitId());
-            for (TemplateUnitNodeDetailInfo firstNode : unitFirstLevelNodes) {
-                TemplateUnitNodeInfo firstFrequencyInfo = courseTemplateDao.selectNodeFrequencyInfo(templateId, firstNode.getNodeId());
-                if (firstFrequencyInfo == null) {
-                    List<TemplateUnitNodeDetailInfo> secondLevelNodes = courseTemplateDao.selectTemplateUnitSecondLevelNodes(templateUnit.getTemplateUnitId(), firstNode.getNodeId());
-                    for (TemplateUnitNodeDetailInfo secondNode : secondLevelNodes) {
-                        TemplateUnitNodeInfo secondFrequencyInfo = courseTemplateDao.selectSecondNodeFrequencyInfo(templateId, templateUnit.getTemplateUnitId(), secondNode.getNodeId());
-                        secondNode.setNodeFrequencyInfo(secondFrequencyInfo);
-                    }
-                    firstNode.setKnowledgeNodeList(secondLevelNodes);
-                }
-                firstNode.setNodeFrequencyInfo(firstFrequencyInfo);
-            }
-            templateUnit.setTemplateUnitNodeInfo(unitFirstLevelNodes);
-        }
-        return templateUnitList;*/
     }
 
-    private void constructNodeInfo(TemplateUnitNodeDetailInfo targetNode, TemplateUnitNodeDetailInfoDTO node, Integer level) {
+    private TemplateUnitNodeInfo constructNodeFreqInfo(TemplateUnitNodeDetailInfoDTO reqUnit) {
+        TemplateUnitNodeInfo resNodeFreq = new TemplateUnitNodeInfo();
+        resNodeFreq.setMidFrequencyCount(0);
+        resNodeFreq.setHighFrequencyCount(0);
+        resNodeFreq.setExtremelyHighFrequencyCount(0);
 
-        if (level.equals(new Integer(1))) {
-            targetNode.setNodeId(node.getFirstLevelNodeId());
-            targetNode.setNodeName(node.getFirstLevelNodeName());
-        } else if (level.equals(new Integer(2))) {
-            targetNode.setNodeId(node.getSecondLevelNodeId());
-            targetNode.setNodeName(node.getSecondLevelNodeName());
+        if (reqUnit.getLastNodeFreq().equals(0)) {
+            resNodeFreq.setMidFrequencyCount(1);
+        } else if (reqUnit.getLastNodeFreq().equals(1)) {
+            resNodeFreq.setHighFrequencyCount(1);
+        } else if (reqUnit.getLastNodeFreq().equals(2)) {
+            resNodeFreq.setExtremelyHighFrequencyCount(1);
         }
 
-        targetNode.setKnowledgeNodeList(null);
+        return resNodeFreq;
     }
 }
