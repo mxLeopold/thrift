@@ -41,7 +41,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
   private static final org.apache.thrift.protocol.TField ROUND_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("roundId", org.apache.thrift.protocol.TType.I32, (short)1);
   private static final org.apache.thrift.protocol.TField TEACH_UNIT_IDS_FIELD_DESC = new org.apache.thrift.protocol.TField("teachUnitIds", org.apache.thrift.protocol.TType.STRING, (short)2);
   private static final org.apache.thrift.protocol.TField TEACHER_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("teacherId", org.apache.thrift.protocol.TType.I32, (short)3);
-  private static final org.apache.thrift.protocol.TField PRIMARY_TEACH_UNIT_ID_FIELD_DESC = new org.apache.thrift.protocol.TField("primaryTeachUnitId", org.apache.thrift.protocol.TType.I32, (short)4);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
   static {
@@ -52,14 +51,12 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
   public int roundId; // required
   public String teachUnitIds; // required
   public int teacherId; // required
-  public int primaryTeachUnitId; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
     ROUND_ID((short)1, "roundId"),
     TEACH_UNIT_IDS((short)2, "teachUnitIds"),
-    TEACHER_ID((short)3, "teacherId"),
-    PRIMARY_TEACH_UNIT_ID((short)4, "primaryTeachUnitId");
+    TEACHER_ID((short)3, "teacherId");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -80,8 +77,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
           return TEACH_UNIT_IDS;
         case 3: // TEACHER_ID
           return TEACHER_ID;
-        case 4: // PRIMARY_TEACH_UNIT_ID
-          return PRIMARY_TEACH_UNIT_ID;
         default:
           return null;
       }
@@ -124,7 +119,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
   // isset id assignments
   private static final int __ROUNDID_ISSET_ID = 0;
   private static final int __TEACHERID_ISSET_ID = 1;
-  private static final int __PRIMARYTEACHUNITID_ISSET_ID = 2;
   private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
@@ -134,8 +128,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
     tmpMap.put(_Fields.TEACH_UNIT_IDS, new org.apache.thrift.meta_data.FieldMetaData("teachUnitIds", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
     tmpMap.put(_Fields.TEACHER_ID, new org.apache.thrift.meta_data.FieldMetaData("teacherId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
-    tmpMap.put(_Fields.PRIMARY_TEACH_UNIT_ID, new org.apache.thrift.meta_data.FieldMetaData("primaryTeachUnitId", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(UnitsStatisticCondition.class, metaDataMap);
@@ -147,8 +139,7 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
   public UnitsStatisticCondition(
     int roundId,
     String teachUnitIds,
-    int teacherId,
-    int primaryTeachUnitId)
+    int teacherId)
   {
     this();
     this.roundId = roundId;
@@ -156,8 +147,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
     this.teachUnitIds = teachUnitIds;
     this.teacherId = teacherId;
     setTeacherIdIsSet(true);
-    this.primaryTeachUnitId = primaryTeachUnitId;
-    setPrimaryTeachUnitIdIsSet(true);
   }
 
   /**
@@ -170,7 +159,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
       this.teachUnitIds = other.teachUnitIds;
     }
     this.teacherId = other.teacherId;
-    this.primaryTeachUnitId = other.primaryTeachUnitId;
   }
 
   public UnitsStatisticCondition deepCopy() {
@@ -184,8 +172,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
     this.teachUnitIds = null;
     setTeacherIdIsSet(false);
     this.teacherId = 0;
-    setPrimaryTeachUnitIdIsSet(false);
-    this.primaryTeachUnitId = 0;
   }
 
   public int getRoundId() {
@@ -258,29 +244,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
     __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __TEACHERID_ISSET_ID, value);
   }
 
-  public int getPrimaryTeachUnitId() {
-    return this.primaryTeachUnitId;
-  }
-
-  public UnitsStatisticCondition setPrimaryTeachUnitId(int primaryTeachUnitId) {
-    this.primaryTeachUnitId = primaryTeachUnitId;
-    setPrimaryTeachUnitIdIsSet(true);
-    return this;
-  }
-
-  public void unsetPrimaryTeachUnitId() {
-    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __PRIMARYTEACHUNITID_ISSET_ID);
-  }
-
-  /** Returns true if field primaryTeachUnitId is set (has been assigned a value) and false otherwise */
-  public boolean isSetPrimaryTeachUnitId() {
-    return EncodingUtils.testBit(__isset_bitfield, __PRIMARYTEACHUNITID_ISSET_ID);
-  }
-
-  public void setPrimaryTeachUnitIdIsSet(boolean value) {
-    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PRIMARYTEACHUNITID_ISSET_ID, value);
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case ROUND_ID:
@@ -307,14 +270,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
       }
       break;
 
-    case PRIMARY_TEACH_UNIT_ID:
-      if (value == null) {
-        unsetPrimaryTeachUnitId();
-      } else {
-        setPrimaryTeachUnitId((Integer)value);
-      }
-      break;
-
     }
   }
 
@@ -328,9 +283,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
 
     case TEACHER_ID:
       return getTeacherId();
-
-    case PRIMARY_TEACH_UNIT_ID:
-      return getPrimaryTeachUnitId();
 
     }
     throw new IllegalStateException();
@@ -349,8 +301,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
       return isSetTeachUnitIds();
     case TEACHER_ID:
       return isSetTeacherId();
-    case PRIMARY_TEACH_UNIT_ID:
-      return isSetPrimaryTeachUnitId();
     }
     throw new IllegalStateException();
   }
@@ -395,15 +345,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
         return false;
     }
 
-    boolean this_present_primaryTeachUnitId = true;
-    boolean that_present_primaryTeachUnitId = true;
-    if (this_present_primaryTeachUnitId || that_present_primaryTeachUnitId) {
-      if (!(this_present_primaryTeachUnitId && that_present_primaryTeachUnitId))
-        return false;
-      if (this.primaryTeachUnitId != that.primaryTeachUnitId)
-        return false;
-    }
-
     return true;
   }
 
@@ -425,11 +366,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
     list.add(present_teacherId);
     if (present_teacherId)
       list.add(teacherId);
-
-    boolean present_primaryTeachUnitId = true;
-    list.add(present_primaryTeachUnitId);
-    if (present_primaryTeachUnitId)
-      list.add(primaryTeachUnitId);
 
     return list.hashCode();
   }
@@ -472,16 +408,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetPrimaryTeachUnitId()).compareTo(other.isSetPrimaryTeachUnitId());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetPrimaryTeachUnitId()) {
-      lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.primaryTeachUnitId, other.primaryTeachUnitId);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     return 0;
   }
 
@@ -516,10 +442,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
     if (!first) sb.append(", ");
     sb.append("teacherId:");
     sb.append(this.teacherId);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("primaryTeachUnitId:");
-    sb.append(this.primaryTeachUnitId);
     first = false;
     sb.append(")");
     return sb.toString();
@@ -590,14 +512,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
             }
             break;
-          case 4: // PRIMARY_TEACH_UNIT_ID
-            if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-              struct.primaryTeachUnitId = iprot.readI32();
-              struct.setPrimaryTeachUnitIdIsSet(true);
-            } else { 
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-            }
-            break;
           default:
             org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
         }
@@ -623,9 +537,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
       }
       oprot.writeFieldBegin(TEACHER_ID_FIELD_DESC);
       oprot.writeI32(struct.teacherId);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(PRIMARY_TEACH_UNIT_ID_FIELD_DESC);
-      oprot.writeI32(struct.primaryTeachUnitId);
       oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
@@ -654,10 +565,7 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
       if (struct.isSetTeacherId()) {
         optionals.set(2);
       }
-      if (struct.isSetPrimaryTeachUnitId()) {
-        optionals.set(3);
-      }
-      oprot.writeBitSet(optionals, 4);
+      oprot.writeBitSet(optionals, 3);
       if (struct.isSetRoundId()) {
         oprot.writeI32(struct.roundId);
       }
@@ -667,15 +575,12 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
       if (struct.isSetTeacherId()) {
         oprot.writeI32(struct.teacherId);
       }
-      if (struct.isSetPrimaryTeachUnitId()) {
-        oprot.writeI32(struct.primaryTeachUnitId);
-      }
     }
 
     @Override
     public void read(org.apache.thrift.protocol.TProtocol prot, UnitsStatisticCondition struct) throws TException {
       TTupleProtocol iprot = (TTupleProtocol) prot;
-      BitSet incoming = iprot.readBitSet(4);
+      BitSet incoming = iprot.readBitSet(3);
       if (incoming.get(0)) {
         struct.roundId = iprot.readI32();
         struct.setRoundIdIsSet(true);
@@ -687,10 +592,6 @@ public class UnitsStatisticCondition implements org.apache.thrift.TBase<UnitsSta
       if (incoming.get(2)) {
         struct.teacherId = iprot.readI32();
         struct.setTeacherIdIsSet(true);
-      }
-      if (incoming.get(3)) {
-        struct.primaryTeachUnitId = iprot.readI32();
-        struct.setPrimaryTeachUnitIdIsSet(true);
       }
     }
   }

@@ -146,7 +146,6 @@ struct UnitsStatisticCondition {
     1: i32 roundId;
     2: string teachUnitIds;
     3: i32 teacherId;
-    4: i32 primaryTeachUnitId;
 }
 
 service WebStatisticsService {
