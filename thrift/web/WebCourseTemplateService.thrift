@@ -93,6 +93,12 @@ struct TemplateUnitNodeInfo {
     3: i32 midFrequencyCount; // 中频知识点个数
 }
 
+// 带课次id的课程标准化课次的知识点频度信息
+struct TemplateUnitNodeInfoIntermediate {
+    1: i32 templateUnitId; // 标准课次id
+    2: TemplateUnitNodeInfo nodeFrequencyInfo; // 知识点频度信息
+}
+
 // 课程标准化课次的一二级知识点频度信息
 struct TemplateUnitNodeDetailInfo {
     1: i32 nodeId; // 知识点id
@@ -125,7 +131,7 @@ service WebCourseTemplateService {
     list<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(1: i32 knowledgeTreeId);
 
     // 查询课程标准化课程的知识点
-    TemplateUnitNodeInfo retrieveTemplateTeachUnitNodeInfo(1: i32 templateId, 2: i32 templateUnitId);
+    list<TemplateUnitNodeInfoIntermediate> retrieveTemplateTeachUnitNodeInfo(1: list<i32> templateUnitIdList);
 
     // 查询课程模板所有课次知识点信息
     list<TemplateUnitInfo> retrieveTemplateUnitNodeDetailInfo(1: i32 templateId);

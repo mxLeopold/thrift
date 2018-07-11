@@ -100,8 +100,8 @@ public class WebCourseTemplateServiceHandler implements WebCourseTemplateService
     }
 
     @Override
-    public TemplateUnitNodeInfo retrieveTemplateTeachUnitNodeInfo(int templateId, int templateUnitId) throws TException {
-        return courseTemplateService.retrieveCourseTemplateTeachUnitNodes(templateId, templateUnitId);
+    public List<TemplateUnitNodeInfoIntermediate> retrieveTemplateTeachUnitNodeInfo(List<Integer> templateUnitIdList) throws TException {
+        return courseTemplateService.retrieveCourseTemplateTeachUnitNodes(templateUnitIdList);
     }
 
     @Override

@@ -4,12 +4,7 @@ import com.sunlands.rpc.common.CourseTemplateConstants;
 import com.sunlands.rpc.web.biz.dao.CourseTemplateDao;
 import com.sunlands.rpc.web.biz.model.TemplateUnitNodeDetailInfoDTO;
 import com.sunlands.rpc.web.biz.service.CourseTemplateService;
-import com.sunlands.rpc.web.coursetemplate.service.LastKnowledgeNodeInfo;
-import com.sunlands.rpc.web.coursetemplate.service.TemplateUnitInfo;
-import com.sunlands.rpc.web.coursetemplate.service.TemplateUnitNodeDetailInfo;
-import com.sunlands.rpc.web.coursetemplate.service.TemplateUnitNodeInfo;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.thrift.TException;
+import com.sunlands.rpc.web.coursetemplate.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,8 +30,8 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
     }
 
     @Override
-    public TemplateUnitNodeInfo retrieveCourseTemplateTeachUnitNodes(int templateId, int templateUnitId) {
-        return courseTemplateDao.retrieveCourseTemplateTeachUnitNodes(templateId, templateUnitId);
+    public List<TemplateUnitNodeInfoIntermediate> retrieveCourseTemplateTeachUnitNodes(List<Integer> templateUnitIdList) {
+        return courseTemplateDao.retrieveCourseTemplateTeachUnitNodes(templateUnitIdList);
     }
 
     @Override
@@ -168,11 +163,11 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
         resNodeFreq.setHighFrequencyCount(0);
         resNodeFreq.setExtremelyHighFrequencyCount(0);
 
-        if (reqUnit.getLastNodeFreq().equals(0)) {
+        if (reqUnit.getLastNodeFreq().equals(CourseTemplateConstants.FREQUENCY_MIDDLE)) {
             resNodeFreq.setMidFrequencyCount(1);
-        } else if (reqUnit.getLastNodeFreq().equals(1)) {
+        } else if (reqUnit.getLastNodeFreq().equals(CourseTemplateConstants.FREQUENCY_HIGH)) {
             resNodeFreq.setHighFrequencyCount(1);
-        } else if (reqUnit.getLastNodeFreq().equals(2)) {
+        } else if (reqUnit.getLastNodeFreq().equals(CourseTemplateConstants.FREQUENCY_EXTREMELY_HIGH)) {
             resNodeFreq.setExtremelyHighFrequencyCount(1);
         }
 

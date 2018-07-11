@@ -1,10 +1,7 @@
 package com.sunlands.rpc.test.api;
 
 import com.sunlands.rpc.web.coursetemplate.handler.WebCourseTemplateServiceHandler;
-import com.sunlands.rpc.web.coursetemplate.service.LastKnowledgeNodeInfo;
-import com.sunlands.rpc.web.coursetemplate.service.TemplateUnitInfo;
-import com.sunlands.rpc.web.coursetemplate.service.TemplateUnitNodeInfo;
-import com.sunlands.rpc.web.coursetemplate.service.WebCourseTemplateService;
+import com.sunlands.rpc.web.coursetemplate.service.*;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
@@ -20,6 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,10 +62,14 @@ public class WebCourseTemplateServiceTest {
     @Test
     public void testRetrieveCourseTemplateTeachUnitNodes() throws TException {
         DateTime before = DateTime.now();
-        Integer templateId = 36;
-        Integer templateUnitId = 124;
-        TemplateUnitNodeInfo res =
-                client.retrieveTemplateTeachUnitNodeInfo(templateId, templateUnitId);
+        List<Integer> templateUnitIdList = new ArrayList<>();
+        templateUnitIdList.add(124);
+        templateUnitIdList.add(125);
+        templateUnitIdList.add(126);
+        templateUnitIdList.add(127);
+        templateUnitIdList.add(128);
+        List<TemplateUnitNodeInfoIntermediate> templateUnitNodeInfoIntermediates =
+                client.retrieveTemplateTeachUnitNodeInfo(templateUnitIdList);
         DateTime end = DateTime.now();
         printTimeSpend(before, end, 1);
     }
