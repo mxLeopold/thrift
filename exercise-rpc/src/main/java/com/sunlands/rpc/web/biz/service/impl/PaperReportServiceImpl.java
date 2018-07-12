@@ -384,16 +384,22 @@ public class PaperReportServiceImpl implements PaperReportService {
             for (Integer paperId:paperIdList){
                 paperIndexList.add(String.format("%01d",paperId%10));
             }
+            ResUnitsStatisticDTO resUnitsStatisticScoreRateDTO = new ResUnitsStatisticDTO();
+            ResUnitsStatisticDTO resUnitsStatisticCompleteRateDTO = new ResUnitsStatisticDTO();
             if (!CollectionUtils.isEmpty(paperIndexList)){
-                resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
+//                resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
+                //取得分率
+                resUnitsStatisticScoreRateDTO = paperReportMapper.retrieveQuizOrHomeworkScoreRateInfo(unitIdList,paperIndexList,getIndexList());
+                //取完成率
+                resUnitsStatisticCompleteRateDTO = paperReportMapper.retrieveQuizOrHomeworkCompleteRateInfo(unitIdList,paperIndexList,getIndexList());
             }
             resUnitsStatisticDTO.setRoundId(unitsStatisticCondition.getRoundId());
             resUnitsStatisticDTO.setTeachUnitIds(unitsStatisticCondition.getTeachUnitIds());
             resUnitsStatisticDTO.setTeacherId(unitsStatisticCondition.getTeacherId());
-            resUnitsStatisticDTO.setHomeworkCompleteRate(setDefaultValueToNull(resUnitsStatisticDTO.getHomeworkCompleteRate()));
-            resUnitsStatisticDTO.setHomeworkScoreRate(setDefaultValueToNull(resUnitsStatisticDTO.getHomeworkScoreRate()));
-            resUnitsStatisticDTO.setQuizzesCompleteRate(setDefaultValueToNull(resUnitsStatisticDTO.getQuizzesCompleteRate()));
-            resUnitsStatisticDTO.setQuizzesScoreRate(setDefaultValueToNull(resUnitsStatisticDTO.getQuizzesScoreRate()));
+            resUnitsStatisticDTO.setHomeworkCompleteRate(setDefaultValueToNull(resUnitsStatisticCompleteRateDTO.getHomeworkCompleteRate()));
+            resUnitsStatisticDTO.setHomeworkScoreRate(setDefaultValueToNull(resUnitsStatisticScoreRateDTO.getHomeworkScoreRate()));
+            resUnitsStatisticDTO.setQuizzesCompleteRate(setDefaultValueToNull(resUnitsStatisticCompleteRateDTO.getQuizzesCompleteRate()));
+            resUnitsStatisticDTO.setQuizzesScoreRate(setDefaultValueToNull(resUnitsStatisticScoreRateDTO.getQuizzesScoreRate()));
             resMap.put(unitsStatisticCondition.getTeachUnitIds(),resUnitsStatisticDTO);
         }
         return resMap;
