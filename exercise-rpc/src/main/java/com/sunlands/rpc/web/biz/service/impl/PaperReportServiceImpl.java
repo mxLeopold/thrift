@@ -389,9 +389,9 @@ public class PaperReportServiceImpl implements PaperReportService {
             if (!CollectionUtils.isEmpty(paperIndexList)){
 //                resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
                 //取得分率
-                resUnitsStatisticScoreRateDTO = paperReportMapper.retrieveQuizOrHomeworkScoreRateInfo(unitIdList,paperIndexList,getIndexList());
+                resUnitsStatisticScoreRateDTO = paperReportMapper.retrieveQuizOrHomeworkScoreRateInfo(unitIdList,paperIndexList);
                 //取完成率
-                resUnitsStatisticCompleteRateDTO = paperReportMapper.retrieveQuizOrHomeworkCompleteRateInfo(unitIdList,paperIndexList,getIndexList());
+                resUnitsStatisticCompleteRateDTO = paperReportMapper.retrieveQuizOrHomeworkCompleteRateInfo(unitIdList,paperIndexList);
             }
             resUnitsStatisticDTO.setRoundId(unitsStatisticCondition.getRoundId());
             resUnitsStatisticDTO.setTeachUnitIds(unitsStatisticCondition.getTeachUnitIds());

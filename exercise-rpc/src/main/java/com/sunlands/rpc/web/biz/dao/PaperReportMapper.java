@@ -354,35 +354,34 @@ public interface PaperReportMapper {
 
 
     @Select({
-            "SELECT ROUND(SUM(IF(t2.exercise_type='ASSIGNMENTS' and t2.status_code='COMPLETE',t2.stuCount,0))/SUM(IF(t2.exercise_type='ASSIGNMENTS',t2.stuCount,0))*100,2) homeworkCompleteRate, " ,
-            "ROUND(SUM(IF(t2.exercise_type='QUIZ' and t2.status_code='COMPLETE',t2.stuCount,0))/SUM(IF(t2.exercise_type='QUIZ',t2.stuCount,0))*100,2) quizzesCompleteRate " ,
-            " FROM ( " ,
-            "SELECT COUNT(DISTINCT t.stu_id) stuCount,t.unit_id,t.status_code,t.exercise_type FROM " ,
-            "<foreach item=\"recordIndex\" collection=\"recordIndexList\"  open=\"(\" separator=\" UNION ALL \" close=\")\"  >" ,
-            "select a.stu_id,a.unit_id,a.status_code,a.exercise_type from t_tiku_user_record_${recordIndex} a where a.exercise_type in ('QUIZ','ASSIGNMENTS') and a.unit_id in " ,
+            "<script>" ,
+            "<foreach item=\"paperIndex\" collection=\"paperIndexList\"  open=\"(\" separator=\" UNION ALL \" close=\")\"  >" ,
+            "SELECT ROUND(SUM(IF(a.exercise_type='ASSIGNMENTS',a.answer_num,0))/SUM(IF(a.exercise_type='ASSIGNMENTS',a.question_num,0))*100,2) homeworkScoreRate, " ,
+            "ROUND(SUM(IF(a.exercise_type='QUIZ',a.answer_num,0))/SUM(IF(a.exercise_type='QUIZ',a.question_num,0))*100,2) quizzesScoreRate from  " ,
+            "t_tiku_exam_user_statistics_${paperIndex} a " ,
+            "where unit_id in " ,
             "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
+            "AND a.exercise_type in ('ASSIGNMENTS','QUIZ') " ,
             "</foreach> " ,
-            " t " ,
-            "GROUP BY t.exercise_type,t.status_code " ,
-            ") t2 LIMIT 1 " ,
+            "</script>"
     })
     ResUnitsStatisticDTO retrieveQuizOrHomeworkCompleteRateInfo(@Param("unitIds") List<Integer> unitIds,
-                                                               @Param("paperIndexList") List<String> paperIndexList,
-                                                               @Param("recordIndexList") List<String> recordIndexList);
+                                                               @Param("paperIndexList") List<String> paperIndexList);
 
     @Select({
-            "select ROUND(SUM(IF(t.exercise_type='ASSIGNMENTS',t.stu_total_score,0))/SUM(IF(t.exercise_type='ASSIGNMENTS',t.total_score,0))*100,2) homeworkScoreRate, "  ,
-            "ROUND(SUM(IF(t.exercise_type='QUIZ',t.stu_total_score,0))/SUM(IF(t.exercise_type='QUIZ',t.total_score,0))*100,2) quizzesScoreRate from "  ,
+            "<script>" ,
             "<foreach item=\"paperIndex\" collection=\"paperIndexList\"  open=\"(\" separator=\" UNION ALL \" close=\")\"  >" ,
-            "select a.t_paper_id,a.stu_id,a.stu_total_score,a.total_score,a.exercise_type,a.record_id from t_tiku_exam_user_statistics_${paperIndex} a "  ,
-            "where a.unit_id in " ,
+            "SELECT ROUND(SUM(IF(a.exercise_type='ASSIGNMENTS',a.correct_question_num,0))/SUM(IF(a.exercise_type='ASSIGNMENTS',a.question_num,0))*100,2) homeworkCompleteRate, " ,
+            "ROUND(SUM(IF(a.exercise_type='QUIZ',a.correct_question_num,0))/SUM(IF(a.exercise_type='QUIZ',a.question_num,0))*100,2) quizzesCompleteRate from  " ,
+            "t_tiku_exam_user_statistics_${paperIndex} a " ,
+            "where unit_id in " ,
             "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
-            "and a.exercise_type in ('QUIZ','ASSIGNMENTS') "  ,
+            "AND a.exercise_type in ('ASSIGNMENTS','QUIZ') " ,
             "</foreach> " ,
+            "</script>"
     })
     ResUnitsStatisticDTO retrieveQuizOrHomeworkScoreRateInfo(@Param("unitIds") List<Integer> unitIds,
-                                        @Param("paperIndexList") List<String> paperIndexList,
-                                        @Param("recordIndexList") List<String> recordIndexList);
+                                        @Param("paperIndexList") List<String> paperIndexList);
 
     /**
      * 根据课程单元ID查询对应的作业随堂考试卷ID
