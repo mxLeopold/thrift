@@ -379,27 +379,23 @@ public class PaperReportServiceImpl implements PaperReportService {
             ResUnitsStatisticDTO resUnitsStatisticDTO = new ResUnitsStatisticDTO();
             List<Integer> unitIdList = stringToIntegerList(unitsStatisticCondition.getTeachUnitIds());
             //根据paper_id分表的
-            List<String> paperIndexList = new ArrayList<>();
             List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
+            Set<String> paperIdSet = new HashSet<>(10);
             for (Integer paperId:paperIdList){
-                paperIndexList.add(String.format("%01d",paperId%10));
+                paperIdSet.add(String.format("%01d",paperId%10));
             }
-            ResUnitsStatisticDTO resUnitsStatisticScoreRateDTO = new ResUnitsStatisticDTO();
-            ResUnitsStatisticDTO resUnitsStatisticCompleteRateDTO = new ResUnitsStatisticDTO();
+            List<String> paperIndexList = new ArrayList<>(paperIdSet);
             if (!CollectionUtils.isEmpty(paperIndexList)){
 //                resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
-                //取得分率
-                resUnitsStatisticScoreRateDTO = paperReportMapper.retrieveQuizOrHomeworkScoreRateInfo(unitIdList,paperIndexList);
-                //取完成率
-                resUnitsStatisticCompleteRateDTO = paperReportMapper.retrieveQuizOrHomeworkCompleteRateInfo(unitIdList,paperIndexList);
+                resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkRateInfo(unitIdList,paperIndexList);
             }
             resUnitsStatisticDTO.setRoundId(unitsStatisticCondition.getRoundId());
             resUnitsStatisticDTO.setTeachUnitIds(unitsStatisticCondition.getTeachUnitIds());
             resUnitsStatisticDTO.setTeacherId(unitsStatisticCondition.getTeacherId());
-            resUnitsStatisticDTO.setHomeworkCompleteRate(setDefaultValueToNull(resUnitsStatisticCompleteRateDTO.getHomeworkCompleteRate()));
-            resUnitsStatisticDTO.setHomeworkScoreRate(setDefaultValueToNull(resUnitsStatisticScoreRateDTO.getHomeworkScoreRate()));
-            resUnitsStatisticDTO.setQuizzesCompleteRate(setDefaultValueToNull(resUnitsStatisticCompleteRateDTO.getQuizzesCompleteRate()));
-            resUnitsStatisticDTO.setQuizzesScoreRate(setDefaultValueToNull(resUnitsStatisticScoreRateDTO.getQuizzesScoreRate()));
+            resUnitsStatisticDTO.setHomeworkCompleteRate(setDefaultValueToNull(resUnitsStatisticDTO.getHomeworkCompleteRate()));
+            resUnitsStatisticDTO.setHomeworkScoreRate(setDefaultValueToNull(resUnitsStatisticDTO.getHomeworkScoreRate()));
+            resUnitsStatisticDTO.setQuizzesCompleteRate(setDefaultValueToNull(resUnitsStatisticDTO.getQuizzesCompleteRate()));
+            resUnitsStatisticDTO.setQuizzesScoreRate(setDefaultValueToNull(resUnitsStatisticDTO.getQuizzesScoreRate()));
             resMap.put(unitsStatisticCondition.getTeachUnitIds(),resUnitsStatisticDTO);
         }
         return resMap;
