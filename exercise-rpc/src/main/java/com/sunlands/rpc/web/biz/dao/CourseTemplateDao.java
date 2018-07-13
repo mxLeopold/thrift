@@ -171,7 +171,7 @@ public interface CourseTemplateDao {
     @Options(useGeneratedKeys = true, keyProperty = "exam.exerciseExamId")
     int deleteMockExam(@Param("exam") ReqMockExam exam, @Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime);
 
-    @Select({"SELECT DISTINCT b.id as knowledgeNodeId, b.`name` as knowledgenodeName, b.`level`, c.last_level_flag as lastLevelFlag," ,
+    @Select({"SELECT DISTINCT b.id as knowledgeNodeId, b.`name` as knowledgeNodeName, b.`level`, c.last_level_flag as lastLevelFlag," ,
             "c.knowledge_node_frequentness as frequency, b.id as nextQueryParentNodeId" ,
             "FROM t_knowledge_tree as a" ,
             "LEFT JOIN t_knowledge_node as b ON b.knowledge_tree_id = a.id AND b.`level` = 1 AND b.delete_flag = 0" ,
@@ -183,7 +183,7 @@ public interface CourseTemplateDao {
     })
     List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(@Param("knowledgeTreeId") int knowledgeTreeId);
 
-    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgenodeName, a.`level`, b.last_level_flag as lastLevelFlag," ,
+    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgeNodeName, a.`level`, b.last_level_flag as lastLevelFlag," ,
             "b.knowledge_node_frequentness as frequency, a.id as nextQueryParentNodeId" ,
             "FROM t_knowledge_node as a" ,
             "LEFT JOIN t_last_knowledge_node as b ON b.knowledge_node_id = a.id AND b.delete_flag = 0" ,
@@ -194,7 +194,7 @@ public interface CourseTemplateDao {
     })
     List<LastKnowledgeNodeInfo> retrieveSecondLevelNodeInfo(@Param("parentNodeId") Integer parentNodeId);
 
-    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgenodeName, a.`level`, b.last_level_flag as lastLevelFlag," ,
+    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgeNodeName, a.`level`, b.last_level_flag as lastLevelFlag," ,
             "b.knowledge_node_frequentness as frequency, a.id as nextQueryParentNodeId" ,
             "FROM t_knowledge_node as a" ,
             "LEFT JOIN t_last_knowledge_node as b ON b.knowledge_node_id = a.id AND b.delete_flag = 0" ,
