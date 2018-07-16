@@ -238,20 +238,17 @@ public interface CourseTemplateDao {
     List<TemplateUnitNodeDetailInfoDTO> retrieveTemplateUnitNodeDetailList(@Param("templateId") int templateId);
 
     @Select({"SELECT DISTINCT " ,
-            "b.id as firstNodeId, b.`name` as firstNodeName, b.`level` as firstNodeLevel, c.last_level_flag as firstLastLevelFlag,c.knowledge_node_frequentness as firstFreq," ,
-            "d.id as secondNodeId, d.`name` as secondNodeName, d.`level` as secondNodeLevel, e.last_level_flag as secondLastLevelFlag,e.knowledge_node_frequentness as secondFreq," ,
-            "f.id as thirdNodeId, f.`name` as thirdNodeName, f.`level` as thirdNodeLevel, g.last_level_flag as thirdLastLevelFlag,g.knowledge_node_frequentness as thirdFreq," ,
+            "c.knowledge_node_id as firstNodeId, c.knowledge_node_name as firstNodeName, c.`level` as firstNodeLevel, c.last_level_flag as firstLastLevelFlag,c.knowledge_node_frequentness as firstFreq," ,
+            "e.knowledge_node_id as secondNodeId, e.knowledge_node_name as secondNodeName, e.`level` as secondNodeLevel, e.last_level_flag as secondLastLevelFlag,e.knowledge_node_frequentness as secondFreq," ,
+            "g.knowledge_node_id as thirdNodeId, g.knowledge_node_name as thirdNodeName, g.`level` as thirdNodeLevel, g.last_level_flag as thirdLastLevelFlag,g.knowledge_node_frequentness as thirdFreq," ,
             "GROUP_CONCAT(h.id) as fourthNodeIds" ,
             "FROM t_knowledge_tree as a" ,
-            "INNER JOIN t_knowledge_node as b ON b.knowledge_tree_id = a.id AND b.delete_flag = 0 AND b.`level` = 1" ,
-            "LEFT JOIN t_last_knowledge_node as c ON c.knowledge_node_id = b.id AND c.delete_flag = 0" ,
-            "LEFT JOIN t_knowledge_node as d ON d.parent_node_id = b.id AND d.delete_flag = 0 AND d.`level` = 2" ,
-            "LEFT JOIN t_last_knowledge_node as e ON e.knowledge_node_id = d.id" ,
-            "LEFT JOIN t_knowledge_node as f ON f.parent_node_id = d.id AND f.delete_flag = 0 AND f.`level` = 3" ,
-            "LEFT JOIN t_last_knowledge_node as g ON g.knowledge_node_id = f.id " ,
-            "LEFT JOIN t_knowledge_node as h ON h.parent_node_id = f.id AND h.delete_flag = 0 AND h.`level` = 4" ,
-            "WHERE a.id = #{knowledgeTreeId } AND a.delete_flag = 0" ,
-            "GROUP BY f.id" ,
-            "ORDER BY b.`level`, b.id, d.id"})
+            "LEFT JOIN t_last_knowledge_node as c ON c.knowledge_tree_id = a.id AND c.`level` = 1 AND c.delete_flag = 0" ,
+            "LEFT JOIN t_last_knowledge_node as e ON e.parent_node_id = c.knowledge_node_id AND e.`level` = 2 AND e.delete_flag = 0" ,
+            "LEFT JOIN t_last_knowledge_node as g ON g.parent_node_id = e.knowledge_node_id AND g.`level` = 3 AND g.delete_flag = 0" ,
+            "LEFT JOIN t_knowledge_node as h ON h.parent_node_id = g.knowledge_node_id AND h.delete_flag = 0 AND h.`level` = 4" ,
+            "WHERE a.id = #{knowledgeTreeId} AND a.delete_flag = 0" ,
+            "GROUP BY g.knowledge_node_id" ,
+            "ORDER BY c.id, e.id, g.id"})
     List<KnowledgeSerialNodeInfoDTO> retrieveCourseTemplateTreeInfoNew(@Param("knowledgeTreeId") int knowledgeTreeId);
 }

@@ -58,12 +58,7 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                             // 如果二级相同，设置三级（三级都是一行一个）
                             if (serialNode.getThirdNodeId() != null && !"".equals(serialNode.getThirdNodeId())) {
                                 LastKnowledgeNodeInfo thirdNode = new LastKnowledgeNodeInfo();
-                                thirdNode.setKnowledgeNodeId(serialNode.getThirdNodeId());
-                                thirdNode.setKnowledgeNodeName(serialNode.getThirdNodeName());
-                                thirdNode.setLevel(serialNode.getThirdNodeLevel());
-                                thirdNode.setLastLevelFlag(serialNode.getThirdLastLevelFlag());
-                                thirdNode.setFrequency(serialNode.getThirdFreq());
-                                thirdNode.setLastLevelIds(serialNode.getFourthNodeIds());
+                                this.constructNodeInfoByLevel(thirdNode, serialNode, 3);
                                 secondNode.getKnowledgeNodeList().add(thirdNode);
                                 same1st2ndFlag = true;
                             } else {
@@ -74,20 +69,11 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                     if (!same1st2ndFlag) {
                         // 二级不同，实例化二级和三级
                         LastKnowledgeNodeInfo nextSecondNode = new LastKnowledgeNodeInfo();
-                        nextSecondNode.setKnowledgeNodeId(serialNode.getSecondNodeId());
-                        nextSecondNode.setKnowledgeNodeName(serialNode.getSecondNodeName());
-                        nextSecondNode.setLevel(serialNode.getSecondNodeLevel());
-                        nextSecondNode.setLastLevelFlag(serialNode.getSecondLastLevelFlag());
-                        nextSecondNode.setFrequency(serialNode.getSecondFreq());
+                        this.constructNodeInfoByLevel(nextSecondNode, serialNode, 2);
                         if (serialNode.getThirdNodeId() != null && !"".equals(serialNode.getThirdNodeId())) {
                             List<LastKnowledgeNodeInfo> thirdNodeList = new ArrayList<>();
                             LastKnowledgeNodeInfo thirdNode = new LastKnowledgeNodeInfo();
-                            thirdNode.setKnowledgeNodeId(serialNode.getThirdNodeId());
-                            thirdNode.setKnowledgeNodeName(serialNode.getThirdNodeName());
-                            thirdNode.setLevel(serialNode.getThirdNodeLevel());
-                            thirdNode.setLastLevelFlag(serialNode.getThirdLastLevelFlag());
-                            thirdNode.setFrequency(serialNode.getThirdFreq());
-                            thirdNode.setLastLevelIds(serialNode.getFourthNodeIds());
+                            this.constructNodeInfoByLevel(thirdNode, serialNode, 3);
                             thirdNodeList.add(thirdNode);
                             nextSecondNode.setKnowledgeNodeList(thirdNodeList);
                         }
@@ -106,21 +92,13 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
 
     private LastKnowledgeNodeInfo constructNodeLastInfo(KnowledgeSerialNodeInfoDTO serialNode) {
         LastKnowledgeNodeInfo res = new LastKnowledgeNodeInfo();
-        res.setKnowledgeNodeId(serialNode.getFirstNodeId());
-        res.setKnowledgeNodeName(serialNode.getFirstNodeName());
-        res.setLastLevelFlag(serialNode.getFirstLastLevelFlag());
-        res.setLevel(serialNode.getFirstNodeLevel());
-        res.setFrequency(serialNode.getFirstFreq());
+        this.constructNodeInfoByLevel(res, serialNode, 1);
         if (!new Integer(1).equals(serialNode.getFirstLastLevelFlag())
                 && serialNode.getSecondNodeId() != null
                 && !"".equals(serialNode.getSecondNodeId())) {
             List<LastKnowledgeNodeInfo> secondNodeList = new ArrayList<>();
             LastKnowledgeNodeInfo secondNode = new LastKnowledgeNodeInfo();
-            secondNode.setKnowledgeNodeId(serialNode.getSecondNodeId());
-            secondNode.setKnowledgeNodeName(serialNode.getSecondNodeName());
-            secondNode.setLastLevelFlag(serialNode.getSecondLastLevelFlag());
-            secondNode.setLevel(serialNode.getSecondNodeLevel());
-            secondNode.setFrequency(serialNode.getSecondFreq());
+            this.constructNodeInfoByLevel(secondNode, serialNode, 2);
             secondNodeList.add(secondNode);
             res.setKnowledgeNodeList(secondNodeList);
             if (!new Integer(1).equals(serialNode.getSecondLastLevelFlag())
@@ -128,17 +106,35 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                     && !"".equals(serialNode.getThirdNodeId())) {
                 List<LastKnowledgeNodeInfo> thirdNodeList = new ArrayList<>();
                 LastKnowledgeNodeInfo thirdNode = new LastKnowledgeNodeInfo();
-                thirdNode.setKnowledgeNodeId(serialNode.getSecondNodeId());
-                thirdNode.setKnowledgeNodeName(serialNode.getSecondNodeName());
-                thirdNode.setLastLevelFlag(serialNode.getSecondLastLevelFlag());
-                thirdNode.setLevel(serialNode.getSecondNodeLevel());
-                thirdNode.setFrequency(serialNode.getSecondFreq());
-                thirdNode.setLastLevelIds(serialNode.getFourthNodeIds());
+                this.constructNodeInfoByLevel(thirdNode, serialNode, 3);
                 thirdNodeList.add(thirdNode);
                 secondNode.setKnowledgeNodeList(thirdNodeList);
             }
         }
         return res;
+    }
+
+    private void constructNodeInfoByLevel(LastKnowledgeNodeInfo res, KnowledgeSerialNodeInfoDTO serialNode, Integer level) {
+        if (new Integer(1).equals(level)) {
+            res.setKnowledgeNodeId(serialNode.getFirstNodeId());
+            res.setKnowledgeNodeName(serialNode.getFirstNodeName());
+            res.setLastLevelFlag(serialNode.getFirstLastLevelFlag());
+            res.setLevel(serialNode.getFirstNodeLevel());
+            res.setFrequency(serialNode.getFirstFreq());
+        } else if (new Integer(2).equals(level)) {
+            res.setKnowledgeNodeId(serialNode.getSecondNodeId());
+            res.setKnowledgeNodeName(serialNode.getSecondNodeName());
+            res.setLastLevelFlag(serialNode.getSecondLastLevelFlag());
+            res.setLevel(serialNode.getSecondNodeLevel());
+            res.setFrequency(serialNode.getSecondFreq());
+        } else if (new Integer(3).equals(level)) {
+            res.setKnowledgeNodeId(serialNode.getThirdNodeId());
+            res.setKnowledgeNodeName(serialNode.getThirdNodeName());
+            res.setLevel(serialNode.getThirdNodeLevel());
+            res.setLastLevelFlag(serialNode.getThirdLastLevelFlag());
+            res.setFrequency(serialNode.getThirdFreq());
+            res.setLastLevelIds(serialNode.getFourthNodeIds());
+        }
     }
 
     @Override
