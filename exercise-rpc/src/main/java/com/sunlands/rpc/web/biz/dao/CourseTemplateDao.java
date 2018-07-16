@@ -171,46 +171,6 @@ public interface CourseTemplateDao {
     @Options(useGeneratedKeys = true, keyProperty = "exam.exerciseExamId")
     int deleteMockExam(@Param("exam") ReqMockExam exam, @Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime);
 
-    @Select({"SELECT DISTINCT b.id as knowledgeNodeId, b.`name` as knowledgeNodeName, b.`level`, c.last_level_flag as lastLevelFlag," ,
-            "c.knowledge_node_frequentness as frequency, b.id as nextQueryParentNodeId" ,
-            "FROM t_knowledge_tree as a" ,
-            "LEFT JOIN t_knowledge_node as b ON b.knowledge_tree_id = a.id AND b.`level` = 1 AND b.delete_flag = 0" ,
-            "LEFT JOIN t_last_knowledge_node as c ON c.knowledge_node_id = b.id AND c.delete_flag = 0" ,
-            "WHERE a.id = #{knowledgeTreeId} AND a.delete_flag = 0"})
-    @Results({
-            @Result(column = "nextQueryParentNodeId", property = "knowledgeNodeList",
-                        many = @Many(select = "retrieveSecondLevelNodeInfo", fetchType = FetchType.EAGER))
-    })
-    List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(@Param("knowledgeTreeId") int knowledgeTreeId);
-
-    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgeNodeName, a.`level`, b.last_level_flag as lastLevelFlag," ,
-            "b.knowledge_node_frequentness as frequency, a.id as nextQueryParentNodeId" ,
-            "FROM t_knowledge_node as a" ,
-            "LEFT JOIN t_last_knowledge_node as b ON b.knowledge_node_id = a.id AND b.delete_flag = 0" ,
-            "WHERE a.parent_node_id = #{parentNodeId} AND a.`level` = 2 AND a.delete_flag = 0"})
-    @Results({
-            @Result(column = "nextQueryParentNodeId", property = "knowledgeNodeList",
-                    many = @Many(select = "retrieveThirdLevelNodeInfo", fetchType = FetchType.EAGER))
-    })
-    List<LastKnowledgeNodeInfo> retrieveSecondLevelNodeInfo(@Param("parentNodeId") Integer parentNodeId);
-
-    @Select({"SELECT DISTINCT a.id as knowledgeNodeId, a.`name` as knowledgeNodeName, a.`level`, b.last_level_flag as lastLevelFlag," ,
-            "b.knowledge_node_frequentness as frequency, a.id as nextQueryParentNodeId" ,
-            "FROM t_knowledge_node as a" ,
-            "LEFT JOIN t_last_knowledge_node as b ON b.knowledge_node_id = a.id AND b.delete_flag = 0" ,
-            "WHERE a.parent_node_id = #{parentNodeId} AND a.`level` = 3 AND a.delete_flag = 0"})
-    @Results({
-            @Result(column = "nextQueryParentNodeId", property = "lastLevelIds",
-                    many = @Many(select = "retrieveFourthLevelNodes", fetchType = FetchType.EAGER))
-    })
-    List<LastKnowledgeNodeInfo> retrieveThirdLevelNodeInfo(@Param("parentNodeId") Integer parentNodeId);
-
-    @Select({"SELECT GROUP_CONCAT(id) as lastLevelIds" ,
-            "FROM t_knowledge_node" ,
-            "WHERE parent_node_id = #{parentNodeId} AND `level` = 4 AND delete_flag = 0" ,
-            "GROUP BY parent_node_id"})
-    String retrieveFourthLevelNodes(@Param("parentNodeId") Integer parentNodeId);
-
     @Select({"<script>SELECT t.id as id," ,
             "IFNULL(SUM(CASE t.frequency WHEN 0 THEN t.frequencyCount END),0) as midFrequencyCount," ,
             "IFNULL(SUM(CASE t.frequency WHEN 1 THEN t.frequencyCount END),0) as highFrequencyCount," ,
@@ -276,4 +236,22 @@ public interface CourseTemplateDao {
             ") as res " ,
             "ORDER BY res.templateUnitId, res.firstLevelNodeSerial, res.secondLevelNodeSerial, res.thirdLevelNodeSerial"})
     List<TemplateUnitNodeDetailInfoDTO> retrieveTemplateUnitNodeDetailList(@Param("templateId") int templateId);
+
+    @Select({"SELECT DISTINCT " ,
+            "b.id as firstNodeId, b.`name` as firstNodeName, b.`level` as firstNodeLevel, c.last_level_flag as firstLastLevelFlag,c.knowledge_node_frequentness as firstFreq," ,
+            "d.id as secondNodeId, d.`name` as secondNodeName, d.`level` as secondNodeLevel, e.last_level_flag as secondLastLevelFlag,e.knowledge_node_frequentness as secondFreq," ,
+            "f.id as thirdNodeId, f.`name` as thirdNodeName, f.`level` as thirdNodeLevel, g.last_level_flag as thirdLastLevelFlag,g.knowledge_node_frequentness as thirdFreq," ,
+            "GROUP_CONCAT(h.id) as fourthNodeIds" ,
+            "FROM t_knowledge_tree as a" ,
+            "INNER JOIN t_knowledge_node as b ON b.knowledge_tree_id = a.id AND b.delete_flag = 0 AND b.`level` = 1" ,
+            "LEFT JOIN t_last_knowledge_node as c ON c.knowledge_node_id = b.id AND c.delete_flag = 0" ,
+            "LEFT JOIN t_knowledge_node as d ON d.parent_node_id = b.id AND d.delete_flag = 0 AND d.`level` = 2" ,
+            "LEFT JOIN t_last_knowledge_node as e ON e.knowledge_node_id = d.id" ,
+            "LEFT JOIN t_knowledge_node as f ON f.parent_node_id = d.id AND f.delete_flag = 0 AND f.`level` = 3" ,
+            "LEFT JOIN t_last_knowledge_node as g ON g.knowledge_node_id = f.id " ,
+            "LEFT JOIN t_knowledge_node as h ON h.parent_node_id = f.id AND h.delete_flag = 0 AND h.`level` = 4" ,
+            "WHERE a.id = #{knowledgeTreeId } AND a.delete_flag = 0" ,
+            "GROUP BY f.id" ,
+            "ORDER BY b.`level`, b.id, d.id"})
+    List<KnowledgeSerialNodeInfoDTO> retrieveCourseTemplateTreeInfoNew(@Param("knowledgeTreeId") int knowledgeTreeId);
 }

@@ -2,6 +2,7 @@ package com.sunlands.rpc.web.biz.service.impl;
 
 import com.sunlands.rpc.common.CourseTemplateConstants;
 import com.sunlands.rpc.web.biz.dao.CourseTemplateDao;
+import com.sunlands.rpc.web.biz.dao.KnowledgeSerialNodeInfoDTO;
 import com.sunlands.rpc.web.biz.model.TemplateUnitNodeDetailInfoDTO;
 import com.sunlands.rpc.web.biz.service.CourseTemplateService;
 import com.sunlands.rpc.web.coursetemplate.service.*;
@@ -26,7 +27,118 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
 
     @Override
     public List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(int knowledgeTreeId) {
-        return courseTemplateDao.retrieveCourseTemplateTreeInfo(knowledgeTreeId);
+        List<LastKnowledgeNodeInfo> resData = new ArrayList<>();
+
+        // 获取树的所有节点信息
+        List<KnowledgeSerialNodeInfoDTO> knowledgeSerialNodeInfoDTO = courseTemplateDao.retrieveCourseTemplateTreeInfoNew(knowledgeTreeId);
+        // 上一个一级知识点id
+        Integer pre1stNodeId = 0;
+        // 上一个二级知识点id
+        Integer pre2ndNodeId = 0;
+
+        for (KnowledgeSerialNodeInfoDTO serialNode : knowledgeSerialNodeInfoDTO) {
+            // 如果1stNodeId不同
+            if (!serialNode.getFirstNodeId().equals(pre1stNodeId)) {
+                LastKnowledgeNodeInfo firstNode = this.constructNodeLastInfo(serialNode);
+                resData.add(firstNode);
+            } else {
+                // 一级二级知识点相同标记
+                boolean same1st2ndFlag = false;
+
+                LastKnowledgeNodeInfo preFirstNode = resData.get(resData.size() - 1);
+                if (serialNode.getSecondNodeId() == null) {
+                    throw new RuntimeException("查询结果有误，与上一知识点属于同一个一级知识点，其二级知识点为空！");
+                }
+                // 一级相同，遍历二级。如果一级相同，正确的查询结果必定有二级及以下
+                List<LastKnowledgeNodeInfo> secondNodeList = preFirstNode.getKnowledgeNodeList();
+                if (secondNodeList != null && !secondNodeList.isEmpty()) {
+                    for (int i = 0; i < secondNodeList.size(); i ++) {
+                        LastKnowledgeNodeInfo secondNode = secondNodeList.get(i);
+                        if (new Integer(secondNode.getKnowledgeNodeId()).equals(pre2ndNodeId) && pre2ndNodeId.equals(serialNode.getSecondNodeId())) {
+                            // 如果二级相同，设置三级（三级都是一行一个）
+                            if (serialNode.getThirdNodeId() != null && !"".equals(serialNode.getThirdNodeId())) {
+                                LastKnowledgeNodeInfo thirdNode = new LastKnowledgeNodeInfo();
+                                thirdNode.setKnowledgeNodeId(serialNode.getThirdNodeId());
+                                thirdNode.setKnowledgeNodeName(serialNode.getThirdNodeName());
+                                thirdNode.setLevel(serialNode.getThirdNodeLevel());
+                                thirdNode.setLastLevelFlag(serialNode.getThirdLastLevelFlag());
+                                thirdNode.setFrequency(serialNode.getThirdFreq());
+                                thirdNode.setLastLevelIds(serialNode.getFourthNodeIds());
+                                secondNode.getKnowledgeNodeList().add(thirdNode);
+                                same1st2ndFlag = true;
+                            } else {
+                                throw new RuntimeException("二级知识点相同的下一条记录，三级知识点不能为空！");
+                            }
+                        }
+                    }
+                    if (!same1st2ndFlag) {
+                        // 二级不同，实例化二级和三级
+                        LastKnowledgeNodeInfo nextSecondNode = new LastKnowledgeNodeInfo();
+                        nextSecondNode.setKnowledgeNodeId(serialNode.getSecondNodeId());
+                        nextSecondNode.setKnowledgeNodeName(serialNode.getSecondNodeName());
+                        nextSecondNode.setLevel(serialNode.getSecondNodeLevel());
+                        nextSecondNode.setLastLevelFlag(serialNode.getSecondLastLevelFlag());
+                        nextSecondNode.setFrequency(serialNode.getSecondFreq());
+                        if (serialNode.getThirdNodeId() != null && !"".equals(serialNode.getThirdNodeId())) {
+                            List<LastKnowledgeNodeInfo> thirdNodeList = new ArrayList<>();
+                            LastKnowledgeNodeInfo thirdNode = new LastKnowledgeNodeInfo();
+                            thirdNode.setKnowledgeNodeId(serialNode.getThirdNodeId());
+                            thirdNode.setKnowledgeNodeName(serialNode.getThirdNodeName());
+                            thirdNode.setLevel(serialNode.getThirdNodeLevel());
+                            thirdNode.setLastLevelFlag(serialNode.getThirdLastLevelFlag());
+                            thirdNode.setFrequency(serialNode.getThirdFreq());
+                            thirdNode.setLastLevelIds(serialNode.getFourthNodeIds());
+                            thirdNodeList.add(thirdNode);
+                            nextSecondNode.setKnowledgeNodeList(thirdNodeList);
+                        }
+                        secondNodeList.add(nextSecondNode);
+                        same1st2ndFlag = false;
+                    }
+                }
+
+            }
+            pre1stNodeId = serialNode.getFirstNodeId();
+            pre2ndNodeId = serialNode.getSecondNodeId() == null ? 0 : serialNode.getSecondNodeId();
+        }
+
+        return resData;
+    }
+
+    private LastKnowledgeNodeInfo constructNodeLastInfo(KnowledgeSerialNodeInfoDTO serialNode) {
+        LastKnowledgeNodeInfo res = new LastKnowledgeNodeInfo();
+        res.setKnowledgeNodeId(serialNode.getFirstNodeId());
+        res.setKnowledgeNodeName(serialNode.getFirstNodeName());
+        res.setLastLevelFlag(serialNode.getFirstLastLevelFlag());
+        res.setLevel(serialNode.getFirstNodeLevel());
+        res.setFrequency(serialNode.getFirstFreq());
+        if (!new Integer(1).equals(serialNode.getFirstLastLevelFlag())
+                && serialNode.getSecondNodeId() != null
+                && !"".equals(serialNode.getSecondNodeId())) {
+            List<LastKnowledgeNodeInfo> secondNodeList = new ArrayList<>();
+            LastKnowledgeNodeInfo secondNode = new LastKnowledgeNodeInfo();
+            secondNode.setKnowledgeNodeId(serialNode.getSecondNodeId());
+            secondNode.setKnowledgeNodeName(serialNode.getSecondNodeName());
+            secondNode.setLastLevelFlag(serialNode.getSecondLastLevelFlag());
+            secondNode.setLevel(serialNode.getSecondNodeLevel());
+            secondNode.setFrequency(serialNode.getSecondFreq());
+            secondNodeList.add(secondNode);
+            res.setKnowledgeNodeList(secondNodeList);
+            if (!new Integer(1).equals(serialNode.getSecondLastLevelFlag())
+                    && serialNode.getThirdNodeId() != null
+                    && !"".equals(serialNode.getThirdNodeId())) {
+                List<LastKnowledgeNodeInfo> thirdNodeList = new ArrayList<>();
+                LastKnowledgeNodeInfo thirdNode = new LastKnowledgeNodeInfo();
+                thirdNode.setKnowledgeNodeId(serialNode.getSecondNodeId());
+                thirdNode.setKnowledgeNodeName(serialNode.getSecondNodeName());
+                thirdNode.setLastLevelFlag(serialNode.getSecondLastLevelFlag());
+                thirdNode.setLevel(serialNode.getSecondNodeLevel());
+                thirdNode.setFrequency(serialNode.getSecondFreq());
+                thirdNode.setLastLevelIds(serialNode.getFourthNodeIds());
+                thirdNodeList.add(thirdNode);
+                secondNode.setKnowledgeNodeList(thirdNodeList);
+            }
+        }
+        return res;
     }
 
     @Override
