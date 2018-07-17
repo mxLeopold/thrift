@@ -355,11 +355,7 @@ public class PaperReportServiceImpl implements PaperReportService {
         List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
         //根据paper_id分表的
         List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
-        Set<String> paperIdSet = new HashSet<>(10);
-        for (Integer paperId:paperIdList){
-            paperIdSet.add(String.format("%01d",paperId%10));
-        }
-        List<String> paperIndexList = new ArrayList<>(paperIdSet);
+        List<String> paperIndexList = getPaperIndexList(paperIdList);
         if (!CollectionUtils.isEmpty(paperIndexList)){
             resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkRateInfo(unitIdList,paperIndexList);
         }
@@ -381,11 +377,7 @@ public class PaperReportServiceImpl implements PaperReportService {
             List<Integer> unitIdList = stringToIntegerList(unitsStatisticCondition.getTeachUnitIds());
             //根据paper_id分表的
             List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
-            Set<String> paperIdSet = new HashSet<>(10);
-            for (Integer paperId:paperIdList){
-                paperIdSet.add(String.format("%01d",paperId%10));
-            }
-            List<String> paperIndexList = new ArrayList<>(paperIdSet);
+            List<String> paperIndexList = getPaperIndexList(paperIdList);
             if (!CollectionUtils.isEmpty(paperIndexList)){
 //                resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
                 resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkRateInfo(unitIdList,paperIndexList);
@@ -457,10 +449,11 @@ public class PaperReportServiceImpl implements PaperReportService {
     }
 
     private List<String> getPaperIndexList(List<Integer> paperIdList){
-        List<String> paperIndexList = new ArrayList<>();
-        for (Integer paperId : paperIdList){
-            paperIndexList.add(String.format("%01d", paperId % 10));
+        Set<String> paperIdSet = new HashSet<>(10);
+        for (Integer paperId:paperIdList){
+            paperIdSet.add(String.format("%01d",paperId%10));
         }
+        List<String> paperIndexList = new ArrayList<>(paperIdSet);
         return paperIndexList;
     }
 
