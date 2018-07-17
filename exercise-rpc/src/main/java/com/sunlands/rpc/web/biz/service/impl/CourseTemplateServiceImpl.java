@@ -155,6 +155,8 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
         Integer preTemplateUnitId = 0;
         // 上一个一级知识点id
         Integer preFirstLevelNodeId = 0;
+        // 上一个二级知识点id
+        Integer preSecondLevelNodeId = 0;
 
         for (TemplateUnitNodeDetailInfoDTO reqUnit : templateUnitList) {
             Integer reqUnitId = reqUnit.getTemplateUnitId();
@@ -199,7 +201,6 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                 // 课次id相同，取出上一课次
                 TemplateUnitInfo preUnit = res.get(res.size() - 1);
                 List<TemplateUnitNodeDetailInfo> preUnitFirstNodes = preUnit.getTemplateUnitNodeInfo();
-                boolean sameFirstSecondFlag = false;
                 // 遍历一级知识点，注意如果有不同的一级知识点，需要add进list（add后立刻break循环），小心并发修改异常
                 for (int i = 0; i < preUnitFirstNodes.size(); i++) {
                     TemplateUnitNodeDetailInfo preUnitFirstNode = preUnitFirstNodes.get(i);
@@ -219,11 +220,10 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                                 } else if (reqUnit.getLastNodeFreq().equals(2)) {
                                     preUnitSecondNodeFreq.setExtremelyHighFrequencyCount(preUnitSecondNodeFreq.getExtremelyHighFrequencyCount() + 1);
                                 }
-                                sameFirstSecondFlag = true;
                             }
                         }
                         // 一级相同，二级不同，组装二级
-                        if (!sameFirstSecondFlag) {
+                        if (preFirstLevelNodeId.equals(reqUnit.getFirstLevelNodeId()) && !preSecondLevelNodeId.equals(reqUnit.getSecondLevelNodeId())) {
                             TemplateUnitNodeDetailInfo resSecondNode = new TemplateUnitNodeDetailInfo();
                             resSecondNode.setNodeId(reqUnit.getSecondLevelNodeId());
                             resSecondNode.setNodeName(reqUnit.getSecondLevelNodeName());
@@ -261,6 +261,7 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
             }
             preTemplateUnitId = reqUnit.getTemplateUnitId();
             preFirstLevelNodeId = reqUnit.getFirstLevelNodeId();
+            preSecondLevelNodeId = reqUnit.getSecondLevelNodeId();
         }
         return res;
     }
