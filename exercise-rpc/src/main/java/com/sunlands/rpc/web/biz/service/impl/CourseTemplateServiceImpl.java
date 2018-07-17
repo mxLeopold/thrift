@@ -261,7 +261,7 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
             }
             preTemplateUnitId = reqUnit.getTemplateUnitId();
             preFirstLevelNodeId = reqUnit.getFirstLevelNodeId();
-            preSecondLevelNodeId = reqUnit.getSecondLevelNodeId();
+            preSecondLevelNodeId = reqUnit.getSecondLevelNodeId() == null ? reqUnit.getSecondLevelNodeId() : 0;
         }
         return res;
     }
