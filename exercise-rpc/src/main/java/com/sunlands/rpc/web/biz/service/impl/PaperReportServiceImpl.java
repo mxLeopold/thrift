@@ -354,13 +354,14 @@ public class PaperReportServiceImpl implements PaperReportService {
         ResUnitsStatisticDTO resUnitsStatisticDTO = new ResUnitsStatisticDTO();
         List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
         //根据paper_id分表的
-        List<String> paperIndexList = new ArrayList<>();
         List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
+        Set<String> paperIdSet = new HashSet<>(10);
         for (Integer paperId:paperIdList){
-            paperIndexList.add(String.format("%01d",paperId%10));
+            paperIdSet.add(String.format("%01d",paperId%10));
         }
+        List<String> paperIndexList = new ArrayList<>(paperIdSet);
         if (!CollectionUtils.isEmpty(paperIndexList)){
-            resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
+            resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkRateInfo(unitIdList,paperIndexList);
         }
         resUnitsStatisticDTO.setRoundId(roundId);
         resUnitsStatisticDTO.setTeachUnitIds(teachUnitIds);
