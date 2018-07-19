@@ -52,7 +52,7 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                 // 一级相同，遍历二级。如果一级相同，正确的查询结果必定有二级及以下
                 List<LastKnowledgeNodeInfo> secondNodeList = preFirstNode.getKnowledgeNodeList();
                 if (secondNodeList != null && !secondNodeList.isEmpty()) {
-                    for (int i = 0; i < secondNodeList.size(); i ++) {
+                    for (int i = 0; i < secondNodeList.size(); i++) {
                         LastKnowledgeNodeInfo secondNode = secondNodeList.get(i);
                         if (new Integer(secondNode.getKnowledgeNodeId()).equals(pre2ndNodeId) && pre2ndNodeId.equals(serialNode.getSecondNodeId())) {
                             // 如果二级相同，设置三级（三级都是一行一个）
@@ -149,108 +149,100 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
         if (templateUnitList == null || templateUnitList.isEmpty()) {
             throw new RuntimeException("该课程模板下有效课次为0！");
         }
-
         List<TemplateUnitInfo> res = new ArrayList<>();
         // 上一个课次id
         Integer preTemplateUnitId = 0;
-        // 上一个一级知识点id
         Integer preFirstLevelNodeId = 0;
-        // 上一个二级知识点id
         Integer preSecondLevelNodeId = 0;
 
-        for (TemplateUnitNodeDetailInfoDTO reqUnit : templateUnitList) {
-            Integer reqUnitId = reqUnit.getTemplateUnitId();
-            if (reqUnitId == null || "".equals(reqUnitId)) {
+        for (TemplateUnitNodeDetailInfoDTO templateUnit : templateUnitList) {
+            Integer unitId = templateUnit.getTemplateUnitId();
+            if (unitId == null || "".equals(unitId)) {
                 throw new RuntimeException("课程模板关联课次id为空！");
             }
-            if (reqUnit.getFirstLevelNodeId() == null || "".equals(reqUnit.getFirstLevelNodeId())) {
-                throw new RuntimeException("获取标准课程化课次知识点失败！课次id：" + reqUnit.getTemplateUnitId());
+            if (templateUnit.getFirstLevelNodeId() == null || "".equals(templateUnit.getFirstLevelNodeId())) {
+                throw new RuntimeException("获取标准课程化课次知识点失败！课次id：" + unitId);
             }
-            // 课次id不同
-            if (!preTemplateUnitId.equals(reqUnitId)) {
+            // 如果课次id不同
+            if (!preTemplateUnitId.equals(unitId)) {
                 // 组装新课
                 TemplateUnitInfo resUnit = new TemplateUnitInfo();
                 // 设置id
-                resUnit.setTemplateUnitId(reqUnitId);
+                resUnit.setTemplateUnitId(unitId);
                 // 组装一级知识点List
                 List<TemplateUnitNodeDetailInfo> resFirstNodes = new ArrayList<>();
                 TemplateUnitNodeDetailInfo resFirstNode = new TemplateUnitNodeDetailInfo();
-                resFirstNode.setNodeId(reqUnit.getFirstLevelNodeId());
-                resFirstNode.setNodeName(reqUnit.getFirstLevelNodeName());
+                resFirstNode.setNodeId(templateUnit.getFirstLevelNodeId());
+                resFirstNode.setNodeName(templateUnit.getFirstLevelNodeName());
                 resFirstNodes.add(resFirstNode);
                 resUnit.setTemplateUnitNodeInfo(resFirstNodes);
                 // 如果同行记录的二级知识点id为空 && 末级知识点为1，设置一级的频度
-                if (reqUnit.getSecondLevelNodeId() != null && "".equals(reqUnit.getSecondLevelNodeId())
-                        && reqUnit.getLastNodeLevel() != null && new Integer(1).equals(reqUnit.getLastNodeLevel())) {
-                    TemplateUnitNodeInfo resFirstNodeFreq = this.constructNodeFreqInfo(reqUnit);
+                if (templateUnit.getSecondLevelNodeId() != null && "".equals(templateUnit.getSecondLevelNodeId())
+                        && templateUnit.getLastNodeLevel() != null && new Integer(1).equals(templateUnit.getLastNodeLevel())) {
+                    TemplateUnitNodeInfo resFirstNodeFreq = this.constructNodeFreqInfo(templateUnit);
                     resFirstNode.setNodeFrequencyInfo(resFirstNodeFreq);
                 } else {
                     // 组装二级知识点
                     List<TemplateUnitNodeDetailInfo> resSecondNodes = new ArrayList<>();
                     TemplateUnitNodeDetailInfo resSecondNode = new TemplateUnitNodeDetailInfo();
-                    resSecondNode.setNodeId(reqUnit.getSecondLevelNodeId());
-                    resSecondNode.setNodeName(reqUnit.getSecondLevelNodeName());
+                    resSecondNode.setNodeId(templateUnit.getSecondLevelNodeId());
+                    resSecondNode.setNodeName(templateUnit.getSecondLevelNodeName());
 
-                    TemplateUnitNodeInfo resSecondNodeFreq = this.constructNodeFreqInfo(reqUnit);
+                    TemplateUnitNodeInfo resSecondNodeFreq = this.constructNodeFreqInfo(templateUnit);
                     resSecondNode.setNodeFrequencyInfo(resSecondNodeFreq);
                     resSecondNodes.add(resSecondNode);
                     resFirstNode.setKnowledgeNodeList(resSecondNodes);
                 }
                 res.add(resUnit);
             } else {
-                // 课次id相同，取出上一课次
-                TemplateUnitInfo preUnit = res.get(res.size() - 1);
-                List<TemplateUnitNodeDetailInfo> preUnitFirstNodes = preUnit.getTemplateUnitNodeInfo();
-                // 遍历一级知识点，注意如果有不同的一级知识点，需要add进list（add后立刻break循环），小心并发修改异常
-                for (int i = 0; i < preUnitFirstNodes.size(); i++) {
-                    TemplateUnitNodeDetailInfo preUnitFirstNode = preUnitFirstNodes.get(i);
-                    int preUnitFirstNodeId = preUnitFirstNode.getNodeId();
-                    if (preFirstLevelNodeId.equals(reqUnit.getFirstLevelNodeId())) {
-                        // 如果相同，遍历二级
+                // 相同的课次，遍历一级知识点，如果一级知识点相同，添加频度；否则组装新的一二级知识点
+                TemplateUnitInfo preTemplateUnit = res.get(res.size() - 1);
+                List<TemplateUnitNodeDetailInfo> preTemplateUnitFirstNodeList = preTemplateUnit.getTemplateUnitNodeInfo();
+                Boolean sameFirstSecondFlag = false;
+                for (int i = 0; i < preTemplateUnitFirstNodeList.size(); i++) {
+                    TemplateUnitNodeDetailInfo preUnitFirstNode = preTemplateUnitFirstNodeList.get(i);
+                    Integer preUnitFirstNodeId = preUnitFirstNode.getNodeId();
+                    if (preUnitFirstNodeId.equals(templateUnit.getFirstLevelNodeId())) {
+                        // 如果一级相同，遍历二级
                         List<TemplateUnitNodeDetailInfo> preUnitSecondNodes = preUnitFirstNode.getKnowledgeNodeList();
                         for (int j = 0; j < preUnitSecondNodes.size(); j++) {
                             TemplateUnitNodeDetailInfo preUnitSecondNode = preUnitSecondNodes.get(j);
                             // 如果二级相同，添加频次
-                            if (reqUnit.getSecondLevelNodeId().equals(preUnitSecondNode.getNodeId())) {
+                            if (templateUnit.getSecondLevelNodeId().equals(preUnitSecondNode.getNodeId())) {
+                                sameFirstSecondFlag = true;
                                 TemplateUnitNodeInfo preUnitSecondNodeFreq = preUnitSecondNode.getNodeFrequencyInfo();
-                                if (reqUnit.getLastNodeFreq().equals(0)) {
+                                if (templateUnit.getLastNodeFreq().equals(0)) {
                                     preUnitSecondNodeFreq.setMidFrequencyCount(preUnitSecondNodeFreq.getMidFrequencyCount() + 1);
-                                } else if (reqUnit.getLastNodeFreq().equals(1)) {
+                                } else if (templateUnit.getLastNodeFreq().equals(1)) {
                                     preUnitSecondNodeFreq.setHighFrequencyCount(preUnitSecondNodeFreq.getHighFrequencyCount() + 1);
-                                } else if (reqUnit.getLastNodeFreq().equals(2)) {
+                                } else if (templateUnit.getLastNodeFreq().equals(2)) {
                                     preUnitSecondNodeFreq.setExtremelyHighFrequencyCount(preUnitSecondNodeFreq.getExtremelyHighFrequencyCount() + 1);
                                 }
                             }
                         }
-                        // 一级相同，二级不同，组装二级
-                        if (preFirstLevelNodeId.equals(reqUnit.getFirstLevelNodeId()) && !preSecondLevelNodeId.equals(reqUnit.getSecondLevelNodeId())) {
-                            TemplateUnitNodeDetailInfo resSecondNode = new TemplateUnitNodeDetailInfo();
-                            resSecondNode.setNodeId(reqUnit.getSecondLevelNodeId());
-                            resSecondNode.setNodeName(reqUnit.getSecondLevelNodeName());
-                            TemplateUnitNodeInfo resSecondNodeFreq = this.constructNodeFreqInfo(reqUnit);
-                            resSecondNode.setNodeFrequencyInfo(resSecondNodeFreq);
-                            preUnitFirstNode.getKnowledgeNodeList().add(resSecondNode);
-                        }
                     } else {
+                        if (i != preTemplateUnitFirstNodeList.size() - 1){
+                            continue;
+                        }
                         // 如果不同，组装一级和二级
                         TemplateUnitNodeDetailInfo resFirstNode = new TemplateUnitNodeDetailInfo();
-                        resFirstNode.setNodeId(reqUnit.getFirstLevelNodeId());
-                        resFirstNode.setNodeName(reqUnit.getFirstLevelNodeName());
-                        preUnitFirstNodes.add(resFirstNode);
+                        resFirstNode.setNodeId(templateUnit.getFirstLevelNodeId());
+                        resFirstNode.setNodeName(templateUnit.getFirstLevelNodeName());
+                        preTemplateUnitFirstNodeList.add(resFirstNode);
                         // 如果同行记录的二级知识点id为空 && 末级知识点为1，设置一级的频度
-                        if (reqUnit.getSecondLevelNodeId() != null && "".equals(reqUnit.getSecondLevelNodeId())
-                                && reqUnit.getLastNodeLevel() != null && new Integer(1).equals(reqUnit.getLastNodeLevel())) {
-                            TemplateUnitNodeInfo resFirstNodeFreq = this.constructNodeFreqInfo(reqUnit);
+                        if (templateUnit.getSecondLevelNodeId() != null && "".equals(templateUnit.getSecondLevelNodeId())
+                                && templateUnit.getLastNodeLevel() != null && new Integer(1).equals(templateUnit.getLastNodeLevel())) {
+                            TemplateUnitNodeInfo resFirstNodeFreq = this.constructNodeFreqInfo(templateUnit);
                             resFirstNode.setNodeFrequencyInfo(resFirstNodeFreq);
                             break;
                         } else {
                             // 组装二级知识点
                             List<TemplateUnitNodeDetailInfo> resSecondNodes = new ArrayList<>();
                             TemplateUnitNodeDetailInfo resSecondNode = new TemplateUnitNodeDetailInfo();
-                            resSecondNode.setNodeId(reqUnit.getSecondLevelNodeId());
-                            resSecondNode.setNodeName(reqUnit.getSecondLevelNodeName());
+                            resSecondNode.setNodeId(templateUnit.getSecondLevelNodeId());
+                            resSecondNode.setNodeName(templateUnit.getSecondLevelNodeName());
 
-                            TemplateUnitNodeInfo resSecondNodeFreq = this.constructNodeFreqInfo(reqUnit);
+                            TemplateUnitNodeInfo resSecondNodeFreq = this.constructNodeFreqInfo(templateUnit);
                             resSecondNode.setNodeFrequencyInfo(resSecondNodeFreq);
                             resSecondNodes.add(resSecondNode);
                             resFirstNode.setKnowledgeNodeList(resSecondNodes);
@@ -258,10 +250,19 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                         }
                     }
                 }
+                // 一级相同，二级不同，组装二级
+                if (!sameFirstSecondFlag && preFirstLevelNodeId.equals(templateUnit.getFirstLevelNodeId()) && !preSecondLevelNodeId.equals(templateUnit.getSecondLevelNodeId())) {
+                    TemplateUnitNodeDetailInfo resSecondNode = new TemplateUnitNodeDetailInfo();
+                    resSecondNode.setNodeId(templateUnit.getSecondLevelNodeId());
+                    resSecondNode.setNodeName(templateUnit.getSecondLevelNodeName());
+                    TemplateUnitNodeInfo resSecondNodeFreq = this.constructNodeFreqInfo(templateUnit);
+                    resSecondNode.setNodeFrequencyInfo(resSecondNodeFreq);
+                    preTemplateUnitFirstNodeList.get(preTemplateUnitFirstNodeList.size() - 1).getKnowledgeNodeList().add(resSecondNode);
+                }
             }
-            preTemplateUnitId = reqUnit.getTemplateUnitId();
-            preFirstLevelNodeId = reqUnit.getFirstLevelNodeId();
-            preSecondLevelNodeId = reqUnit.getSecondLevelNodeId() == null ? reqUnit.getSecondLevelNodeId() : 0;
+            preTemplateUnitId = templateUnit.getTemplateUnitId();
+            preFirstLevelNodeId = templateUnit.getFirstLevelNodeId();
+            preSecondLevelNodeId = templateUnit.getSecondLevelNodeId() == null ? 0 : templateUnit.getSecondLevelNodeId();
         }
         return res;
     }
