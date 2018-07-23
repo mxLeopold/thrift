@@ -124,6 +124,9 @@ service WebCourseTemplateService {
     //根据课程模板Id获取课程模板内容
     CourseTemplateDetail getCourseTemplateDetailById(1: i32 courseTemplateId);
 
+    //根据课程模板Code获取课程模板内容
+    CourseTemplateDetail getCourseTemplateDetailByCode(1: i32 courseTemplateCode);
+
     // 新建/编辑/删除模考
     i32 operateMockExam(1: ReqMockExam reqMockExam);
 

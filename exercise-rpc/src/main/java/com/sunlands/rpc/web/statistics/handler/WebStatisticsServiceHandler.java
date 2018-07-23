@@ -157,10 +157,7 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
      * @param content
      */
     private String resetContent(String content) {
-        // 屏蔽微软控制字符
-        // https://www.utf8-chartable.de/unicode-utf8-table.pl?utf8=0x
-        String con = content.replaceAll("[\u0000-\u001f\u007f-\u009f]", "");
-        return con.replaceAll("(style=\")[\\s\\S]*?(\")", "");
+        return content.replaceAll("(style=\")[\\s\\S]*?(\")", "");
     }
 
     @Override
