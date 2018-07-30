@@ -15,14 +15,9 @@ spring:
       datasource:
            type: com.alibaba.druid.pool.DruidDataSource
            master:
-           #226
                url: jdbc:mysql://172.16.117.226:3306/exercise?autoReconnect=true
                username: ent_all
                password: ent
-#41
-#               url: jdbc:mysql://172.16.116.41:3306/exercise?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=true
-#               username: ent_xiayimin
-#               password: F$cHb]=T
                driver-class-name: com.mysql.jdbc.Driver
                minIdle: 5
                maxActive: 100
@@ -39,14 +34,9 @@ spring:
                removeAbandoned: true
                filters: stat
            slave:
-           #226
                url: jdbc:mysql://172.16.117.226:3306/exercise?autoReconnect=true
                username: ent_all
                password: ent
-               #41
-#               url: jdbc:mysql://172.16.116.41:3306/exercise?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=true
-#               username: ent_xiayimin
-#               password: F$cHb]=T
                driver-class-name: com.mysql.jdbc.Driver
                minIdle: 5
                maxActive: 100
