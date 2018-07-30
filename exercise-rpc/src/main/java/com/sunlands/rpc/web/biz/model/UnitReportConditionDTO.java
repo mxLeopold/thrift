@@ -12,14 +12,6 @@ public class UnitReportConditionDTO {
      */
     private String unitIds;
     /**
-     * 课后作业试卷ID
-     */
-    private String homeworkId;
-    /**
-     * 随堂考试卷ID
-     */
-    private String quizzesGroupId;
-    /**
      *学员名称
      */
     private String userName;
@@ -116,21 +108,5 @@ public class UnitReportConditionDTO {
 
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
-    }
-
-    public String getHomeworkId() {
-        return homeworkId;
-    }
-
-    public void setHomeworkId(String homeworkId) {
-        this.homeworkId = homeworkId;
-    }
-
-    public String getQuizzesGroupId() {
-        return quizzesGroupId;
-    }
-
-    public void setQuizzesGroupId(String quizzesGroupId) {
-        this.quizzesGroupId = quizzesGroupId;
     }
 }
