@@ -264,6 +264,13 @@ public interface PaperReportMapper {
 
     /**
      * 获取某课程单元下所有学员作业和随堂考的正确率
+     * @param unitReportConditionDTO
+     * @param unitIds
+     * @param stuIds
+     * @param paperIndexList
+     * @param pageIndex
+     * @param countPerPage
+     * @return
      */
     @Select({
             "<script>" ,
@@ -275,8 +282,12 @@ public interface PaperReportMapper {
             "FROM " ,
             "t_tiku_exam_user_statistics_${paperIndex} a " ,
             "INNER JOIN stu_user_info b ON a.stu_id = b.stu_id " ,
-            "WHERE a.exercise_type in ('ASSIGNMENTS','QUIZ') AND a.unit_id in " ,
+            "WHERE a.exercise_type in ('ASSIGNMENTS','QUIZ')  AND a.unit_id in " ,
             "<foreach item=\"item\" index=\"index\" collection=\"unitIds\"  open=\"(\" separator=\",\" close=\")\"  >#{item}</foreach>" ,
+            "<if test=\"unitReportConditionDTO.homeworkId != null or unitReportConditionDTO.quizzesGroupId != null\"> and a.t_paper_id in( </if>",
+            "<if test=\"unitReportConditionDTO.homeworkId != null and unitReportConditionDTO.homeworkId != '' \"> #{unitReportConditionDTO.homeworkId}, </if>",
+            "<if test=\"unitReportConditionDTO.quizzesGroupId != null and unitReportConditionDTO.quizzesGroupId != '' \"> #{unitReportConditionDTO.quizzesGroupId} </if>",
+            ") " ,
             "<if test=\"unitReportConditionDTO.userId != null and unitReportConditionDTO.userId != '' \"> and a.stu_id like '%${unitReportConditionDTO.userId}%' </if>",
             "<if test=\"unitReportConditionDTO.userName != null and unitReportConditionDTO.userName != '' \"> and b.name like '%${unitReportConditionDTO.userName}%' </if>",
             "GROUP BY a.stu_id,a.exercise_type " ,

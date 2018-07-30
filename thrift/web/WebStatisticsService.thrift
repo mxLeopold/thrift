@@ -110,14 +110,16 @@ struct QuizzesOrWorkUserCorrectRate {
 //课程单元报告列表查询条件
 struct UnitReportCondition {
     1: string unitIds;
-    2: string userName;
-    3: i32 userId;
-    4: string attendStatus;
-    5: string evaluateScoreLevel;
-    6: string quizzesSort;
-    7: string homeworkSort;
-    8: i32 pageNo;
-    9: i32 pageSize;
+    2: string homeworkId;
+    3: string quizzesGroupId;
+    4: string userName;
+    5: i32 userId;
+    6: string attendStatus;
+    7: string evaluateScoreLevel;
+    8: string quizzesSort;
+    9: string homeworkSort;
+    10: i32 pageNo;
+    11: i32 pageSize;
 }
 //课程单元报告列表统计数据
 struct UnitsStatistic {

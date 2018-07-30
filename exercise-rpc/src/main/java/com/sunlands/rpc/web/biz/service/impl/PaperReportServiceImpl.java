@@ -313,6 +313,16 @@ public class PaperReportServiceImpl implements PaperReportService {
 
     @Override
     public List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(UnitReportConditionDTO unitReportConditionDTO,List<Integer> stuIds) {
+        //通过作业随堂考code找到对应id
+        if (unitReportConditionDTO.getHomeworkId() != null){
+            PaperDTO paperDTO = paperReportMapper.selectPaperByCode(unitReportConditionDTO.getHomeworkId());
+            unitReportConditionDTO.setHomeworkId(paperDTO.getId().toString());
+        }
+        if (unitReportConditionDTO.getQuizzesGroupId() != null){
+            PaperDTO paperDTO = paperReportMapper.selectPaperByCode(unitReportConditionDTO.getQuizzesGroupId());
+            unitReportConditionDTO.setQuizzesGroupId(paperDTO.getId().toString());
+        }
+
         List<QuizzesOrWorkUserCorrectRateDTO> quizzesOrWorkUserCorrectRateDTOS;
         Integer pageIndex =(unitReportConditionDTO.getPageNo() - 1) * unitReportConditionDTO.getPageSize();
         Integer countPerPage = unitReportConditionDTO.getPageSize();
