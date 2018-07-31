@@ -2,6 +2,7 @@ package com.sunlands.rpc.web.biz.service;
 
 import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.statistics.service.UnitsStatisticCondition;
+import com.sunlands.rpc.web.statistics.service.UnitsStatisticCorrectRateCondition;
 
 import java.util.List;
 import java.util.Map;
@@ -61,11 +62,10 @@ public interface PaperReportService {
 
     /**
      * 根据该轮次下的课程单元ID查询该轮次下的统计数据
-     * @param roundId
-     * @param teachUnitIds
+     * @param unitsStatisticCondition
      * @return
      */
-    ResUnitsStatisticDTO retrieveQuizOrHomeworkInfo(Integer roundId, String teachUnitIds,Integer teacherId);
+    ResUnitsStatisticDTO retrieveQuizOrHomeworkInfo(UnitsStatisticCondition unitsStatisticCondition);
 
     /**
      * 批量根据该轮次下的课程单元ID查询该轮次下的统计数据
@@ -76,16 +76,16 @@ public interface PaperReportService {
 
     /**
      * 根据课程单元ID查询该轮次下的作业随堂考正确率的统计数据
-     * @param teachUnitIds
+     * @param unitsStatisticCorrectRateCondition
      * @return
      */
-    UnitsCorrectRateStatisticDTO retrieveQuizOrHomeworkCorrectInfo(String teachUnitIds);
+    UnitsCorrectRateStatisticDTO retrieveQuizOrHomeworkCorrectInfo(UnitsStatisticCorrectRateCondition unitsStatisticCorrectRateCondition);
 
     /**
      * 批量根据课程单元ID查询该轮次下的作业随堂考正确率的统计数据
-     * @param teachUnitIdsList
+     * @param unitsStatisticCorrectRateConditions
      * @return
      */
-    Map<String,UnitsCorrectRateStatisticDTO> retrieveQuizOrHomeworkCorrectInfoMap(List<String> teachUnitIdsList);
+    Map<String,UnitsCorrectRateStatisticDTO> retrieveQuizOrHomeworkCorrectInfoMap(List<UnitsStatisticCorrectRateCondition> unitsStatisticCorrectRateConditions);
 
 }

@@ -110,14 +110,16 @@ struct QuizzesOrWorkUserCorrectRate {
 //课程单元报告列表查询条件
 struct UnitReportCondition {
     1: string unitIds;
-    2: string userName;
-    3: i32 userId;
-    4: string attendStatus;
-    5: string evaluateScoreLevel;
-    6: string quizzesSort;
-    7: string homeworkSort;
-    8: i32 pageNo;
-    9: i32 pageSize;
+    2: string homeworkId;
+    3: string quizzesGroupId;
+    4: string userName;
+    5: i32 userId;
+    6: string attendStatus;
+    7: string evaluateScoreLevel;
+    8: string quizzesSort;
+    9: string homeworkSort;
+    10: i32 pageNo;
+    11: i32 pageSize;
 }
 //课程单元报告列表统计数据
 struct UnitsStatistic {
@@ -146,6 +148,14 @@ struct UnitsStatisticCondition {
     1: i32 roundId;
     2: string teachUnitIds;
     3: i32 teacherId;
+    4: string homeworkId;
+    5: string quizzesGroupId;
+}
+
+struct UnitsStatisticCorrectRateCondition{
+    1: string teachUnitIdsList;
+    2: string homeworkId;
+    3: string quizzesGroupId;
 }
 
 service WebStatisticsService {
@@ -177,15 +187,15 @@ service WebStatisticsService {
     list<QuizzesOrWorkUserCorrectRate> getPaperStudentCorrectRate(1: UnitReportCondition unitReportCondition, 2: list<i32> stuIds);
 
     //查询作业随堂考学员完成率和得分率
-    UnitsStatistic retrieveQuizzesAndAssignmentsByUnitIds(1: i32 roundId, 2: string teachUnitIds, 3: i32 teacherId);
+    UnitsStatistic retrieveQuizzesAndAssignmentsByUnitIds(1: UnitsStatisticCondition unitsStatisticCondition);
 
     //批量查询作业随堂考学员完成率和得分率
     map<string,UnitsStatistic> retrieveQuizzesAndAssignmentListByUnitIds(1: list<UnitsStatisticCondition> unitsStatisticConditionList);
 
     //查询作业随堂考的正确率
-    UnitsCorrectRateStatistic retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(1: string teachUnitIds);
+    UnitsCorrectRateStatistic retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(1: UnitsStatisticCorrectRateCondition unitsStatisticCorrectRateCondition);
 
     //批量查询作业随堂考学员完成率和得分率
-    map<string,UnitsCorrectRateStatistic> retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(1: list<string> teachUnitIdsList);
+    map<string,UnitsCorrectRateStatistic> retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(1: list<UnitsStatisticCorrectRateCondition> unitsStatisticCorrectRateCondition);
 
 }
