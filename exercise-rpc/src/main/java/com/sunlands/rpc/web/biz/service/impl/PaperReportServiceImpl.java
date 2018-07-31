@@ -5,6 +5,7 @@ import com.sunlands.rpc.web.biz.dao.PaperReportMapper;
 import com.sunlands.rpc.web.biz.model.*;
 import com.sunlands.rpc.web.biz.service.PaperReportService;
 import com.sunlands.rpc.web.statistics.service.UnitsStatisticCondition;
+import com.sunlands.rpc.web.statistics.service.UnitsStatisticCorrectRateCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -313,6 +314,16 @@ public class PaperReportServiceImpl implements PaperReportService {
 
     @Override
     public List<QuizzesOrWorkUserCorrectRateDTO> getQuizzesOrWorkUserCorrectRate(UnitReportConditionDTO unitReportConditionDTO,List<Integer> stuIds) {
+        //通过作业随堂考code找到对应id
+        if (unitReportConditionDTO.getHomeworkId() != null){
+            PaperDTO paperDTO = paperReportMapper.selectPaperByCode(unitReportConditionDTO.getHomeworkId());
+            unitReportConditionDTO.setHomeworkId(paperDTO.getId().toString());
+        }
+        if (unitReportConditionDTO.getQuizzesGroupId() != null){
+            PaperDTO paperDTO = paperReportMapper.selectPaperByCode(unitReportConditionDTO.getQuizzesGroupId());
+            unitReportConditionDTO.setQuizzesGroupId(paperDTO.getId().toString());
+        }
+
         List<QuizzesOrWorkUserCorrectRateDTO> quizzesOrWorkUserCorrectRateDTOS;
         Integer pageIndex =(unitReportConditionDTO.getPageNo() - 1) * unitReportConditionDTO.getPageSize();
         Integer countPerPage = unitReportConditionDTO.getPageSize();
@@ -350,18 +361,29 @@ public class PaperReportServiceImpl implements PaperReportService {
     }
 
     @Override
-    public ResUnitsStatisticDTO retrieveQuizOrHomeworkInfo(Integer roundId, String teachUnitIds,Integer teacherId) {
+    public ResUnitsStatisticDTO retrieveQuizOrHomeworkInfo(UnitsStatisticCondition unitsStatisticCondition) {
         ResUnitsStatisticDTO resUnitsStatisticDTO = new ResUnitsStatisticDTO();
-        List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
-        //根据paper_id分表的
-        List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
-        List<String> paperIndexList = getPaperIndexList(paperIdList);
-        if (!CollectionUtils.isEmpty(paperIndexList)){
-            resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkRateInfo(unitIdList,paperIndexList);
+        List<Integer> unitIdList = stringToIntegerList(unitsStatisticCondition.getTeachUnitIds());
+        List<Integer> paperIdList = new ArrayList<>();
+        List<String> paperIndexList;
+
+        //通过作业随堂考code找到对应id
+        PaperDTO homeworkPaperDTO = paperReportMapper.selectPaperByCode(unitsStatisticCondition.getHomeworkId());
+        PaperDTO quizzesPaperDTO = paperReportMapper.selectPaperByCode(unitsStatisticCondition.getQuizzesGroupId());
+        if (homeworkPaperDTO != null && homeworkPaperDTO.getId() != null){
+            paperIdList.add(homeworkPaperDTO.getId());
         }
-        resUnitsStatisticDTO.setRoundId(roundId);
-        resUnitsStatisticDTO.setTeachUnitIds(teachUnitIds);
-        resUnitsStatisticDTO.setTeacherId(teacherId);
+        if (quizzesPaperDTO != null && quizzesPaperDTO.getId() != null){
+            paperIdList.add(quizzesPaperDTO.getId());
+        }
+        paperIndexList = getPaperIndexList(paperIdList);
+
+        if (!CollectionUtils.isEmpty(paperIndexList)){
+            resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkRateInfo(unitIdList,paperIdList,paperIndexList);
+        }
+        resUnitsStatisticDTO.setRoundId(unitsStatisticCondition.getRoundId());
+        resUnitsStatisticDTO.setTeachUnitIds(unitsStatisticCondition.getTeachUnitIds());
+        resUnitsStatisticDTO.setTeacherId(unitsStatisticCondition.getTeacherId());
         resUnitsStatisticDTO.setHomeworkCompleteRate(setDefaultValueToNull(resUnitsStatisticDTO.getHomeworkCompleteRate()));
         resUnitsStatisticDTO.setHomeworkScoreRate(setDefaultValueToNull(resUnitsStatisticDTO.getHomeworkScoreRate()));
         resUnitsStatisticDTO.setQuizzesCompleteRate(setDefaultValueToNull(resUnitsStatisticDTO.getQuizzesCompleteRate()));
@@ -375,12 +397,22 @@ public class PaperReportServiceImpl implements PaperReportService {
         for (UnitsStatisticCondition unitsStatisticCondition : unitsStatisticConditionList){
             ResUnitsStatisticDTO resUnitsStatisticDTO = new ResUnitsStatisticDTO();
             List<Integer> unitIdList = stringToIntegerList(unitsStatisticCondition.getTeachUnitIds());
-            //根据paper_id分表的
-            List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
-            List<String> paperIndexList = getPaperIndexList(paperIdList);
+            List<Integer> paperIdList = new ArrayList<>();
+            List<String> paperIndexList;
+
+            //通过作业随堂考code找到对应id
+            PaperDTO homeworkPaperDTO = paperReportMapper.selectPaperByCode(unitsStatisticCondition.getHomeworkId());
+            PaperDTO quizzesPaperDTO = paperReportMapper.selectPaperByCode(unitsStatisticCondition.getQuizzesGroupId());
+            if (homeworkPaperDTO != null && homeworkPaperDTO.getId() != null){
+                paperIdList.add(homeworkPaperDTO.getId());
+            }
+            if (quizzesPaperDTO != null && quizzesPaperDTO.getId() != null){
+                paperIdList.add(quizzesPaperDTO.getId());
+            }
+            paperIndexList = getPaperIndexList(paperIdList);
             if (!CollectionUtils.isEmpty(paperIndexList)){
 //                resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkInfo(unitIdList,paperIndexList,getIndexList());
-                resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkRateInfo(unitIdList,paperIndexList);
+                resUnitsStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkRateInfo(unitIdList,paperIdList,paperIndexList);
             }
             resUnitsStatisticDTO.setRoundId(unitsStatisticCondition.getRoundId());
             resUnitsStatisticDTO.setTeachUnitIds(unitsStatisticCondition.getTeachUnitIds());
@@ -395,15 +427,29 @@ public class PaperReportServiceImpl implements PaperReportService {
     }
 
     @Override
-    public UnitsCorrectRateStatisticDTO retrieveQuizOrHomeworkCorrectInfo(String teachUnitIds) {
+    public UnitsCorrectRateStatisticDTO retrieveQuizOrHomeworkCorrectInfo(UnitsStatisticCorrectRateCondition unitsStatisticCorrectRateCondition) {
         UnitsCorrectRateStatisticDTO unitsCorrectRateStatisticDTO = new UnitsCorrectRateStatisticDTO();
-        List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
-        List<Integer> paperIdList = paperReportMapper.getPaperIdList(unitIdList);
-        List<String> paperIndexList = getPaperIndexList(paperIdList);
-        if (!CollectionUtils.isEmpty(paperIndexList)){
-            unitsCorrectRateStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkCorrectInfo(unitIdList,paperIndexList);
+        List<Integer> unitIdList = stringToIntegerList(unitsStatisticCorrectRateCondition.getTeachUnitIdsList());
+        List<Integer> paperIdList = new ArrayList<>();
+        List<String> paperIndexList;
+
+        //通过作业随堂考code找到对应id
+        PaperDTO homeworkPaperDTO = paperReportMapper.selectPaperByCode(unitsStatisticCorrectRateCondition.getHomeworkId());
+        PaperDTO quizzesPaperDTO = paperReportMapper.selectPaperByCode(unitsStatisticCorrectRateCondition.getQuizzesGroupId());
+        if (homeworkPaperDTO != null && homeworkPaperDTO.getId() != null){
+            paperIdList.add(homeworkPaperDTO.getId());
         }
-        unitsCorrectRateStatisticDTO.setTeachUnitIds(teachUnitIds);
+        if (quizzesPaperDTO != null && quizzesPaperDTO.getId() != null){
+            paperIdList.add(quizzesPaperDTO.getId());
+        }
+        paperIndexList = getPaperIndexList(paperIdList);
+
+//        List<Integer> paperIdList = paperReportMapper.getPaperIdList(unitIdList);
+//        List<String> paperIndexList = getPaperIndexList(paperIdList);
+        if (!CollectionUtils.isEmpty(paperIndexList)){
+            unitsCorrectRateStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkCorrectInfo(unitIdList,paperIdList,paperIndexList);
+        }
+        unitsCorrectRateStatisticDTO.setTeachUnitIds(unitsStatisticCorrectRateCondition.getTeachUnitIdsList());
         unitsCorrectRateStatisticDTO.setHomeworkAnswerNum(unitsCorrectRateStatisticDTO.getHomeworkAnswerNum()==null ? 0 :unitsCorrectRateStatisticDTO.getHomeworkAnswerNum());
         unitsCorrectRateStatisticDTO.setQuizzesAnswerNum(unitsCorrectRateStatisticDTO.getQuizzesAnswerNum()==null ? 0 : unitsCorrectRateStatisticDTO.getQuizzesAnswerNum());
         unitsCorrectRateStatisticDTO.setHomeworkAvgCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkAvgCorrectRate()));
@@ -416,17 +462,28 @@ public class PaperReportServiceImpl implements PaperReportService {
     }
 
     @Override
-    public Map<String, UnitsCorrectRateStatisticDTO> retrieveQuizOrHomeworkCorrectInfoMap(List<String> teachUnitIdsList) {
+    public Map<String, UnitsCorrectRateStatisticDTO> retrieveQuizOrHomeworkCorrectInfoMap(List<UnitsStatisticCorrectRateCondition> unitsStatisticCorrectRateConditions) {
         Map<String, UnitsCorrectRateStatisticDTO> resMap = new HashMap<>();
-        for (String teachUnitIds : teachUnitIdsList){
+        for (UnitsStatisticCorrectRateCondition unitsStatisticCorrectRateCondition : unitsStatisticCorrectRateConditions){
             UnitsCorrectRateStatisticDTO unitsCorrectRateStatisticDTO = new UnitsCorrectRateStatisticDTO();
-            List<Integer> unitIdList = stringToIntegerList(teachUnitIds);
-            List<Integer> paperIdList = paperReportMapper.getPaperIdList(unitIdList);
-            List<String> paperIndexList = getPaperIndexList(paperIdList);
-            if (!CollectionUtils.isEmpty(paperIndexList)){
-                unitsCorrectRateStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkCorrectInfo(unitIdList,paperIndexList);
+            List<Integer> unitIdList = stringToIntegerList(unitsStatisticCorrectRateCondition.getTeachUnitIdsList());
+            List<Integer> paperIdList = new ArrayList<>();
+            List<String> paperIndexList;
+
+            //通过作业随堂考code找到对应id
+            PaperDTO homeworkPaperDTO = paperReportMapper.selectPaperByCode(unitsStatisticCorrectRateCondition.getHomeworkId());
+            PaperDTO quizzesPaperDTO = paperReportMapper.selectPaperByCode(unitsStatisticCorrectRateCondition.getQuizzesGroupId());
+            if (homeworkPaperDTO != null && homeworkPaperDTO.getId() != null){
+                paperIdList.add(homeworkPaperDTO.getId());
             }
-            unitsCorrectRateStatisticDTO.setTeachUnitIds(teachUnitIds);
+            if (quizzesPaperDTO != null && quizzesPaperDTO.getId() != null){
+                paperIdList.add(quizzesPaperDTO.getId());
+            }
+            paperIndexList = getPaperIndexList(paperIdList);
+            if (!CollectionUtils.isEmpty(paperIndexList)){
+                unitsCorrectRateStatisticDTO = paperReportMapper.retrieveQuizOrHomeworkCorrectInfo(unitIdList,paperIdList,paperIndexList);
+            }
+            unitsCorrectRateStatisticDTO.setTeachUnitIds(unitsStatisticCorrectRateCondition.getTeachUnitIdsList());
             unitsCorrectRateStatisticDTO.setHomeworkAnswerNum(unitsCorrectRateStatisticDTO.getHomeworkAnswerNum()==null ? 0 :unitsCorrectRateStatisticDTO.getHomeworkAnswerNum());
             unitsCorrectRateStatisticDTO.setQuizzesAnswerNum(unitsCorrectRateStatisticDTO.getQuizzesAnswerNum()==null ? 0 : unitsCorrectRateStatisticDTO.getQuizzesAnswerNum());
             unitsCorrectRateStatisticDTO.setHomeworkAvgCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkAvgCorrectRate()));
@@ -435,7 +492,7 @@ public class PaperReportServiceImpl implements PaperReportService {
             unitsCorrectRateStatisticDTO.setHomeworkAvgCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkAvgCorrectRate()));
             unitsCorrectRateStatisticDTO.setHomeworkMaxCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMaxCorrectRate()));
             unitsCorrectRateStatisticDTO.setHomeworkMinCorrectRate(setDefaultValueToNull(unitsCorrectRateStatisticDTO.getHomeworkMinCorrectRate()));
-            resMap.put(teachUnitIds,unitsCorrectRateStatisticDTO);
+            resMap.put(unitsStatisticCorrectRateCondition.getTeachUnitIdsList(),unitsCorrectRateStatisticDTO);
         }
         return resMap;
     }

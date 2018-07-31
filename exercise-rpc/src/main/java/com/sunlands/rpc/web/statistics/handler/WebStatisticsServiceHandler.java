@@ -290,12 +290,12 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     }
 
     @Override
-    public UnitsStatistic retrieveQuizzesAndAssignmentsByUnitIds(int roundId, String teachUnitIds, int teacherId) throws TException {
-        logger.debug("retrieveQuizzesAndAssignmentsByUnitIds(roundId:{},teachUnitIds:{},teacherId:{}) -------- start",roundId, teachUnitIds,teacherId);
+    public UnitsStatistic retrieveQuizzesAndAssignmentsByUnitIds(UnitsStatisticCondition unitsStatisticCondition) throws TException {
+        logger.debug("retrieveQuizzesAndAssignmentsByUnitIds(unitsStatisticCondition:{}) -------- start",unitsStatisticCondition);
         UnitsStatistic unitsStatistic = new UnitsStatistic();
-        ResUnitsStatisticDTO resUnitsStatisticDTO = paperReportService.retrieveQuizOrHomeworkInfo(roundId,teachUnitIds,teacherId);
+        ResUnitsStatisticDTO resUnitsStatisticDTO = paperReportService.retrieveQuizOrHomeworkInfo(unitsStatisticCondition);
         BeanUtils.copyProperties(resUnitsStatisticDTO, unitsStatistic);
-        logger.debug("retrieveQuizzesAndAssignmentsByUnitIds(roundId:{},teachUnitIds:{},teacherId:{}) -------- end",roundId, teachUnitIds,teacherId);
+        logger.debug("retrieveQuizzesAndAssignmentsByUnitIds(unitsStatisticCondition:{}) -------- end",unitsStatisticCondition);
         return unitsStatistic;
     }
 
@@ -314,27 +314,27 @@ public class WebStatisticsServiceHandler implements WebStatisticsService.Iface {
     }
 
     @Override
-    public UnitsCorrectRateStatistic retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(String teachUnitIds) throws TException {
-        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(teachUnitIds:{}) -------- start",teachUnitIds);
+    public UnitsCorrectRateStatistic retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(UnitsStatisticCorrectRateCondition unitsStatisticCorrectRateCondition) throws TException {
+        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(unitsStatisticCorrectRateCondition:{}) -------- start",unitsStatisticCorrectRateCondition);
         UnitsCorrectRateStatistic unitsCorrectRateStatistic = new UnitsCorrectRateStatistic();
-        UnitsCorrectRateStatisticDTO unitsCorrectRateStatisticDTO = paperReportService.retrieveQuizOrHomeworkCorrectInfo(teachUnitIds);
+        UnitsCorrectRateStatisticDTO unitsCorrectRateStatisticDTO = paperReportService.retrieveQuizOrHomeworkCorrectInfo(unitsStatisticCorrectRateCondition);
         BeanUtils.copyProperties(unitsCorrectRateStatisticDTO, unitsCorrectRateStatistic);
-        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(teachUnitIds:{}) -------- end",teachUnitIds);
+        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateByUnitIds(unitsStatisticCorrectRateCondition:{}) -------- end",unitsStatisticCorrectRateCondition);
         return unitsCorrectRateStatistic;
     }
 
     @Override
-    public Map<String, UnitsCorrectRateStatistic> retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(List<String> teachUnitIdsList) throws TException {
+    public Map<String, UnitsCorrectRateStatistic> retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(List<UnitsStatisticCorrectRateCondition> unitsStatisticCorrectRateConditions) throws TException {
 
-        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(teachUnitIdsList:{}) -------- start",teachUnitIdsList);
+        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(unitsStatisticCorrectRateConditions:{}) -------- start",unitsStatisticCorrectRateConditions);
         Map <String,UnitsCorrectRateStatistic> unitsCorrectRateStatisticMap = new HashMap<>();
-        Map<String,UnitsCorrectRateStatisticDTO> unitsCorrectRateStatisticDTOMap = paperReportService.retrieveQuizOrHomeworkCorrectInfoMap(teachUnitIdsList);
+        Map<String,UnitsCorrectRateStatisticDTO> unitsCorrectRateStatisticDTOMap = paperReportService.retrieveQuizOrHomeworkCorrectInfoMap(unitsStatisticCorrectRateConditions);
         for (String key : unitsCorrectRateStatisticDTOMap.keySet()){
             UnitsCorrectRateStatistic unitsCorrectRateStatistic = new UnitsCorrectRateStatistic();
             BeanUtils.copyProperties(unitsCorrectRateStatisticDTOMap.get(key), unitsCorrectRateStatistic);
             unitsCorrectRateStatisticMap.put(key,unitsCorrectRateStatistic);
         }
-        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(teachUnitIdsList:{}) -------- end",teachUnitIdsList);
+        logger.debug("retrieveQuizzesAndAssignmentsCorrectRateListByUnitIds(unitsStatisticCorrectRateConditions:{}) -------- end",unitsStatisticCorrectRateConditions);
         return unitsCorrectRateStatisticMap;
     }
 
