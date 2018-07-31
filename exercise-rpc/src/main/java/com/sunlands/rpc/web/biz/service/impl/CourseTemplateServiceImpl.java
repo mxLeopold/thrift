@@ -7,6 +7,8 @@ import com.sunlands.rpc.web.biz.model.TemplateUnitNodeDetailInfoDTO;
 import com.sunlands.rpc.web.biz.service.CourseTemplateService;
 import com.sunlands.rpc.web.coursetemplate.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,12 +22,14 @@ import java.util.List;
  * @copyright by sunlands
  */
 @Service
+@CacheConfig(cacheNames = "course_template")
 public class CourseTemplateServiceImpl implements CourseTemplateService {
 
     @Autowired
     private CourseTemplateDao courseTemplateDao;
 
     @Override
+    @Cacheable(key = "#root.methodName + '_' + #p0")
     public List<LastKnowledgeNodeInfo> retrieveCourseTemplateTreeInfo(int knowledgeTreeId) {
         List<LastKnowledgeNodeInfo> resData = new ArrayList<>();
 
@@ -138,11 +142,13 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
     }
 
     @Override
+    @Cacheable(key = "#root.methodName + '_' + #p0")
     public List<TemplateUnitNodeInfoIntermediate> retrieveCourseTemplateTeachUnitNodes(List<Integer> templateUnitIdList) {
         return courseTemplateDao.retrieveCourseTemplateTeachUnitNodes(templateUnitIdList);
     }
 
     @Override
+    @Cacheable(key = "#root.methodName + '_' + #p0")
     public List<TemplateUnitInfo> retrieveTemplateUnitNodeDetailInfo(int templateId) {
         // 获取所有课次的知识点详情
         List<TemplateUnitNodeDetailInfoDTO> templateUnitList = courseTemplateDao.retrieveTemplateUnitNodeDetailList(templateId);
@@ -221,7 +227,7 @@ public class CourseTemplateServiceImpl implements CourseTemplateService {
                             }
                         }
                     } else {
-                        if (i != preTemplateUnitFirstNodeList.size() - 1){
+                        if (i != preTemplateUnitFirstNodeList.size() - 1) {
                             continue;
                         }
                         // 如果不同，组装一级和二级
