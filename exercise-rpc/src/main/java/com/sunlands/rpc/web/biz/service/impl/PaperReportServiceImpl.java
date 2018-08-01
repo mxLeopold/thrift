@@ -317,21 +317,21 @@ public class PaperReportServiceImpl implements PaperReportService {
         //通过作业随堂考code找到对应id
         if (unitReportConditionDTO.getHomeworkId() != null){
             PaperDTO paperDTO = paperReportMapper.selectPaperByCode(unitReportConditionDTO.getHomeworkId());
-            unitReportConditionDTO.setHomeworkId(paperDTO.getId().toString());
+            unitReportConditionDTO.setHomeworkId(paperDTO==null? null : paperDTO.getId().toString());
         }
         if (unitReportConditionDTO.getQuizzesGroupId() != null){
             PaperDTO paperDTO = paperReportMapper.selectPaperByCode(unitReportConditionDTO.getQuizzesGroupId());
-            unitReportConditionDTO.setQuizzesGroupId(paperDTO.getId().toString());
+            unitReportConditionDTO.setQuizzesGroupId(paperDTO==null? null : paperDTO.getId().toString());
         }
 
-        List<QuizzesOrWorkUserCorrectRateDTO> quizzesOrWorkUserCorrectRateDTOS;
+        List<QuizzesOrWorkUserCorrectRateDTO> quizzesOrWorkUserCorrectRateDTOS = new ArrayList<>();
         Integer pageIndex =(unitReportConditionDTO.getPageNo() - 1) * unitReportConditionDTO.getPageSize();
         Integer countPerPage = unitReportConditionDTO.getPageSize();
         if (unitReportConditionDTO.getUnitIds() == null || "".equals(unitReportConditionDTO.getUnitIds())){
             throw new RuntimeException("课程单元ID不能为空");
         }
         //RPC不支持基本类型空值传递，因此设置-1代表默认为空
-        if (unitReportConditionDTO.getUserId() == -1){
+        if (Objects.equals(-1,unitReportConditionDTO.getUserId()) || unitReportConditionDTO.getUserId() == null){
             unitReportConditionDTO.setUserId( null );
         }
 
@@ -340,7 +340,7 @@ public class PaperReportServiceImpl implements PaperReportService {
         List<String> paperIndexList = new ArrayList<>();
         List<Integer> paperIdList = paperReportMapper.getPaperIdsByUnitIds(unitIdList);
         if (paperIdList==null || paperIdList.size()==0){
-            return null;
+            return quizzesOrWorkUserCorrectRateDTOS;
 //            throw new RuntimeException("该课程单元下没有配置试卷！");
         }
         for (Integer paperId:paperIdList){

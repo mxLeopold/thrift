@@ -28,9 +28,11 @@ public interface PaperReportMapper {
      * @return
      */
     @Select({
-            "select id,code,name,type,question_amount questionAmount,total_score totalScore,avg_difficulty_value avgDifficultyValue,",
-            "create_time createTime,update_time updateTime,creator,operator,delete_flag deleteFlag",
-            " from t_paper where delete_flag = 0 and code = #{paperCode} order by create_time desc limit 1"
+            "select a.id,a.code,a.name,a.type,a.question_amount questionAmount,a.total_score totalScore,a.avg_difficulty_value avgDifficultyValue, ",
+            "a.create_time createTime,a.update_time updateTime,a.creator,a.operator,a.delete_flag deleteFlag ",
+            "from t_paper a ",
+            "INNER JOIN t_paper_code b ON a.code = b.code ",
+            " where a.delete_flag = 0 and a.code = #{paperCode} order by a.create_time desc limit 1"
     })
     PaperDTO selectPaperByCode(@Param("paperCode") String paperCode);
 
