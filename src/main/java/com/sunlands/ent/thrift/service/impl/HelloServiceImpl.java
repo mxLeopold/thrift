@@ -1,8 +1,8 @@
-package com.cnblogs.yjmyzz.thrift.service.impl;
+package com.sunlands.ent.thrift.service.impl;
 
-import com.cnblogs.yjmyzz.thrift.service.DemoParam;
-import com.cnblogs.yjmyzz.thrift.service.DemoResult;
-import com.cnblogs.yjmyzz.thrift.service.HelloService;
+import com.sunlands.ent.thrift.service.DemoParam;
+import com.sunlands.ent.thrift.service.DemoResult;
+import com.sunlands.ent.thrift.service.HelloService;
 import org.apache.thrift.TException;
 import org.springframework.stereotype.Service;
 

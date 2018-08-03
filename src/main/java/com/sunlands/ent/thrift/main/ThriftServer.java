@@ -1,8 +1,8 @@
-package com.cnblogs.yjmyzz.thrift.main;
+package com.sunlands.ent.thrift.main;
 
-import com.cnblogs.yjmyzz.thrift.embed.JettyWebServer;
-import com.cnblogs.yjmyzz.thrift.util.FileUtil;
-import com.cnblogs.yjmyzz.thrift.util.JarUtils;
+import com.sunlands.ent.thrift.embed.JettyWebServer;
+import com.sunlands.ent.thrift.util.FileUtil;
+import com.sunlands.ent.thrift.util.JarUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;

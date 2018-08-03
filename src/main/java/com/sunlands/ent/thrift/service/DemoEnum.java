@@ -4,12 +4,8 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.cnblogs.yjmyzz.thrift.service;
+package com.sunlands.ent.thrift.service;
 
-
-import java.util.Map;
-import java.util.HashMap;
-import org.apache.thrift.TEnum;
 
 public enum DemoEnum implements org.apache.thrift.TEnum {
   A(0),
@@ -25,6 +21,7 @@ public enum DemoEnum implements org.apache.thrift.TEnum {
   /**
    * Get the integer value of this enum value, as defined in the Thrift IDL.
    */
+  @Override
   public int getValue() {
     return value;
   }

@@ -1,9 +1,9 @@
-package com.cnblogs.yjmyzz.thrift.proxy;
+package com.sunlands.ent.thrift.proxy;
 
-import com.cnblogs.yjmyzz.thrift.service.DemoEnum;
-import com.cnblogs.yjmyzz.thrift.service.DemoParam;
-import com.cnblogs.yjmyzz.thrift.service.HealthService;
-import com.cnblogs.yjmyzz.thrift.service.HelloService;
+import com.sunlands.ent.thrift.service.DemoEnum;
+import com.sunlands.ent.thrift.service.DemoParam;
+import com.sunlands.ent.thrift.service.HealthService;
+import com.sunlands.ent.thrift.service.HelloService;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TCompactProtocol;

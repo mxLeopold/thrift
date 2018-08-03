@@ -1,4 +1,4 @@
-package com.cnblogs.yjmyzz.thrift.embed;
+package com.sunlands.ent.thrift.embed;
 
 import org.eclipse.jetty.server.*;
 import org.eclipse.jetty.server.handler.HandlerCollection;

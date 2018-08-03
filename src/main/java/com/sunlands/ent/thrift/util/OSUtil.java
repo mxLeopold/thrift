@@ -1,4 +1,4 @@
-package com.cnblogs.yjmyzz.thrift.util;
+package com.sunlands.ent.thrift.util;
 
 /**
  * Created by jimmy on 2015/8/6.

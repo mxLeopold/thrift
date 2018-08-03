@@ -17,15 +17,15 @@
     <bean class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>
 
 
-    <bean name="/health.service" class="com.cnblogs.yjmyzz.thrift.proxy.ThriftServletProxy">
-        <constructor-arg index="0" value="com.cnblogs.yjmyzz.thrift.service.HealthService"/>
+    <bean name="/health.service" class="com.sunlands.ent.thrift.proxy.ThriftServletProxy">
+        <constructor-arg index="0" value="com.sunlands.ent.thrift.service.HealthService"/>
         <constructor-arg index="1">
             <ref bean="healthServiceImpl"/>
         </constructor-arg>
     </bean>
 
-    <bean name="/hello.service" class="com.cnblogs.yjmyzz.thrift.proxy.ThriftServletProxy">
-        <constructor-arg index="0" value="com.cnblogs.yjmyzz.thrift.service.HelloService"/>
+    <bean name="/hello.service" class="com.sunlands.ent.thrift.proxy.ThriftServletProxy">
+        <constructor-arg index="0" value="com.sunlands.ent.thrift.service.HelloService"/>
         <constructor-arg index="1">
             <ref bean="helloServiceImpl"/>
         </constructor-arg>
@@ -36,16 +36,16 @@
         <ref bean="healthProxy"/>
     </util:list>
 
-    <bean id="helloProxy" class="com.cnblogs.yjmyzz.thrift.proxy.ThriftServerProxy">
+    <bean id="helloProxy" class="com.sunlands.ent.thrift.proxy.ThriftServerProxy">
         <property name="port" value="33201"/>
-        <property name="serviceInterface" value="com.cnblogs.yjmyzz.thrift.service.HelloService"/>
+        <property name="serviceInterface" value="com.sunlands.ent.thrift.service.HelloService"/>
         <property name="serviceImplObject" ref="helloServiceImpl"/>
     </bean>
 
 
-    <bean id="healthProxy" class="com.cnblogs.yjmyzz.thrift.proxy.ThriftServerProxy">
+    <bean id="healthProxy" class="com.sunlands.ent.thrift.proxy.ThriftServerProxy">
         <property name="port" value="33202"/>
-        <property name="serviceInterface" value="com.cnblogs.yjmyzz.thrift.service.HealthService"/>
+        <property name="serviceInterface" value="com.sunlands.ent.thrift.service.HealthService"/>
         <property name="serviceImplObject" ref="healthServiceImpl"/>
     </bean>
 

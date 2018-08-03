@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-package com.cnblogs.yjmyzz.thrift.service;
+package com.sunlands.ent.thrift.service;
 
 import org.apache.thrift.EncodingUtils;
 import org.apache.thrift.protocol.TTupleProtocol;
@@ -511,7 +511,7 @@ public class DemoParam implements org.apache.thrift.TBase<DemoParam, DemoParam._
             break;
           case 3: // DEMO_ENUM
             if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
-              struct.demoEnum = com.cnblogs.yjmyzz.thrift.service.DemoEnum.findByValue(iprot.readI32());
+              struct.demoEnum = DemoEnum.findByValue(iprot.readI32());
               struct.setDemoEnumIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
@@ -597,7 +597,7 @@ public class DemoParam implements org.apache.thrift.TBase<DemoParam, DemoParam._
         struct.setNameIsSet(true);
       }
       if (incoming.get(1)) {
-        struct.demoEnum = com.cnblogs.yjmyzz.thrift.service.DemoEnum.findByValue(iprot.readI32());
+        struct.demoEnum = DemoEnum.findByValue(iprot.readI32());
         struct.setDemoEnumIsSet(true);
       }
     }

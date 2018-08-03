@@ -1,6 +1,6 @@
-package com.cnblogs.yjmyzz.thrift.service.impl;
+package com.sunlands.ent.thrift.service.impl;
 
-import com.cnblogs.yjmyzz.thrift.service.HealthService;
+import com.sunlands.ent.thrift.service.HealthService;
 import org.apache.thrift.TException;
 import org.springframework.stereotype.Service;
 

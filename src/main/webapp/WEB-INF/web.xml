@@ -67,7 +67,7 @@
 
 
     <listener>
-        <listener-class>com.cnblogs.yjmyzz.thrift.listener.ThriftServerStartListener</listener-class>
+        <listener-class>com.sunlands.ent.thrift.listener.ThriftServerStartListener</listener-class>
     </listener>
 
     <session-config>

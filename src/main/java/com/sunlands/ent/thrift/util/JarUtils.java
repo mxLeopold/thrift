@@ -1,4 +1,4 @@
-package com.cnblogs.yjmyzz.thrift.util;
+package com.sunlands.ent.thrift.util;
 
 import org.apache.commons.io.FileUtils;
 
@@ -78,8 +78,9 @@ public class JarUtils {
                 int length = -1;
                 while (true) {
                     length = input.read(buffer);
-                    if (length == -1)
+                    if (length == -1) {
                         break;
+                    }
                     bos.write(buffer, 0, length);
                 }
                 bos.close();
@@ -198,8 +199,9 @@ public class JarUtils {
                 int length = -1;
                 while (true) {
                     length = bis.read(buffer);
-                    if (length == -1)
+                    if (length == -1) {
                         break;
+                    }
                     zos.write(buffer, 0, length);
                 }
                 bis.close();
@@ -230,7 +232,7 @@ public class JarUtils {
     /**
      * 获得zip entry 字符串
      *
-     * @param base
+     * @param baseFile
      * @param file
      * @return
      */

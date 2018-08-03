@@ -1,4 +1,4 @@
-package com.cnblogs.yjmyzz.thrift.proxy;
+package com.sunlands.ent.thrift.proxy;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;

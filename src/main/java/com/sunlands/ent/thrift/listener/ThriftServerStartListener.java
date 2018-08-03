@@ -1,10 +1,10 @@
-package com.cnblogs.yjmyzz.thrift.listener;
+package com.sunlands.ent.thrift.listener;
 
+import com.sunlands.ent.thrift.proxy.ThriftServerProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import com.cnblogs.yjmyzz.thrift.proxy.ThriftServerProxy;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

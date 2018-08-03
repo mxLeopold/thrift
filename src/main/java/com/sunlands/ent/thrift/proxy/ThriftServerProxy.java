@@ -1,4 +1,4 @@
-package com.cnblogs.yjmyzz.thrift.proxy;
+package com.sunlands.ent.thrift.proxy;
 
 import org.apache.thrift.TProcessor;
 import org.apache.thrift.protocol.TCompactProtocol;
@@ -63,6 +63,8 @@ public class ThriftServerProxy {
 
     public void start() {
         new Thread() {
+
+            @Override
             public void run() {
 
                 try {
