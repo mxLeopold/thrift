@@ -1,7 +1,9 @@
 package com.sunlands;
 
+import com.sunlands.entrpc.proxy.ThriftServletProxy;
 import com.sunlands.rpc.api.homepage.handler.ApiHomePageServiceHandler;
 import com.sunlands.rpc.api.homepage.service.ApiHomePageService;
+import com.sunlands.rpc.hello.service.HelloService;
 import com.sunlands.rpc.web.coursetemplate.handler.WebCourseTemplateServiceHandler;
 import com.sunlands.rpc.web.coursetemplate.service.WebCourseTemplateService;
 import com.sunlands.rpc.web.statistics.handler.WebStatisticsServiceHandler;
@@ -12,8 +14,11 @@ import org.apache.thrift.protocol.TProtocolFactory;
 import org.apache.thrift.server.TServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +26,7 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 @EnableCaching
 @EnableEncryptableProperties
+@ServletComponentScan
 public class Application {
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);
@@ -58,6 +64,14 @@ public class Application {
                 new TServlet(new ApiHomePageService.Processor<>(handler), protocolFactory),
                 "/api/homePage/*");
         homePage.setName("homePage");
+        return homePage;
+    }
+
+    @Bean
+    public ServletRegistrationBean helloServiceServletRegistrationBean(@Autowired @Qualifier("helloService") ThriftServletProxy helloService) {
+        ServletRegistrationBean homePage = new ServletRegistrationBean(helloService,
+                "/hello.service");
+        homePage.setName("hello.service");
         return homePage;
     }
 
