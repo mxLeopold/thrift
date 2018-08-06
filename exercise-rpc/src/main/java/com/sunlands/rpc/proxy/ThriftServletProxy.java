@@ -1,4 +1,4 @@
-package com.sunlands.entrpc.proxy;
+package com.sunlands.rpc.proxy;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.TProcessor;

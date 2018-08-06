@@ -15,6 +15,6 @@ import org.springframework.stereotype.Component;
 public class HealthServiceHandler implements HealthService.Iface {
     @Override
     public String ping() throws TException {
-        return null;
+        return "pong";
     }
 }

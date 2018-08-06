@@ -1,4 +1,4 @@
-package com.sunlands;
+package com.sunlands.rpc.config;
 
 import java.io.IOException;
 

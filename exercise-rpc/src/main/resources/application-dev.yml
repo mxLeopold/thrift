@@ -52,16 +52,6 @@ spring:
                maxPoolPreparedStatementPerConnectionSize: 50
                removeAbandoned: true
                filters: stat
-thrift-config:
-  thriftServerList:
-        - port: 33201
-          serviceInterface: com.sunlands.rpc.hello.service.HelloService
-          serviceImplObject: com.sunlands.rpc.hello.handler.HelloServiceHandler
-        - port: 33202
-          serviceInterface: com.sunlands.rpc.hello.service.HealthService
-          serviceImplObject: com.sunlands.rpc.hello.handler.HealthServiceHandler
-
-
 server:
       port: 9094
 logging:

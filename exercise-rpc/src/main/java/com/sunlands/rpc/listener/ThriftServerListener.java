@@ -1,6 +1,6 @@
-package com.sunlands.entrpc.listener;
+package com.sunlands.rpc.listener;
 
-import com.sunlands.entrpc.proxy.ThriftServerProxy;
+import com.sunlands.rpc.proxy.ThriftServerProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Slf4j
 @WebListener
-public class ThriftServerStartListener implements ServletContextListener {
+public class ThriftServerListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {
         System.out.println("thrift server ----------------------- start begin");

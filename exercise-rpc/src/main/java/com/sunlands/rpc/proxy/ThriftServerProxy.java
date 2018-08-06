@@ -1,4 +1,4 @@
-package com.sunlands.entrpc.proxy;
+package com.sunlands.rpc.proxy;
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +9,7 @@ import org.apache.thrift.server.TServer;
 import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TTransportException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Constructor;
@@ -27,7 +28,7 @@ public class ThriftServerProxy {
     /**
      * 端口
      */
-    private int port;
+    private static int PORT;
     /**
      * 实现类接口
      */
@@ -40,6 +41,25 @@ public class ThriftServerProxy {
      * thrift接口
      */
     private String serviceIface;
+
+    /**
+     * 保证执行顺序
+     */
+    private static volatile TNonblockingServerSocket transport = null;
+
+    static {
+        if (transport == null) {
+            synchronized (ThriftServletProxy.class) {
+                if (transport == null) {
+                    try {
+                        transport = new TNonblockingServerSocket(PORT);
+                    } catch (TTransportException e) {
+                        log.error("服务启动失败，端口：" + PORT);
+                    }
+                }
+            }
+        }
+    }
 
     public void start() {
         ThreadFactory namedThreadFactory = new ThreadFactoryBuilder()
@@ -59,7 +79,6 @@ public class ThriftServerProxy {
                             Constructor constructor = processorClazz.getConstructor(iface);
                             TProcessor processor = (TProcessor) constructor.newInstance(serviceImplObject);
 
-                            TNonblockingServerSocket transport = new TNonblockingServerSocket(getPort());
                             TNonblockingServer.Args tArgs = new TNonblockingServer.Args(transport);
                             tArgs.processor(processor);
                             tArgs.protocolFactory(new TCompactProtocol.Factory());
@@ -68,9 +87,6 @@ public class ThriftServerProxy {
 
                             log.info(serviceInterface + "服务启动成功,端口:" + getPort());
                             server.serve();
-
-                        } catch (TTransportException e) {
-                            e.printStackTrace();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -89,11 +105,16 @@ public class ThriftServerProxy {
     }
 
     public int getPort() {
-        return port;
+        return PORT;
     }
 
+    /**
+     * 注入静态常量
+     * @param port
+     */
+    @Value("${server.port:}")
     public void setPort(int port) {
-        this.port = port;
+        PORT = port;
     }
 
     public String getServiceInterface() {

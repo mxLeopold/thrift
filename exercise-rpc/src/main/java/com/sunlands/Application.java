@@ -1,9 +1,8 @@
 package com.sunlands;
 
-import com.sunlands.entrpc.proxy.ThriftServletProxy;
+import com.sunlands.rpc.proxy.ThriftServletProxy;
 import com.sunlands.rpc.api.homepage.handler.ApiHomePageServiceHandler;
 import com.sunlands.rpc.api.homepage.service.ApiHomePageService;
-import com.sunlands.rpc.hello.service.HelloService;
 import com.sunlands.rpc.web.coursetemplate.handler.WebCourseTemplateServiceHandler;
 import com.sunlands.rpc.web.coursetemplate.service.WebCourseTemplateService;
 import com.sunlands.rpc.web.statistics.handler.WebStatisticsServiceHandler;
@@ -67,12 +66,26 @@ public class Application {
         return homePage;
     }
 
+    /**
+     * 更新后注册方法
+     */
     @Bean
     public ServletRegistrationBean helloServiceServletRegistrationBean(@Autowired @Qualifier("helloService") ThriftServletProxy helloService) {
-        ServletRegistrationBean homePage = new ServletRegistrationBean(helloService,
+        ServletRegistrationBean hello = new ServletRegistrationBean(helloService,
                 "/hello.service");
-        homePage.setName("hello.service");
-        return homePage;
+        hello.setName("hello.service");
+        return hello;
+    }
+
+    /**
+     * 更新后注册方法
+     */
+    @Bean
+    public ServletRegistrationBean healthServiceServletRegistrationBean(@Autowired @Qualifier("healthService") ThriftServletProxy healthService) {
+        ServletRegistrationBean health = new ServletRegistrationBean(healthService,
+                "/health.service");
+        health.setName("health.service");
+        return health;
     }
 
     @Bean

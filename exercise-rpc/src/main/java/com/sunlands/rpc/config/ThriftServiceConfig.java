@@ -1,14 +1,11 @@
 package com.sunlands.rpc.config;
 
-import com.sunlands.entrpc.proxy.ThriftServerProxy;
-import com.sunlands.entrpc.proxy.ThriftServletProxy;
-import com.sunlands.rpc.hello.ThriftSerivceDTO;
+import com.sunlands.rpc.proxy.ThriftServerProxy;
+import com.sunlands.rpc.proxy.ThriftServletProxy;
 import com.sunlands.rpc.hello.handler.HealthServiceHandler;
 import com.sunlands.rpc.hello.handler.HelloServiceHandler;
-import com.sunlands.rpc.hello.service.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,7 +25,6 @@ public class ThriftServiceConfig {
     @Bean
     public ThriftServerProxy helloProxy(@Autowired @Qualifier("helloServiceHandler")HelloServiceHandler helloServiceHandler) {
         ThriftServerProxy helloProxy = new ThriftServerProxy();
-        helloProxy.setPort(33201);
         helloProxy.setServiceInterface("com.sunlands.rpc.hello.service.HelloService");
         helloProxy.setServiceImplObject(helloServiceHandler);
         return helloProxy;
@@ -43,7 +39,6 @@ public class ThriftServiceConfig {
     @Bean
     public ThriftServerProxy healthProxy(@Autowired @Qualifier("healthServiceHandler")HealthServiceHandler healthServiceHandler) {
         ThriftServerProxy helloProxy = new ThriftServerProxy();
-        helloProxy.setPort(33202);
         helloProxy.setServiceInterface("com.sunlands.rpc.hello.service.HealthService");
         helloProxy.setServiceImplObject(healthServiceHandler);
         return helloProxy;
